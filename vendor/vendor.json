@@ -1,0 +1,23 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "7cxwOBG3z8bcqlACknqxIV+jB/o=",
+			"path": "github.com/urfave/cli",
+			"revision": "f1be59ff3d239f0942b201619030d302bce912cc",
+			"revisionTime": "2016-11-19T21:37:11Z"
+		},
+		{
+			"path": "github.com/urfave/cli.v1",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "QpWY2ygzClg3Bw+GHjD7yXlcTxw=",
+			"path": "gopkg.in/yaml.v2",
+			"revision": "4c78c975fe7c825c6d1466c42be594d1d6f3aba6",
+			"revisionTime": "2017-01-25T14:37:19Z"
+		}
+	],
+	"rootPath": "github.com/cbegin/graven"
+}

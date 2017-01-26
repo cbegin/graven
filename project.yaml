@@ -1,0 +1,34 @@
+
+package: github.com/cbegin/graven
+version: 0.0.1-SNAPSHOT
+
+artifacts:
+  - classifier: win
+    flags: -f
+    environment:
+      - FOO: bar
+    packaging: zip
+    resources:
+      - resources/commmon
+      - resources/win
+  - classifier: linux
+    flags: -f
+    environment:
+      - FOO: bar
+      - BAZ: buz
+    packaging: tar.gz
+    resources:
+      - resources/commmon
+      - resources/linux
+
+
+repositories:
+  - name: central
+    url: http://foo.com/nexus
+    username: me
+    password: $password
+    type: maven
+  - name: git
+    url: http://github.com/api
+    token: 32uoiew09u32jie93jioqu9oji21w
+    type: github
