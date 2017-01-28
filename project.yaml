@@ -5,17 +5,17 @@ version: 0.0.1-SNAPSHOT
 artifacts:
   - classifier: win
     flags: -f
-    environment:
-      - FOO: bar
     packaging: zip
+    environment:
+      FOO: bar
     resources:
       - resources/commmon
       - resources/win
   - classifier: linux
     flags: -f
     environment:
-      - FOO: bar
-      - BAZ: buz
+      FOO: bar
+      BAZ: buz
     packaging: tar.gz
     resources:
       - resources/commmon

@@ -15,6 +15,25 @@ type Project struct {
 	FilePath string
 	Package  string `yaml:"package"`
 	Version  string `yaml:"version"`
+	Artifacts []Artifact `yaml:"artifacts"`
+	Repositories []Repository `yaml:"repositories"`
+}
+
+type Repository struct {
+	Name string `yaml:"name"`
+	URL string `yaml:"url"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	Token string `yaml:"token"`
+	Type string `yaml:"type"`
+}
+
+type Artifact struct {
+	Classifier string `yaml:"classifier"`
+	Flags string `yaml:"flags"`
+	Packaging string `yaml:"packaging"`
+	Environment map[string]string `yaml:"environment"`
+	Resources []string `yaml:"resources"`
 }
 
 func FindProject() (*Project, error) {
