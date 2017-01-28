@@ -23,9 +23,7 @@ var BuildCommand = cli.Command{
 
 func build(c *cli.Context) error {
 	project := c.App.Metadata["project"].(*domain.Project)
-
-	fmt.Printf("%+v\n", project)
-
+	
 	for _, pkg := range project.Packages {
 		cmd := exec.Command("go", "build", "-o", pkg.Exec, pkg.Path)
 		cmd.Stdout = os.Stdout
