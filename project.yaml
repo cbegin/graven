@@ -27,7 +27,6 @@ artifacts:
       - resources/commmon
       - resources/linux
 
-
 repositories:
   - name: central
     url: http://foo.com/nexus
