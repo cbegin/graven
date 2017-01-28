@@ -4,8 +4,9 @@ import (
 	"github.com/urfave/cli"
 	"os"
 	"fmt"
+	"github.com/cbegin/graven/commands"
+	"github.com/cbegin/graven/domain"
 )
-
 
 func main() {
 	app := cli.NewApp()
@@ -16,8 +17,18 @@ func main() {
 	app.Name = "graven"
 	app.Usage = "A build automation tool for Go."
 
-	p, err := FindProject()
-	fmt.Printf("%+v %v\n", p, err)
+	app.Commands = []cli.Command{
+		commands.BuildCommand,
+	}
+
+	p, err := domain.FindProject()
+	if err != nil {
+		fmt.Println("Could not find project.yaml in current or parent path.")
+		return
+	}
+
+	app.Metadata = map[string]interface{}{"project":p}
+	//fmt.Printf("%+v %v\n", p, err)
 
 	// new -- initializes new directory and project.yaml
 	// clean -- deletes target dir
@@ -27,6 +38,7 @@ func main() {
 	// deploy -- deploy one artifact to one repository
 	// release [major|minor|patch] package, deploy each archive
 	// docker?
+
 
 	app.Run(os.Args)
 }

@@ -1,4 +1,4 @@
-package main
+package domain
 
 import (
 	"os"
@@ -13,10 +13,16 @@ const (
 
 type Project struct {
 	FilePath string
-	Package  string `yaml:"package"`
+	Name  string `yaml:"name"`
 	Version  string `yaml:"version"`
+	Packages []Package `yaml:"packages"`
 	Artifacts []Artifact `yaml:"artifacts"`
 	Repositories []Repository `yaml:"repositories"`
+}
+
+type Package struct {
+	Path string `yaml:"path"`
+	Exec string `yaml:"exec"`
 }
 
 type Repository struct {
@@ -38,9 +44,6 @@ type Artifact struct {
 
 func FindProject() (*Project, error) {
 	wd, _ := os.Getwd()
-
-	fmt.Println(wd)
-
 	cwd := wd
 	for len(cwd) > 1 {
 		p := path.Join(cwd, ProjectFileName)

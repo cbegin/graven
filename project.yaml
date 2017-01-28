@@ -1,6 +1,12 @@
 
-package: github.com/cbegin/graven
+name: github.com/cbegin/graven
 version: 0.0.1-SNAPSHOT
+
+packages:
+  - path: graven.go
+    exec: gvn
+  - path: graven.go
+    exec: graven
 
 artifacts:
   - classifier: win
