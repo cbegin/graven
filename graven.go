@@ -33,9 +33,7 @@ func main() {
 	//fmt.Printf("%+v %v\n", p, err)
 
 	// new -- initializes new directory and project.yaml
-	// clean -- deletes target dir
 	// test -- runs tests with flags, coverage etc.
-	// build -- compiles all platforms with flags
 	// package -- clean, test, build, package archives
 	// deploy -- deploy one artifact to one repository
 	// release [major|minor|patch] package, deploy each archive
