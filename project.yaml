@@ -2,30 +2,46 @@
 name: github.com/cbegin/graven
 version: 0.0.1-SNAPSHOT
 
-packages:
-  - path: graven.go
-    exec: gvn
-  - path: graven.go
-    exec: graven
-
 artifacts:
+
   - classifier: win
-    flags: -f
-    packaging: zip
-    environment:
-      FOO: bar
+    targets:
+      - executable: gvn.exe
+        package: .
+        flags:
+        env:
+          GOOS: windows
+          GOARCH: amd64
     resources:
       - resources/commmon
       - resources/win
+    archive: zip
+
   - classifier: linux
-    flags: -f
-    environment:
-      FOO: bar
-      BAZ: buz
-    packaging: tar.gz
+    targets:
+      - executable: gvn
+        package: .
+        flags:
+        env:
+          GOOS: linux
+          GOARCH: amd64
     resources:
       - resources/commmon
       - resources/linux
+    archive: tar.gz
+
+  - classifier: darwin
+    targets:
+      - executable: gvn
+        package: .
+        flags:
+        env:
+          GOOS: darwin
+          GOARCH: amd64
+    resources:
+      - resources/commmon
+      - resources/darwin
+    archive: tar.gz
 
 repositories:
   - name: central

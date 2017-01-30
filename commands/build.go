@@ -4,8 +4,9 @@ import (
 	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
 	"os/exec"
-	"fmt"
 	"os"
+	"fmt"
+	"path"
 )
 
 var BuildCommand = cli.Command{
@@ -24,15 +25,29 @@ var BuildCommand = cli.Command{
 func build(c *cli.Context) error {
 	project := c.App.Metadata["project"].(*domain.Project)
 	
-	for _, pkg := range project.Packages {
-		cmd := exec.Command("go", "build", "-o", pkg.Exec, pkg.Path)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		cmd.Stdin = os.Stdin
+	for _, artifact := range project.Artifacts {
+		for _, target := range artifact.Targets {
+			outpath := path.Join(project.TargetPath(artifact.Classifier))
+			if _, err := os.Stat(outpath); os.IsNotExist(err) {
+				os.Mkdir(outpath, 0755)
+			}
+			cmd := exec.Command("go", "build", "-o", path.Join(outpath, target.Executable), target.Flags, target.Package)
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			cmd.Stdin = os.Stdin
 
-		err := cmd.Run()
-		if err != nil {
-			return err
+			environment := []string{}
+			for k, v := range target.Environment {
+				environment = append(environment, fmt.Sprintf("%s=%s", k, v))
+			}
+			gopath, _ := os.LookupEnv("GOPATH")
+			environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
+			cmd.Env = environment
+
+			err := cmd.Run()
+			if err != nil {
+				return err
+			}
 		}
 	}
 

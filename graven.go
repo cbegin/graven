@@ -39,6 +39,7 @@ func main() {
 	// release [major|minor|patch] package, deploy each archive
 	// docker?
 
+	fmt.Printf("%+v\n", p)
 
 	app.Run(os.Args)
 }

@@ -15,14 +15,22 @@ type Project struct {
 	FilePath string
 	Name  string `yaml:"name"`
 	Version  string `yaml:"version"`
-	Packages []Package `yaml:"packages"`
 	Artifacts []Artifact `yaml:"artifacts"`
 	Repositories []Repository `yaml:"repositories"`
 }
 
-type Package struct {
-	Path string `yaml:"path"`
-	Exec string `yaml:"exec"`
+type Artifact struct {
+	Classifier string `yaml:"classifier"`
+	Resources []string `yaml:"resources"`
+	Targets []Target `yaml:"targets"`
+	Archive string `yaml:"archive"`
+}
+
+type Target struct {
+	Executable string `yaml:"executable"`
+	Package string `yaml:"package"`
+	Flags string `yaml:"flags"`
+	Environment map[string]string `yaml:"env"`
 }
 
 type Repository struct {
@@ -34,12 +42,12 @@ type Repository struct {
 	Type string `yaml:"type"`
 }
 
-type Artifact struct {
-	Classifier string `yaml:"classifier"`
-	Flags string `yaml:"flags"`
-	Packaging string `yaml:"packaging"`
-	Environment map[string]string `yaml:"environment"`
-	Resources []string `yaml:"resources"`
+func (p *Project) TargetPath(subdirs ...string) string {
+	target := path.Join("target")
+	for _, s := range subdirs {
+		target = path.Join(target, s)
+	}
+	return target
 }
 
 func FindProject() (*Project, error) {
