@@ -11,11 +11,6 @@ import (
 
 var BuildCommand = cli.Command{
 	Name: "build",
-	//Flags: []cli.Flag{
-	//	cli.StringFlag{
-	//		Name: "",
-	//	},
-	//},
 	Usage:       "build project",
 	UsageText:   "build - build project",
 	Description: "find the nearest project.yaml in the current directory tree and builds",
@@ -28,15 +23,20 @@ func build(c *cli.Context) error {
 	for _, artifact := range project.Artifacts {
 		for _, target := range artifact.Targets {
 			classifiedPath := project.TargetPath(artifact.Classifier)
+			if _, err := os.Stat(classifiedPath); os.IsNotExist(err) {
+				os.Mkdir(classifiedPath, 0755)
+			}
+
 			for _, resource := range artifact.Resources {
-				err := domain.CopyDir(project.ProjectPath(resource), classifiedPath)
+				resourcePath := project.ProjectPath(resource)
+				baseProjectPath := project.ProjectPath()
+				if len(resourcePath[len(baseProjectPath):]) < 1 {
+					return fmt.Errorf("Resource path cannot be the entire project folder: %s", resourcePath)
+				}
+				err := domain.CopyDir(resourcePath, classifiedPath)
 				if err != nil {
 					return err
 				}
-			}
-
-			if _, err := os.Stat(classifiedPath); os.IsNotExist(err) {
-				os.Mkdir(classifiedPath, 0755)
 			}
 
 			cmd := exec.Command("go", "build", "-o", path.Join(classifiedPath, target.Executable), target.Flags, target.Package)
