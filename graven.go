@@ -20,6 +20,7 @@ func main() {
 	app.Commands = []cli.Command{
 		commands.BuildCommand,
 		commands.InfoCommand,
+		commands.CleanCommand,
 	}
 
 	p, err := domain.FindProject()

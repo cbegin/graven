@@ -23,8 +23,8 @@ var InfoCommand = cli.Command{
 func info(c *cli.Context) error {
 	project := c.App.Metadata["project"].(*domain.Project)
 
-	bytes, _ := yaml.Marshal(project)
+	bytes, err := yaml.Marshal(project)
 
 	fmt.Println(string(bytes))
-	return nil
+	return err
 }

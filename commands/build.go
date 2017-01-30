@@ -27,11 +27,18 @@ func build(c *cli.Context) error {
 	
 	for _, artifact := range project.Artifacts {
 		for _, target := range artifact.Targets {
-			outpath := project.TargetPath(artifact.Classifier)
-			if _, err := os.Stat(outpath); os.IsNotExist(err) {
-				os.Mkdir(outpath, 0755)
+			classifiedPath := project.TargetPath(artifact.Classifier)
+			for _, resource := range artifact.Resources {
+				err := domain.CopyDir(project.ProjectPath(resource), classifiedPath)
+				if err != nil {
+					return err
+				}
 			}
-			cmd := exec.Command("go", "build", "-o", path.Join(outpath, target.Executable), target.Flags, target.Package)
+
+			if _, err := os.Stat(classifiedPath); os.IsNotExist(err) {
+				os.Mkdir(classifiedPath, 0755)
+			}
+			cmd := exec.Command("go", "build", "-o", path.Join(classifiedPath, target.Executable), target.Flags, target.Package)
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			cmd.Stdin = os.Stdin
