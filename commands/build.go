@@ -38,6 +38,7 @@ func build(c *cli.Context) error {
 			if _, err := os.Stat(classifiedPath); os.IsNotExist(err) {
 				os.Mkdir(classifiedPath, 0755)
 			}
+
 			cmd := exec.Command("go", "build", "-o", path.Join(classifiedPath, target.Executable), target.Flags, target.Package)
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr

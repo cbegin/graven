@@ -53,8 +53,7 @@ func CopyFile(src, dst string) error {
 }
 
 // CopyDir recursively copies a directory tree, attempting to preserve permissions.
-// Source directory must exist, destination directory must *not* exist.
-// Symlinks are ignored and skipped.
+// Source directory must exist. Symlinks are ignored and skipped.
 func CopyDir(src string, dst string) error {
 	src = filepath.Clean(src)
 	dst = filepath.Clean(dst)
@@ -71,9 +70,6 @@ func CopyDir(src string, dst string) error {
 	if err != nil && !os.IsNotExist(err) {
 		return err
 	}
-	//if err == nil {
-	//	return fmt.Errorf("destination already exists: %s", dst)
-	//}
 
 	err = os.MkdirAll(dst, si.Mode())
 	if err != nil {
