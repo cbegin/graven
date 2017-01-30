@@ -44,11 +44,13 @@ artifacts:
     archive: tar.gz
 
 repositories:
+
   - name: central
     url: http://foo.com/nexus
     username: me
     password: $password
     type: maven
+
   - name: git
     url: http://github.com/api
     token: 32uoiew09u32jie93jioqu9oji21w

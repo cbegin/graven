@@ -19,6 +19,7 @@ func main() {
 
 	app.Commands = []cli.Command{
 		commands.BuildCommand,
+		commands.InfoCommand,
 	}
 
 	p, err := domain.FindProject()
@@ -39,7 +40,7 @@ func main() {
 	// release [major|minor|patch] package, deploy each archive
 	// docker?
 
-	fmt.Printf("%+v\n", p)
+	fmt.Printf("Project Path: %s\n", p.ProjectPath())
 
 	app.Run(os.Args)
 }

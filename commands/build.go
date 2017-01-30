@@ -27,7 +27,7 @@ func build(c *cli.Context) error {
 	
 	for _, artifact := range project.Artifacts {
 		for _, target := range artifact.Targets {
-			outpath := path.Join(project.TargetPath(artifact.Classifier))
+			outpath := project.TargetPath(artifact.Classifier)
 			if _, err := os.Stat(outpath); os.IsNotExist(err) {
 				os.Mkdir(outpath, 0755)
 			}
@@ -35,6 +35,7 @@ func build(c *cli.Context) error {
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			cmd.Stdin = os.Stdin
+			cmd.Dir = project.ProjectPath()
 
 			environment := []string{}
 			for k, v := range target.Environment {

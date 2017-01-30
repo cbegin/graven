@@ -43,11 +43,19 @@ type Repository struct {
 }
 
 func (p *Project) TargetPath(subdirs ...string) string {
-	target := path.Join("target")
+	targetPath := p.ProjectPath("target")
 	for _, s := range subdirs {
-		target = path.Join(target, s)
+		targetPath = path.Join(targetPath, s)
 	}
-	return target
+	return targetPath
+}
+
+func (p *Project) ProjectPath(subdirs ...string) string {
+	projectPath := path.Dir(p.FilePath)
+	for _, s := range subdirs {
+		projectPath = path.Join(projectPath, s)
+	}
+	return projectPath
 }
 
 func FindProject() (*Project, error) {
