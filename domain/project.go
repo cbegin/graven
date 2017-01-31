@@ -9,6 +9,7 @@ import (
 
 const (
 	ProjectFileName = "project.yaml"
+	TargetDirName = "target"
 )
 
 type Project struct {
@@ -43,7 +44,7 @@ type Repository struct {
 }
 
 func (p *Project) TargetPath(subdirs ...string) string {
-	targetPath := p.ProjectPath("target")
+	targetPath := p.ProjectPath(TargetDirName)
 	for _, s := range subdirs {
 		targetPath = path.Join(targetPath, s)
 	}
