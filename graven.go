@@ -35,7 +35,6 @@ func main() {
 
 	// new -- initializes new directory and project.yaml
 	// test -- runs tests with flags, coverage etc.
-	// package -- clean, test, build, package archives
 	// deploy -- deploy one artifact to one repository
 	// release [major|minor|patch] package, deploy each archive
 	// docker?

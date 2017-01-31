@@ -41,7 +41,7 @@ artifacts:
     resources:
       - resources/commmon
       - resources/darwin
-    archive: tar.gz
+    archive: tgz
 
 repositories:
 

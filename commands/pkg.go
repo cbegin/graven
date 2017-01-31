@@ -41,6 +41,8 @@ func pkg(c *cli.Context) error {
 			if err != nil {
 				return err
 			}
+		case "tgz":
+			fallthrough
 		case "tar.gz":
 			err := tarDir(source, dest)
 			if err != nil {
