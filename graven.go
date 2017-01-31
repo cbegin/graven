@@ -31,13 +31,11 @@ func main() {
 	}
 
 	app.Metadata = map[string]interface{}{"project":p}
-	//fmt.Printf("%+v %v\n", p, err)
 
 	// new -- initializes new directory and project.yaml
 	// test -- runs tests with flags, coverage etc.
 	// deploy -- deploy one artifact to one repository
 	// release [major|minor|patch] package, deploy each archive
-	// docker?
 
 	fmt.Printf("Project Path: %s\n", p.ProjectPath())
 

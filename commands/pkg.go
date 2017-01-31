@@ -34,7 +34,6 @@ func pkg(c *cli.Context) error {
 		source := project.TargetPath(artifact.Classifier)
 		dest := project.TargetPath(targetFile)
 		temp := fmt.Sprintf("%s.tmp", dest)
-		fmt.Println(artifact.Archive)
 		switch artifact.Archive {
 		case "zip":
 			err := zipDir(source, dest)
