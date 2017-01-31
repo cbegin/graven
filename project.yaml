@@ -6,7 +6,7 @@ artifacts:
 
   - classifier: win
     targets:
-      - executable: gvn.exe
+      - executable: bin/gvn.exe
         package: .
         flags:
         env:
