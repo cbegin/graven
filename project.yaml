@@ -19,7 +19,7 @@ artifacts:
 
   - classifier: linux
     targets:
-      - executable: gvn
+      - executable: bin/gvn
         package: .
         flags:
         env:
@@ -32,7 +32,7 @@ artifacts:
 
   - classifier: darwin
     targets:
-      - executable: gvn
+      - executable: bin/gvn
         package: .
         flags:
         env:
