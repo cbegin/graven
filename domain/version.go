@@ -26,14 +26,26 @@ func (v *Version) Parse(s string) (err error) {
 	}
 	parts = strings.Split(full, ".")
 	if len(parts) == 3 {
-		v.Major, err = strconv.Atoi(parts[0])
-		v.Minor, err = strconv.Atoi(parts[1])
-		v.Patch, err = strconv.Atoi(parts[2])
+		if v.Major, err = strconv.Atoi(parts[0]); err != nil {
+			return err
+		}
+		if v.Minor, err = strconv.Atoi(parts[1]); err != nil {
+			return err
+		}
+		if v.Patch, err = strconv.Atoi(parts[2]); err != nil {
+			return err
+		}
 	} else if len(parts) == 2 {
-		v.Major, err = strconv.Atoi(parts[0])
-		v.Minor, err = strconv.Atoi(parts[1])
+		if v.Major, err = strconv.Atoi(parts[0]); err != nil {
+			return err
+		}
+		if v.Minor, err = strconv.Atoi(parts[1]); err != nil {
+			return err
+		}
 	} else if len(parts) == 1 {
-		v.Major, err = strconv.Atoi(parts[0])
+		if v.Major, err = strconv.Atoi(parts[0]); err != nil {
+			return err
+		}
 	} else {
 		return fmt.Errorf("Too many qualifier delimiters (-) in version string: %s", s)
 	}

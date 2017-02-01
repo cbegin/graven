@@ -6,6 +6,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"os"
 	"io/ioutil"
+	"fmt"
 )
 
 var ReleaseCommand = cli.Command{
@@ -31,7 +32,7 @@ func bumpVersion(project *domain.Project, arg string) error {
 
 	err := version.Parse(project.Version)
 	if err != nil {
-		return err
+		return fmt.Errorf("Error parsing version: %v", err)
 	}
 
 	switch arg {
