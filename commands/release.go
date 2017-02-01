@@ -18,7 +18,15 @@ var ReleaseCommand = cli.Command{
 
 func release(c *cli.Context) error {
 	project := c.App.Metadata["project"].(*domain.Project)
+	arg := c.Args().First()
+	if err := bumpVersion(project, arg); err != nil {
+		return err
+	}
+	return pkg(c)
+}
 
+
+func bumpVersion(project *domain.Project, arg string) error {
 	version := domain.Version{}
 
 	err := version.Parse(project.Version)
@@ -26,7 +34,6 @@ func release(c *cli.Context) error {
 		return err
 	}
 
-	arg := c.Args().First()
 	switch arg {
 	case "major":
 		version.Major++
@@ -63,5 +70,4 @@ func release(c *cli.Context) error {
 
 	return nil
 }
-
 

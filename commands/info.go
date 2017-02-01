@@ -9,11 +9,6 @@ import (
 
 var InfoCommand = cli.Command{
 	Name: "info",
-	//Flags: []cli.Flag{
-	//	cli.StringFlag{
-	//		Name: "",
-	//	},
-	//},
 	Usage:       "project info",
 	UsageText:   "info - project info",
 	Description: "prints the known information about a project",

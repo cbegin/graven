@@ -22,8 +22,13 @@ var PackageCommand = cli.Command{
 }
 
 func pkg(c *cli.Context) error {
-	clean(c)
-	build(c)
+	if err := clean(c); err != nil {
+		return err
+	}
+
+	if err := build(c); err != nil {
+		return err
+	}
 
 	project := c.App.Metadata["project"].(*domain.Project)
 	for _, artifact := range project.Artifacts {

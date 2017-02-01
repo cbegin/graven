@@ -18,7 +18,9 @@ var BuildCommand = cli.Command{
 }
 
 func build(c *cli.Context) error {
-	clean(c)
+	if err := clean(c); err != nil {
+		return err
+	}
 
 	project := c.App.Metadata["project"].(*domain.Project)
 	for _, artifact := range project.Artifacts {
