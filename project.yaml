@@ -1,57 +1,53 @@
-
+filepath: /Users/clinton/Development/gopath/src/github.com/cbegin/graven/project.yaml
 name: github.com/cbegin/graven
-version: 0.0.1-SNAPSHOT
-
+version: 1.0.0-SNAPSHOT
 artifacts:
-
-  - classifier: win
-    targets:
-      - executable: bin/gvn.exe
-        package: .
-        flags:
-        env:
-          GOOS: windows
-          GOARCH: amd64
-    resources:
-      - resources/commmon
-      - resources/win
-    archive: zip
-
-  - classifier: linux
-    targets:
-      - executable: bin/gvn
-        package: .
-        flags:
-        env:
-          GOOS: linux
-          GOARCH: amd64
-    resources:
-      - resources/commmon
-      - resources/linux
-    archive: tar.gz
-
-  - classifier: darwin
-    targets:
-      - executable: bin/gvn
-        package: .
-        flags:
-        env:
-          GOOS: darwin
-          GOARCH: amd64
-    resources:
-      - resources/commmon
-      - resources/darwin
-    archive: tgz
-
+- classifier: win
+  resources:
+  - resources/commmon
+  - resources/win
+  targets:
+  - executable: bin/gvn.exe
+    package: .
+    flags: ""
+    env:
+      GOARCH: amd64
+      GOOS: windows
+  archive: zip
+- classifier: linux
+  resources:
+  - resources/commmon
+  - resources/linux
+  targets:
+  - executable: bin/gvn
+    package: .
+    flags: ""
+    env:
+      GOARCH: amd64
+      GOOS: linux
+  archive: tar.gz
+- classifier: darwin
+  resources:
+  - resources/commmon
+  - resources/darwin
+  targets:
+  - executable: bin/gvn
+    package: .
+    flags: ""
+    env:
+      GOARCH: amd64
+      GOOS: darwin
+  archive: tgz
 repositories:
-
-  - name: central
-    url: http://foo.com/nexus
-    username: me
-    password: $password
-    type: maven
-
-  - name: git
-    url: http://github.com/api
-    token: 32uoiew09u32jie93jioqu9oji21w
-    type: github
+- name: central
+  url: http://foo.com/nexus
+  username: me
+  password: $password
+  token: ""
+  type: maven
+- name: git
+  url: http://github.com/api
+  username: ""
+  password: ""
+  token: 32uoiew09u32jie93jioqu9oji21w
+  type: github

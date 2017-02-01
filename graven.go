@@ -22,6 +22,7 @@ func main() {
 		commands.InfoCommand,
 		commands.CleanCommand,
 		commands.PackageCommand,
+		commands.ReleaseCommand,
 	}
 
 	p, err := domain.FindProject()
