@@ -16,6 +16,5 @@ var CleanCommand = cli.Command{
 
 func clean(c *cli.Context) error {
 	project := c.App.Metadata["project"].(*domain.Project)
-
 	return os.RemoveAll(project.TargetPath())
 }

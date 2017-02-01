@@ -18,8 +18,9 @@ var BuildCommand = cli.Command{
 }
 
 func build(c *cli.Context) error {
+	clean(c)
+
 	project := c.App.Metadata["project"].(*domain.Project)
-	
 	for _, artifact := range project.Artifacts {
 		for _, target := range artifact.Targets {
 			classifiedPath := project.TargetPath(artifact.Classifier)

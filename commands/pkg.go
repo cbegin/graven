@@ -22,11 +22,10 @@ var PackageCommand = cli.Command{
 }
 
 func pkg(c *cli.Context) error {
-	project := c.App.Metadata["project"].(*domain.Project)
-
 	clean(c)
 	build(c)
 
+	project := c.App.Metadata["project"].(*domain.Project)
 	for _, artifact := range project.Artifacts {
 		nameParts := strings.Split(project.Name, "/")
 		shortName := nameParts[len(nameParts) - 1:][0]
