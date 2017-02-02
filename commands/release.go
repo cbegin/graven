@@ -7,7 +7,12 @@ import (
 	"os"
 	"io/ioutil"
 	"fmt"
+	"text/template"
 )
+
+var versionTemplate = `// This file was generated. It will be overwritten. Do not modify.
+package version
+var Version="{{.}}"`
 
 var ReleaseCommand = cli.Command{
 	Name: "release",
@@ -23,6 +28,14 @@ func release(c *cli.Context) error {
 	if err := bumpVersion(project, arg); err != nil {
 		return err
 	}
+
+	versionPath := project.ProjectPath("version")
+	versionFile := project.ProjectPath("version","version.go")
+	_ = os.Mkdir(versionPath, 0755)
+	file, _ := os.Create(versionFile);
+	tmpl, _ := template.New("test").Parse(versionTemplate)
+	tmpl.Execute(file, project.Version)
+
 	return pkg(c)
 }
 
@@ -48,6 +61,7 @@ func bumpVersion(project *domain.Project, arg string) error {
 	case "patch":
 		version.Patch++
 		version.Qualifier = ""
+	case "":
 	default:
 		version.Qualifier = arg
 	}

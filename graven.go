@@ -6,14 +6,12 @@ import (
 	"fmt"
 	"github.com/cbegin/graven/commands"
 	"github.com/cbegin/graven/domain"
+	"github.com/cbegin/graven/version"
 )
 
 func main() {
 	app := cli.NewApp()
-	app.Version = "0.0.1"
-	app.Author = "Clinton Begin"
-	app.Copyright = "Clinton Begin"
-	app.Description = "A build automation tool for Go."
+	app.Version = version.Version
 	app.Name = "graven"
 	app.Usage = "A build automation tool for Go."
 
