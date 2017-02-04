@@ -10,9 +10,13 @@ import (
 	"text/template"
 )
 
-var versionTemplate = `// This file was generated. It will be overwritten. Do not modify.
-package version
-var Version="{{.}}"`
+const (
+	versionPackage = "version"
+	versionFileName = "version.go"
+	versionTemplate = `// graven - This file was generated. It will be overwritten. Do not modify.
+package {{.Package}}
+var Version="{{.Version}}"`
+)
 
 var ReleaseCommand = cli.Command{
 	Name: "release",
@@ -28,17 +32,59 @@ func release(c *cli.Context) error {
 	if err := bumpVersion(project, arg); err != nil {
 		return err
 	}
-
-	versionPath := project.ProjectPath("version")
-	versionFile := project.ProjectPath("version","version.go")
-	_ = os.Mkdir(versionPath, 0755)
-	file, _ := os.Create(versionFile);
-	tmpl, _ := template.New("test").Parse(versionTemplate)
-	tmpl.Execute(file, project.Version)
-
+	if err := writeVersionFile(project); err != nil {
+		return err
+	}
 	return pkg(c)
 }
 
+func writeVersionFile(project *domain.Project) error {
+	versionPath := project.ProjectPath(versionPackage)
+	versionFile := project.ProjectPath(versionPackage, versionFileName)
+
+	if err := validateHeader(versionFile); err != nil {
+		return err
+	}
+
+	_ = os.Mkdir(versionPath, 0755) // ignore error, we'll catch file errors
+
+	file, err := os.Create(versionFile);
+	defer file.Close()
+	if err != nil {
+		return err
+	}
+	tmpl, err := template.New("version").Parse(versionTemplate)
+	if err != nil {
+		return err
+	}
+
+	tmpl.Execute(file, struct {
+		Version string
+		Package string
+	} {
+		Version: project.Version,
+		Package: versionPackage,
+	})
+	return nil
+}
+
+func validateHeader (versionFile string) error {
+	const headerLength = 10
+	file, err := os.Open(versionFile)
+	defer file.Close()
+	if err != nil {
+		return err
+	}
+	var buffer = make([]byte, headerLength)
+	_, err = file.Read(buffer)
+	if err != nil {
+		return err
+	}
+	if string(buffer)!= versionTemplate[:headerLength] {
+		return fmt.Errorf("Header in %v doesn't match, so graven won't overwrite it.", versionFile)
+	}
+	return nil
+}
 
 func bumpVersion(project *domain.Project, arg string) error {
 	version := domain.Version{}
