@@ -36,5 +36,9 @@ func main() {
 
 	fmt.Printf("Project Path: %s\n", p.ProjectPath())
 
-	app.Run(os.Args)
+	err = app.Run(os.Args)
+	if err != nil {
+		fmt.Printf("ERROR: %v", err)
+		os.Exit(1)
+	}
 }
