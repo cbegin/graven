@@ -66,6 +66,10 @@ func buildTarget(project *domain.Project, artifact *domain.Artifact, target *dom
 		}
 	}
 
+	return runBuildCommand(classifiedPath, project, target)
+}
+
+func runBuildCommand(classifiedPath string, project *domain.Project, target *domain.Target) error {
 	cmd := exec.Command("go", "build", "-o", path.Join(classifiedPath, target.Executable), target.Flags, target.Package)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -88,6 +92,5 @@ func buildTarget(project *domain.Project, artifact *domain.Artifact, target *dom
 	if !cmd.ProcessState.Success() {
 		return fmt.Errorf("Build command exited in an error state. %v", cmd)
 	}
-
-	return nil
+	return err
 }

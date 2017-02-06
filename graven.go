@@ -21,6 +21,7 @@ func main() {
 		commands.CleanCommand,
 		commands.PackageCommand,
 		commands.ReleaseCommand,
+		commands.TestCommand,
 	}
 
 	p, err := domain.FindProject()
@@ -32,7 +33,6 @@ func main() {
 	app.Metadata = map[string]interface{}{"project":p}
 
 	// new -- initializes new directory and project.yaml
-	// test -- runs tests with flags, coverage etc.
 
 	fmt.Printf("Project Path: %s\n", p.ProjectPath())
 
