@@ -1,18 +1,17 @@
 package commands
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
-	"fmt"
-	"os"
 )
 
 var UnfreezeCommand = cli.Command{
 	Name: "unfreeze",
-	Usage:       "project unfreeze",
-	UsageText:   "unfreeze- project unfreeze",
-	Description: "unfreezes vendor dependencies",
+	Usage:       "unfreezes vendor dependencies",
 	Action: unfreeze,
 }
 

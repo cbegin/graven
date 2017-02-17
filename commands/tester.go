@@ -1,20 +1,19 @@
 package commands
 
 import (
-	"github.com/urfave/cli"
-	"github.com/cbegin/graven/domain"
 	"fmt"
 	"path/filepath"
 	"os"
 	"strings"
 	"os/exec"
+
+	"github.com/urfave/cli"
+	"github.com/cbegin/graven/domain"
 )
 
 var TestCommand = cli.Command{
 	Name: "test",
-	Usage:       "run tests",
-	UsageText:   "test - run tests",
-	Description: "finds and runs tests in this project",
+	Usage:       "finds and runs tests in this project",
 	Action: tester,
 }
 

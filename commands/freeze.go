@@ -1,20 +1,19 @@
 package commands
 
 import (
-	"github.com/urfave/cli"
-	"github.com/cbegin/graven/domain"
 	"encoding/json"
 	"io/ioutil"
 	"os"
 	"fmt"
+
+	"github.com/urfave/cli"
+	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
 )
 
 var FreezeCommand = cli.Command{
 	Name:        "freeze",
-	Usage:       "freeze",
-	UsageText:   "freeze - freezes dependencies",
-	Description: "freezes dependencies to avoid having to check in source",
+	Usage:       "freezes dependencies to avoid having to check in source",
 	Action: freeze,
 }
 

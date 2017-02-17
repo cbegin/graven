@@ -1,13 +1,14 @@
 package commands
 
 import (
-	"github.com/urfave/cli"
-	"github.com/cbegin/graven/domain"
-	"gopkg.in/yaml.v2"
 	"os"
 	"io/ioutil"
 	"fmt"
 	"text/template"
+
+	"github.com/urfave/cli"
+	"github.com/cbegin/graven/domain"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -20,9 +21,7 @@ var Version="{{.Version}}"`
 
 var ReleaseCommand = cli.Command{
 	Name: "release",
-	Usage:       "project release",
-	UsageText:   "release - release project",
-	Description: "increments the revision and packages the release",
+	Usage:       "increments the revision and packages the release",
 	Action: release,
 }
 

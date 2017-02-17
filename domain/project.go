@@ -2,9 +2,10 @@ package domain
 
 import (
 	"os"
-	"gopkg.in/yaml.v2"
 	"fmt"
 	"path"
+
+	"gopkg.in/yaml.v2"
 )
 
 const (

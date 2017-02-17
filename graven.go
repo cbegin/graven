@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/urfave/cli"
 	"os"
 	"fmt"
+
 	"github.com/cbegin/graven/commands"
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/version"
+	"github.com/urfave/cli"
 )
 
 func main() {
@@ -14,6 +15,9 @@ func main() {
 	app.Version = version.Version
 	app.Name = "graven"
 	app.Usage = "A build automation tool for Go."
+
+	// TODO:
+	// new -- initializes new directory and project.yaml
 
 	app.Commands = []cli.Command{
 		commands.BuildCommand,
@@ -33,9 +37,6 @@ func main() {
 	}
 
 	app.Metadata = map[string]interface{}{"project":p}
-
-	// new -- initializes new directory and project.yaml
-	// freeze -- freeze vendor dependencies in binary archives
 
 	fmt.Printf("Project Path: %s\n", p.ProjectPath())
 

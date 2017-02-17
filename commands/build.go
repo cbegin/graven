@@ -1,21 +1,20 @@
 package commands
 
 import (
-	"github.com/urfave/cli"
-	"github.com/cbegin/graven/domain"
 	"os/exec"
 	"os"
 	"fmt"
 	"path"
 	"sync"
+
 	"github.com/hashicorp/go-multierror"
+	"github.com/urfave/cli"
+	"github.com/cbegin/graven/domain"
 )
 
 var BuildCommand = cli.Command{
-	Name: "build",
-	Usage:       "build project",
-	UsageText:   "build - build project",
-	Description: "find the nearest project.yaml in the current directory tree and builds",
+	Name:        "build",
+	Usage:       "builds the current project",
 	Action: build,
 }
 

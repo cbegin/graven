@@ -1,21 +1,20 @@
 package commands
 
 import (
-	"github.com/urfave/cli"
-	"github.com/cbegin/graven/domain"
 	"os"
 	"strings"
 	"fmt"
 	"sync"
+
+	"github.com/urfave/cli"
+	"github.com/cbegin/graven/domain"
 	"github.com/hashicorp/go-multierror"
 	"github.com/cbegin/graven/util"
 )
 
 var PackageCommand = cli.Command{
 	Name: "package",
-	Usage:       "project package",
-	UsageText:   "package - project package",
-	Description: "produces packaged archive",
+	Usage:       "produces packaged archive",
 	Action: pkg,
 }
 
