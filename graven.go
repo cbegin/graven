@@ -35,6 +35,7 @@ func main() {
 	app.Metadata = map[string]interface{}{"project":p}
 
 	// new -- initializes new directory and project.yaml
+	// freeze -- freeze vendor dependencies in binary archives
 
 	fmt.Printf("Project Path: %s\n", p.ProjectPath())
 
