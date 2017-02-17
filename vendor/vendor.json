@@ -27,32 +27,8 @@
 			"revisionTime": "2016-01-10T10:55:54Z"
 		},
 		{
-			"checksumSHA1": "K0crHygPTP42i1nLKWphSlvOQJw=",
-			"path": "github.com/stretchr/objx",
-			"revision": "1a9d0bb9f541897e62256577b352fdbc1fb4fd94",
-			"revisionTime": "2015-09-28T12:21:52Z"
-		},
-		{
-			"checksumSHA1": "/kKwYqD04AkkDZFQhGwklKw3RFA=",
-			"path": "github.com/stretchr/testify",
-			"revision": "4d4bfba8f1d1027c4fdbe371823030df51419987",
-			"revisionTime": "2017-01-30T11:31:45Z"
-		},
-		{
 			"checksumSHA1": "JXUVA1jky8ZX8w09p2t5KLs97Nc=",
 			"path": "github.com/stretchr/testify/assert",
-			"revision": "4d4bfba8f1d1027c4fdbe371823030df51419987",
-			"revisionTime": "2017-01-30T11:31:45Z"
-		},
-		{
-			"checksumSHA1": "fg3TzS9/QK3wZbzei3Z6O8XPLHg=",
-			"path": "github.com/stretchr/testify/http",
-			"revision": "4d4bfba8f1d1027c4fdbe371823030df51419987",
-			"revisionTime": "2017-01-30T11:31:45Z"
-		},
-		{
-			"checksumSHA1": "WGwMB6WljaeGKzuNCX5M4E8LADE=",
-			"path": "github.com/stretchr/testify/mock",
 			"revision": "4d4bfba8f1d1027c4fdbe371823030df51419987",
 			"revisionTime": "2017-01-30T11:31:45Z"
 		},
@@ -61,10 +37,6 @@
 			"path": "github.com/urfave/cli",
 			"revision": "f1be59ff3d239f0942b201619030d302bce912cc",
 			"revisionTime": "2016-11-19T21:37:11Z"
-		},
-		{
-			"path": "github.com/urfave/cli.v1",
-			"revision": ""
 		},
 		{
 			"checksumSHA1": "QpWY2ygzClg3Bw+GHjD7yXlcTxw=",
