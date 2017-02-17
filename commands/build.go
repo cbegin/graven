@@ -28,11 +28,13 @@ func build(c *cli.Context) error {
 	wg := sync.WaitGroup{}
 	project := c.App.Metadata["project"].(*domain.Project)
 	for _, artifact := range project.Artifacts {
+		a := artifact
 		for _, target := range artifact.Targets {
+			t := target
 			wg.Add(len(artifact.Targets))
 			go func() {
 				defer wg.Done()
-				err := buildTarget(project, &artifact, &target)
+				err := buildTarget(project, &a, &t)
 				if err != nil {
 					mutex.Lock()
 					merr = multierror.Append(merr, err)

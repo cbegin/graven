@@ -32,10 +32,11 @@ func pkg(c *cli.Context) error {
 	wg := sync.WaitGroup{}
 	project := c.App.Metadata["project"].(*domain.Project)
 	for _, artifact := range project.Artifacts {
+		a := artifact
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			err := packageArtifact(project, &artifact)
+			err := packageArtifact(project, &a)
 			if err != nil {
 				mutex.Lock()
 				merr = multierror.Append(merr, err)
