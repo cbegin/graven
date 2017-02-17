@@ -14,7 +14,7 @@ import (
 
 var BuildCommand = cli.Command{
 	Name:        "build",
-	Usage:       "builds the current project",
+	Usage:       "Builds the current project",
 	Action: build,
 }
 

@@ -13,7 +13,7 @@ import (
 
 var TestCommand = cli.Command{
 	Name: "test",
-	Usage:       "finds and runs tests in this project",
+	Usage:       "Finds and runs tests in this project",
 	Action: tester,
 }
 

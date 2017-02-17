@@ -11,7 +11,7 @@ import (
 
 var UnfreezeCommand = cli.Command{
 	Name: "unfreeze",
-	Usage:       "unfreezes vendor dependencies",
+	Usage:       "Unfreezes vendor dependencies",
 	Action: unfreeze,
 }
 

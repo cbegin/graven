@@ -9,7 +9,7 @@ import (
 
 var CleanCommand = cli.Command{
 	Name: "clean",
-	Usage:       "cleans the target directory and its contents",
+	Usage:       "Cleans the target directory and its contents",
 	Action: clean,
 }
 

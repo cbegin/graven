@@ -14,7 +14,7 @@ import (
 
 var PackageCommand = cli.Command{
 	Name: "package",
-	Usage:       "produces packaged archive",
+	Usage:       "Produces packaged archive for deployment",
 	Action: pkg,
 }
 

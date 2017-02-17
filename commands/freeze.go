@@ -13,7 +13,7 @@ import (
 
 var FreezeCommand = cli.Command{
 	Name:        "freeze",
-	Usage:       "freezes dependencies to avoid having to check in source",
+	Usage:       "Freezes vendor dependencies to avoid having to check in source",
 	Action: freeze,
 }
 

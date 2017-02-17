@@ -21,7 +21,7 @@ var Version="{{.Version}}"`
 
 var ReleaseCommand = cli.Command{
 	Name: "release",
-	Usage:       "increments the revision and packages the release",
+	Usage:       "Increments the revision and packages the release",
 	Action: release,
 }
 

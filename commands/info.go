@@ -10,7 +10,7 @@ import (
 
 var InfoCommand = cli.Command{
 	Name: "info",
-	Usage:       "prints the known information about a project",
+	Usage:       "Prints the known information about a project",
 	Action: info,
 }
 
