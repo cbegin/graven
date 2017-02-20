@@ -18,12 +18,15 @@ var TestCommand = cli.Command{
 }
 
 func tester(c *cli.Context) error {
-	project := c.App.Metadata["project"].(*domain.Project)
+	project, err := domain.FindProject()
+	if err != nil {
+		return err
+	}
 
-	return filepath.Walk(project.ProjectPath(), getWalker(project))
+	return filepath.Walk(project.ProjectPath(), getTestWalkerFunc(project))
 }
 
-func getWalker(project *domain.Project) filepath.WalkFunc {
+func getTestWalkerFunc(project *domain.Project) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			subDir := path[len(project.ProjectPath()):]

@@ -14,7 +14,7 @@ const (
 )
 
 type Project struct {
-	FilePath string
+	FilePath string `yaml:",omitempty"`
 	Name  string `yaml:"name"`
 	Version  string `yaml:"version"`
 	Artifacts []Artifact `yaml:"artifacts"`

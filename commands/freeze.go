@@ -18,7 +18,10 @@ var FreezeCommand = cli.Command{
 }
 
 func freeze(c *cli.Context) error {
-	project := c.App.Metadata["project"].(*domain.Project)
+	project, err := domain.FindProject()
+	if err != nil {
+		return err
+	}
 
 	govendorFile, err := domain.ReadGovendorFile(project)
 

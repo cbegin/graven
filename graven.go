@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/cbegin/graven/commands"
-	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/version"
 	"github.com/urfave/cli"
 )
@@ -28,19 +27,10 @@ func main() {
 		commands.TestCommand,
 		commands.FreezeCommand,
 		commands.UnfreezeCommand,
+		commands.InitCommand,
 	}
 
-	p, err := domain.FindProject()
-	if err != nil {
-		fmt.Println("Could not find project.yaml in current or parent path.")
-		return
-	}
-
-	app.Metadata = map[string]interface{}{"project":p}
-
-	fmt.Printf("Project Path: %s\n", p.ProjectPath())
-
-	err = app.Run(os.Args)
+	err := app.Run(os.Args)
 	if err != nil {
 		fmt.Printf("ERROR: %v", err)
 		os.Exit(1)

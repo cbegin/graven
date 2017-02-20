@@ -26,7 +26,12 @@ func build(c *cli.Context) error {
 	var merr error
 	mutex := sync.Mutex{}
 	wg := sync.WaitGroup{}
-	project := c.App.Metadata["project"].(*domain.Project)
+
+	project, err := domain.FindProject()
+	if err != nil {
+		return err
+	}
+
 	for _, artifact := range project.Artifacts {
 		a := artifact
 		for _, target := range artifact.Targets {

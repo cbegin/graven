@@ -26,7 +26,11 @@ var ReleaseCommand = cli.Command{
 }
 
 func release(c *cli.Context) error {
-	project := c.App.Metadata["project"].(*domain.Project)
+	project, err := domain.FindProject()
+	if err != nil {
+		return err
+	}
+
 	arg := c.Args().First()
 	if err := bumpVersion(project, arg); err != nil {
 		return err
@@ -60,14 +64,14 @@ func writeVersionFile(project *domain.Project) error {
 	tmpl.Execute(file, struct {
 		Version string
 		Package string
-	} {
+	}{
 		Version: project.Version,
 		Package: versionPackage,
 	})
 	return nil
 }
 
-func validateHeader (versionFile string) error {
+func validateHeader(versionFile string) error {
 	const headerLength = 10
 	file, err := os.Open(versionFile)
 	defer file.Close()
@@ -79,7 +83,7 @@ func validateHeader (versionFile string) error {
 	if err != nil {
 		return err
 	}
-	if string(buffer)!= versionTemplate[:headerLength] {
+	if string(buffer) != versionTemplate[:headerLength] {
 		return fmt.Errorf("Header in %v doesn't match, so graven won't overwrite it.", versionFile)
 	}
 	return nil
@@ -113,17 +117,24 @@ func bumpVersion(project *domain.Project, arg string) error {
 
 	project.Version = version.ToString()
 
+	// Silly workaround for YAML libs inability to ignore fields.
+	projectFilePath := project.FilePath
+	project.FilePath = ""
+	defer func() {
+		project.FilePath = projectFilePath
+	}()
+
 	bytes, err := yaml.Marshal(project)
 	if err != nil {
 		return err
 	}
 
-	fileInfo, err := os.Stat(project.FilePath)
+	fileInfo, err := os.Stat(projectFilePath)
 	if err != nil {
 		return err
 	}
 
-	err = ioutil.WriteFile(project.FilePath, bytes, fileInfo.Mode())
+	err = ioutil.WriteFile(projectFilePath, bytes, fileInfo.Mode())
 	if err != nil {
 		return err
 	}

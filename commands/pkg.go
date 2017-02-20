@@ -27,10 +27,14 @@ func pkg(c *cli.Context) error {
 		return err
 	}
 
+	project, err := domain.FindProject()
+	if err != nil {
+		return err
+	}
+
 	var merr error
 	mutex := sync.Mutex{}
 	wg := sync.WaitGroup{}
-	project := c.App.Metadata["project"].(*domain.Project)
 	for _, artifact := range project.Artifacts {
 		a := artifact
 		wg.Add(1)

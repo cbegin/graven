@@ -1,6 +1,5 @@
-filepath: /Users/clinton/Development/gopath/src/github.com/cbegin/graven/project.yaml
 name: github.com/cbegin/graven
-version: 0.9.0
+version: 0.9.4
 artifacts:
 - classifier: win
   resources:
