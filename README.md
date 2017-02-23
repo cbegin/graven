@@ -1,3 +1,5 @@
+_Status: This is a proof of concept. The code was written during about 10 episodes of The 100. I'll post some next steps soon, to bring the code to production level._
+
 # graven
 
 Graven is a build management tool for Go projects. It takes light
