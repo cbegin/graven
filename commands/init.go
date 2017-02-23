@@ -63,16 +63,45 @@ var (
 	}
 )
 
+var mainTemplate = `package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Println("Hello!")
+}`
+
 func initialize(c *cli.Context) error {
 	wd, err := os.Getwd()
 	if err != nil {
 		return err
 	}
-	projectPath := path.Join(wd, "projectx.yaml")
+	projectPath := path.Join(wd, "project.yaml")
 
 	packages := &[]PackagePath{}
 
 	if err = filepath.Walk(wd, getInitializeWalkerFunc(wd, packages)); err != nil {
+		return err
+	}
+
+	if len(*packages) < 1 {
+		err := ioutil.WriteFile("main.go", []byte(mainTemplate), 0655)
+		if err != nil {
+			return err
+		}
+		*packages = append(*packages, PackagePath{
+			Package: "main",
+			Path: "",
+		})
+	}
+
+	err = writeVersionFile(&domain.Project{
+		FilePath: projectPath,
+		Version:"0.0.1-DEV",
+	})
+	if err != nil {
 		return err
 	}
 

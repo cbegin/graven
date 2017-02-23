@@ -49,7 +49,7 @@ func writeVersionFile(project *domain.Project) error {
 		return err
 	}
 
-	_ = os.Mkdir(versionPath, 0755) // ignore error, we'll catch file errors
+	_ = os.Mkdir(versionPath, 0755) // ignore error. we'll catch file errors later
 
 	file, err := os.Create(versionFile);
 	defer file.Close()
@@ -75,9 +75,14 @@ func validateHeader(versionFile string) error {
 	const headerLength = 10
 	file, err := os.Open(versionFile)
 	defer file.Close()
-	if err != nil {
+	if os.IsNotExist(err) {
+		// it's okay if the file doesn't exist
+		return nil
+	} else if err != nil {
+		// but fail for any other reason
 		return err
 	}
+
 	var buffer = make([]byte, headerLength)
 	_, err = file.Read(buffer)
 	if err != nil {
