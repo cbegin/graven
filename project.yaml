@@ -4,13 +4,13 @@ artifacts:
 - classifier: darwin
   resources: []
   targets:
-  - executable: app0
+  - executable: bin/gvn
     package: .
     flags: ""
     env:
       GOARCH: amd64
       GOOS: darwin
-  - executable: app3
+  - executable: bin/hello 
     package: ./hello
     flags: ""
     env:
@@ -20,13 +20,13 @@ artifacts:
 - classifier: linux
   resources: []
   targets:
-  - executable: app0
+  - executable: bin/gvn
     package: .
     flags: ""
     env:
       GOARCH: amd64
       GOOS: linux
-  - executable: app3
+  - executable: bin/hello
     package: ./hello
     flags: ""
     env:
@@ -36,13 +36,13 @@ artifacts:
 - classifier: win
   resources: []
   targets:
-  - executable: app0.exe
+  - executable: gvn.exe
     package: .
     flags: ""
     env:
       GOARCH: amd64
       GOOS: windows
-  - executable: app3.exe
+  - executable: hello.exe
     package: ./hello
     flags: ""
     env:

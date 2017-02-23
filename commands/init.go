@@ -79,7 +79,10 @@ func initialize(c *cli.Context) error {
 		return err
 	}
 	projectPath := path.Join(wd, "project.yaml")
-
+	if _, err := os.Stat(projectPath); !os.IsNotExist(err) {
+		return fmt.Errorf("%v already exists. No changes made.", projectPath)
+	}
+	
 	packages := &[]PackagePath{}
 
 	if err = filepath.Walk(wd, getInitializeWalkerFunc(wd, packages)); err != nil {
@@ -142,10 +145,6 @@ func initialize(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	if _, err := os.Stat(projectPath); !os.IsNotExist(err) {
-		return fmt.Errorf("%v already exists. No changes made.", projectPath)
-	}
-
 	if err := ioutil.WriteFile(projectPath, bytes, 0655); err != nil {
 		return err
 	}
