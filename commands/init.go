@@ -78,16 +78,14 @@ func initialize(c *cli.Context) error {
 
 	artifacts := []domain.Artifact{}
 
-	// TODO: determine default name (better than "app"
-
 	for _, template := range templates {
 		targets := []domain.Target{}
-
-		for i, p := range *packages {
+		for _, p := range *packages {
 			if p.Package == "main" {
 				pkg := fmt.Sprintf(".%v", p.Path)
+				executable := path.Base(path.Join(wd, pkg))
 				targets = append(targets, domain.Target{
-					Executable: fmt.Sprintf("%v%v%v", "app", i, template.Extension),
+					Executable: fmt.Sprintf("%v%v", executable, template.Extension),
 					Package: pkg,
 					Flags: "",
 					Environment:map[string]string{
