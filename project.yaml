@@ -1,52 +1,52 @@
-name: github.com/cbegin/graven
-version: 0.9.4
+name: github.com/org/myProject
+version: 0.0.1
 artifacts:
-- classifier: win
-  resources:
-  - resources/commmon
-  - resources/win
-  targets:
-  - executable: bin/gvn.exe
-    package: .
-    flags: ""
-    env:
-      GOARCH: amd64
-      GOOS: windows
-  archive: zip
-- classifier: linux
-  resources:
-  - resources/commmon
-  - resources/linux
-  targets:
-  - executable: bin/gvn
-    package: .
-    flags: ""
-    env:
-      GOARCH: amd64
-      GOOS: linux
-  archive: tar.gz
 - classifier: darwin
-  resources:
-  - resources/commmon
-  - resources/darwin
+  resources: []
   targets:
-  - executable: bin/gvn
+  - executable: app0
     package: .
     flags: ""
     env:
       GOARCH: amd64
       GOOS: darwin
+  - executable: app3
+    package: ./hello
+    flags: ""
+    env:
+      GOARCH: amd64
+      GOOS: darwin
   archive: tgz
-repositories:
-- name: central
-  url: http://foo.com/nexus
-  username: me
-  password: $password
-  token: ""
-  type: maven
-- name: git
-  url: http://github.com/api
-  username: ""
-  password: ""
-  token: 32uoiew09u32jie93jioqu9oji21w
-  type: github
+- classifier: linux
+  resources: []
+  targets:
+  - executable: app0
+    package: .
+    flags: ""
+    env:
+      GOARCH: amd64
+      GOOS: linux
+  - executable: app3
+    package: ./hello
+    flags: ""
+    env:
+      GOARCH: amd64
+      GOOS: linux
+  archive: tar.gz
+- classifier: win
+  resources: []
+  targets:
+  - executable: app0.exe
+    package: .
+    flags: ""
+    env:
+      GOARCH: amd64
+      GOOS: windows
+  - executable: app3.exe
+    package: ./hello
+    flags: ""
+    env:
+      GOARCH: amd64
+      GOOS: windows
+  archive: zip
+repositories: []

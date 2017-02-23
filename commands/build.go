@@ -34,9 +34,9 @@ func build(c *cli.Context) error {
 
 	for _, artifact := range project.Artifacts {
 		a := artifact
+		wg.Add(len(artifact.Targets))
 		for _, target := range artifact.Targets {
 			t := target
-			wg.Add(len(artifact.Targets))
 			go func() {
 				defer wg.Done()
 				err := buildTarget(project, &a, &t)
@@ -76,11 +76,16 @@ func buildTarget(project *domain.Project, artifact *domain.Artifact, target *dom
 }
 
 func runBuildCommand(classifiedPath string, project *domain.Project, target *domain.Target) error {
-	cmd := exec.Command("go", "build", "-o", path.Join(classifiedPath, target.Executable), target.Flags, target.Package)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
-	cmd.Dir = project.ProjectPath()
+	var c *exec.Cmd
+	if target.Flags == "" {
+		c = exec.Command("go", "build", "-o", path.Join(classifiedPath, target.Executable), target.Package)
+	} else {
+		c = exec.Command("go", "build", "-o", path.Join(classifiedPath, target.Executable), target.Flags, target.Package)
+	}
+	c.Stdout = os.Stdout
+	c.Stderr = os.Stderr
+	c.Stdin = os.Stdin
+	c.Dir = project.ProjectPath()
 
 	environment := []string{}
 	for k, v := range target.Environment {
@@ -88,15 +93,15 @@ func runBuildCommand(classifiedPath string, project *domain.Project, target *dom
 	}
 	gopath, _ := os.LookupEnv("GOPATH")
 	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
-	cmd.Env = environment
+	c.Env = environment
 
-	err := cmd.Run()
+	err := c.Run()
 	if err != nil {
 		return fmt.Errorf("Build error. %v", err)
 	}
 
-	if !cmd.ProcessState.Success() {
-		return fmt.Errorf("Build command exited in an error state. %v", cmd)
+	if !c.ProcessState.Success() {
+		return fmt.Errorf("Build command exited in an error state. %v", c)
 	}
 	return err
 }

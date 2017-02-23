@@ -21,25 +21,95 @@ var InitCommand = cli.Command{
 	Action: initialize,
 }
 
+type ClassifierTemplate struct {
+	Classifier   string
+	Archive      string
+	Extension    string
+	OS           string
+	Architecture string
+}
+
+type PackagePath struct {
+	Package string
+	Path string
+}
+
+var (
+	darwinTemplate = ClassifierTemplate{
+		Classifier: "darwin",
+		Archive: "tgz",
+		Extension: "",
+		OS: "darwin",
+		Architecture: "amd64",
+	}
+	linuxTemplate = ClassifierTemplate{
+		Classifier: "linux",
+		Archive: "tar.gz",
+		Extension: "",
+		OS: "linux",
+		Architecture: "amd64",
+	}
+	winTemplate = ClassifierTemplate{
+		Classifier: "win",
+		Archive: "zip",
+		Extension: ".exe",
+		OS: "windows",
+		Architecture: "amd64",
+	}
+	templates = []ClassifierTemplate{
+		darwinTemplate,
+		linuxTemplate,
+		winTemplate,
+	}
+)
+
 func initialize(c *cli.Context) error {
 	wd, err := os.Getwd()
 	if err != nil {
 		return err
 	}
-	projectPath := path.Join(wd, "project.yaml")
+	projectPath := path.Join(wd, "projectx.yaml")
 
-	if err = filepath.Walk(wd, getInitializeWalkerFunc(wd)); err != nil {
+	packages := &[]PackagePath{}
+
+	if err = filepath.Walk(wd, getInitializeWalkerFunc(wd, packages)); err != nil {
 		return err
+	}
+
+	artifacts := []domain.Artifact{}
+
+	// TODO: determine default name (better than "app"
+
+	for _, template := range templates {
+		targets := []domain.Target{}
+
+		for i, p := range *packages {
+			if p.Package == "main" {
+				pkg := fmt.Sprintf(".%v", p.Path)
+				targets = append(targets, domain.Target{
+					Executable: fmt.Sprintf("%v%v%v", "app", i, template.Extension),
+					Package: pkg,
+					Flags: "",
+					Environment:map[string]string{
+						"GOOS":template.OS,
+						"GOARCH":template.Architecture,
+					},
+				})
+			}
+		}
+
+		artifacts = append(artifacts, domain.Artifact{
+			Classifier:template.Classifier,
+			Resources: []string{},
+			Archive:template.Archive,
+			Targets:targets,
+		})
 	}
 
 	newProject := &domain.Project{}
 	newProject.Name = "github.com/org/myProject"
 	newProject.Version = "0.0.1"
-	newProject.Artifacts = []domain.Artifact{
-		domain.Artifact{
-
-		},
-	}
+	newProject.Artifacts = artifacts
 
 	bytes, err := yaml.Marshal(newProject)
 	if err != nil {
@@ -56,7 +126,7 @@ func initialize(c *cli.Context) error {
 	return err
 }
 
-func getInitializeWalkerFunc(basePath string) filepath.WalkFunc {
+func getInitializeWalkerFunc(basePath string, packages *[]PackagePath) filepath.WalkFunc {
 	fs := token.NewFileSet()
 	return func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
@@ -74,7 +144,10 @@ func getInitializeWalkerFunc(basePath string) filepath.WalkFunc {
 				}
 				for _, v := range ast {
 					shortPath := path[len(basePath):]
-					fmt.Printf("%v => %v\n", v.Name, shortPath)
+					*packages = append(*packages, PackagePath{
+						Package: v.Name,
+						Path: shortPath,
+					})
 				}
 			}
 		}
