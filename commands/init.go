@@ -1,23 +1,24 @@
 package commands
 
 import (
+	"fmt"
 	"go/parser"
 	"go/token"
-	"path/filepath"
-	"os"
-	"strings"
-	"fmt"
 	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strings"
 
-	"github.com/urfave/cli"
-	"github.com/cbegin/graven/domain"
-	"gopkg.in/yaml.v2"
 	"path"
+
+	"github.com/cbegin/graven/domain"
+	"github.com/urfave/cli"
+	"gopkg.in/yaml.v2"
 )
 
 var InitCommand = cli.Command{
-	Name: "init",
-	Usage:       "Initializes a project directory",
+	Name:   "init",
+	Usage:  "Initializes a project directory",
 	Action: initialize,
 }
 
@@ -31,29 +32,29 @@ type ClassifierTemplate struct {
 
 type PackagePath struct {
 	Package string
-	Path string
+	Path    string
 }
 
 var (
 	darwinTemplate = ClassifierTemplate{
-		Classifier: "darwin",
-		Archive: "tgz",
-		Extension: "",
-		OS: "darwin",
+		Classifier:   "darwin",
+		Archive:      "tgz",
+		Extension:    "",
+		OS:           "darwin",
 		Architecture: "amd64",
 	}
 	linuxTemplate = ClassifierTemplate{
-		Classifier: "linux",
-		Archive: "tar.gz",
-		Extension: "",
-		OS: "linux",
+		Classifier:   "linux",
+		Archive:      "tar.gz",
+		Extension:    "",
+		OS:           "linux",
 		Architecture: "amd64",
 	}
 	winTemplate = ClassifierTemplate{
-		Classifier: "win",
-		Archive: "zip",
-		Extension: ".exe",
-		OS: "windows",
+		Classifier:   "win",
+		Archive:      "zip",
+		Extension:    ".exe",
+		OS:           "windows",
 		Architecture: "amd64",
 	}
 	templates = []ClassifierTemplate{
@@ -82,7 +83,7 @@ func initialize(c *cli.Context) error {
 	if _, err := os.Stat(projectPath); !os.IsNotExist(err) {
 		return fmt.Errorf("%v already exists. No changes made.", projectPath)
 	}
-	
+
 	packages := &[]PackagePath{}
 
 	if err = filepath.Walk(wd, getInitializeWalkerFunc(wd, packages)); err != nil {
@@ -96,13 +97,13 @@ func initialize(c *cli.Context) error {
 		}
 		*packages = append(*packages, PackagePath{
 			Package: "main",
-			Path: "",
+			Path:    "",
 		})
 	}
 
 	err = writeVersionFile(&domain.Project{
 		FilePath: projectPath,
-		Version:"0.0.1-DEV",
+		Version:  "0.0.1-DEV",
 	})
 	if err != nil {
 		return err
@@ -118,21 +119,21 @@ func initialize(c *cli.Context) error {
 				executable := path.Base(path.Join(wd, pkg))
 				targets = append(targets, domain.Target{
 					Executable: fmt.Sprintf("%v%v", executable, template.Extension),
-					Package: pkg,
-					Flags: "",
-					Environment:map[string]string{
-						"GOOS":template.OS,
-						"GOARCH":template.Architecture,
-					},
+					Package:    pkg,
+					Flags:      "",
 				})
 			}
 		}
 
 		artifacts = append(artifacts, domain.Artifact{
-			Classifier:template.Classifier,
-			Resources: []string{},
-			Archive:template.Archive,
-			Targets:targets,
+			Classifier: template.Classifier,
+			Resources:  []string{},
+			Archive:    template.Archive,
+			Targets:    targets,
+			Environment: map[string]string{
+				"GOOS":   template.OS,
+				"GOARCH": template.Architecture,
+			},
 		})
 	}
 
@@ -158,11 +159,11 @@ func getInitializeWalkerFunc(basePath string, packages *[]PackagePath) filepath.
 		if info.IsDir() {
 			subDir := path[len(basePath):]
 			subDirParts := strings.Split(subDir, string(filepath.Separator))
-			matches, _ := filepath.Glob(filepath.Join(path, "*.go"));
+			matches, _ := filepath.Glob(filepath.Join(path, "*.go"))
 			if len(matches) > 0 && !contains(subDirParts, map[string]struct{}{
-				"vendor":struct{}{},
-				"target":struct{}{},
-				".git":struct{}{}}) {
+				"vendor": struct{}{},
+				"target": struct{}{},
+				".git":   struct{}{}}) {
 				ast, err := parser.ParseDir(fs, path, nil, parser.PackageClauseOnly)
 				if err != nil {
 					fmt.Println(err)
@@ -172,7 +173,7 @@ func getInitializeWalkerFunc(basePath string, packages *[]PackagePath) filepath.
 					shortPath := path[len(basePath):]
 					*packages = append(*packages, PackagePath{
 						Package: v.Name,
-						Path: shortPath,
+						Path:    shortPath,
 					})
 				}
 			}

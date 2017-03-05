@@ -3,50 +3,41 @@ version: 0.0.1
 artifacts:
 - classifier: darwin
   resources: []
+  env:
+    GOARCH: amd64
+    GOOS: darwin
   targets:
   - executable: bin/gvn
     package: .
     flags: ""
-    env:
-      GOARCH: amd64
-      GOOS: darwin
   - executable: bin/hello 
     package: ./hello
     flags: ""
-    env:
-      GOARCH: amd64
-      GOOS: darwin
   archive: tgz
 - classifier: linux
   resources: []
+  env:
+    GOARCH: amd64
+    GOOS: linux
   targets:
   - executable: bin/gvn
     package: .
     flags: ""
-    env:
-      GOARCH: amd64
-      GOOS: linux
   - executable: bin/hello
     package: ./hello
     flags: ""
-    env:
-      GOARCH: amd64
-      GOOS: linux
   archive: tar.gz
 - classifier: win
   resources: []
+  env:
+    GOARCH: amd64
+    GOOS: windows
   targets:
   - executable: gvn.exe
     package: .
     flags: ""
-    env:
-      GOARCH: amd64
-      GOOS: windows
   - executable: hello.exe
     package: ./hello
     flags: ""
-    env:
-      GOARCH: amd64
-      GOOS: windows
   archive: zip
 repositories: []

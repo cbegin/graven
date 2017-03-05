@@ -1,8 +1,8 @@
 package domain
 
 import (
-	"os"
 	"fmt"
+	"os"
 	"path"
 
 	"gopkg.in/yaml.v2"
@@ -10,38 +10,40 @@ import (
 
 const (
 	ProjectFileName = "project.yaml"
-	TargetDirName = "target"
+	TargetDirName   = "target"
 )
 
 type Project struct {
-	FilePath string `yaml:",omitempty"`
-	Name  string `yaml:"name"`
-	Version  string `yaml:"version"`
-	Artifacts []Artifact `yaml:"artifacts"`
+	FilePath     string       `yaml:",omitempty"`
+	Name         string       `yaml:"name"`
+	Version      string       `yaml:"version"`
+	Artifacts    []Artifact   `yaml:"artifacts"`
 	Repositories []Repository `yaml:"repositories"`
+	Resources    []string     `yaml:"resources"`
 }
 
 type Artifact struct {
-	Classifier string `yaml:"classifier"`
-	Resources []string `yaml:"resources"`
-	Targets []Target `yaml:"targets"`
-	Archive string `yaml:"archive"`
+	Classifier  string            `yaml:"classifier"`
+	Targets     []Target          `yaml:"targets"`
+	Archive     string            `yaml:"archive"`
+	Resources   []string          `yaml:"resources"`
+	Environment map[string]string `yaml:"env"`
 }
 
 type Target struct {
-	Executable string `yaml:"executable"`
-	Package string `yaml:"package"`
-	Flags string `yaml:"flags"`
+	Executable  string            `yaml:"executable"`
+	Package     string            `yaml:"package"`
+	Flags       string            `yaml:"flags"`
 	Environment map[string]string `yaml:"env"`
 }
 
 type Repository struct {
-	Name string `yaml:"name"`
-	URL string `yaml:"url"`
+	Name     string `yaml:"name"`
+	URL      string `yaml:"url"`
 	Username string `yaml:"username"`
 	Password string `yaml:"password"`
-	Token string `yaml:"token"`
-	Type string `yaml:"type"`
+	Token    string `yaml:"token"`
+	Type     string `yaml:"type"`
 }
 
 func (p *Project) TargetPath(subdirs ...string) string {
