@@ -24,15 +24,31 @@ func freeze(c *cli.Context) error {
 	}
 
 	govendorFile, err := domain.ReadGovendorFile(project)
-
-	os.Mkdir(project.ProjectPath(".freezer"), 0755) // ignore errors, we'll catch subsequent ones
 	if err != nil {
 		return err
 	}
+
+	freezerPath := project.ProjectPath(".freezer")
+
+	if _, err := os.Stat(freezerPath); !os.IsNotExist(err) {
+		if err := os.RemoveAll(freezerPath); err != nil {
+			return fmt.Errorf("Could not clean .freezer: %v", err)
+		}
+	}
+
+	if err := os.Mkdir(freezerPath, 0755); err != nil {
+		return fmt.Errorf("Could not make .freezer: %v", err)
+	}
+
 	for _, p := range govendorFile.Packages {
 		sourcePath := project.ProjectPath("vendor", p.Path)
 		targetFile := project.ProjectPath(".freezer", p.ArchiveFileName())
 		frozenFile := project.ProjectPath("vendor", p.Path, ".frozen")
+
+		if _, err := os.Stat(sourcePath); os.IsNotExist(err) {
+			fmt.Printf("MISSING dependency %v\n", p.Path)
+			continue
+		}
 
 		j, err := json.Marshal(p)
 		if err != nil {

@@ -38,6 +38,8 @@ func unfreeze(c *cli.Context) error {
 				return err
 			}
 			fmt.Printf("%s => %s\n", p.ArchiveFileName(), p.Path)
+		} else {
+			fmt.Printf("MISSING frozen dependency: %s => %s\n", p.ArchiveFileName(), p.Path)
 		}
 
 		_ = os.Remove(frozenFile)
