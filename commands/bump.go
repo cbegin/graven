@@ -19,13 +19,13 @@ package {{.Package}}
 var Version="{{.Version}}"`
 )
 
-var ReleaseCommand = cli.Command{
-	Name: "release",
-	Usage:       "Increments the revision and packages the release",
-	Action: release,
+var BumpCommand = cli.Command{
+	Name: "bump",
+	Usage:       "Increments the version (major, minor, patch) or sets the qualifier (-SNAPSHOT)",
+	Action: bump,
 }
 
-func release(c *cli.Context) error {
+func bump(c *cli.Context) error {
 	project, err := domain.FindProject()
 	if err != nil {
 		return err
@@ -33,6 +33,9 @@ func release(c *cli.Context) error {
 
 	oldVersion := project.Version
 	arg := c.Args().First()
+	if arg == "" {
+		return fmt.Errorf("Missing argument: major, minor, patch, current or any -QUALIFIER.")
+	}
 	if err := bumpVersion(project, arg); err != nil {
 		return err
 	}
@@ -40,8 +43,8 @@ func release(c *cli.Context) error {
 		return err
 	}
 	newVersion := project.Version
-	fmt.Printf("Promoted version %v => %v\n", oldVersion, newVersion)
-	return pkg(c)
+	fmt.Printf("Version changed from %v to %v\n", oldVersion, newVersion)
+	return nil
 }
 
 func writeVersionFile(project *domain.Project) error {
@@ -117,6 +120,8 @@ func bumpVersion(project *domain.Project, arg string) error {
 		version.Qualifier = ""
 	case "patch":
 		version.Patch++
+		version.Qualifier = ""
+	case "current":
 		version.Qualifier = ""
 	case "":
 	default:

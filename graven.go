@@ -23,7 +23,7 @@ func main() {
 		commands.InfoCommand,
 		commands.CleanCommand,
 		commands.PackageCommand,
-		commands.ReleaseCommand,
+		commands.BumpCommand,
 		commands.TestCommand,
 		commands.FreezeCommand,
 		commands.UnfreezeCommand,
