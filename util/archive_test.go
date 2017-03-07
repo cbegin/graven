@@ -5,7 +5,6 @@ import (
 	"testing"
 	"fmt"
 	"os"
-	"io/ioutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,23 +14,18 @@ func TestZipUnzip(t *testing.T) {
 		fmt.Printf("Zip error: %v", err)
 		t.FailNow()
 	}
+
 	if err := UnzipDir("../temp/hello.zip", "../temp/hello"); err != nil {
 		fmt.Printf("Unzip error: %v", err)
 		t.FailNow()
 	}
 
-	orig, err := ioutil.ReadFile("../hello/hello.go")
-	if err != nil {
-		fmt.Printf("Zip error: %v", err)
+	if same, err := CompareFileContents("../hello/hello.go", "../temp/hello/hello.go"); err != nil {
+		fmt.Printf("Error comparing files: %v", err)
 		t.FailNow()
+	} else {
+		assert.True(t, same)
 	}
-	unzipped, err := ioutil.ReadFile("../temp/hello/hello.go")
-	if err != nil {
-		fmt.Printf("Unzip error: %v", err)
-		t.FailNow()
-	}
-
-	assert.Equal(t, orig, unzipped)
 
 	os.RemoveAll("../temp")
 }
@@ -42,23 +36,18 @@ func TestTarUntar(t *testing.T) {
 		fmt.Printf("Tar error: %v", err)
 		t.FailNow()
 	}
+
 	if err := UntarDir("../temp/hello.tar.gz", "../temp/hello"); err != nil {
 		fmt.Printf("Untar error: %v", err)
 		t.FailNow()
 	}
 
-	orig, err := ioutil.ReadFile("../hello/hello.go")
-	if err != nil {
-		fmt.Printf("Tar file error: %v", err)
+	if same, err := CompareFileContents("../hello/hello.go", "../temp/hello/hello.go"); err != nil {
+		fmt.Printf("Error comparing files: %v", err)
 		t.FailNow()
+	} else {
+		assert.True(t, same)
 	}
-	unzipped, err := ioutil.ReadFile("../temp/hello/hello.go")
-	if err != nil {
-		fmt.Printf("Untar file error: %v", err)
-		t.FailNow()
-	}
-
-	assert.Equal(t, orig, unzipped)
 
 	os.RemoveAll("../temp")
 }

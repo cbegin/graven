@@ -69,7 +69,7 @@ func buildTarget(project *domain.Project, artifact *domain.Artifact, target *dom
 		if len(resourcePath[len(baseProjectPath):]) < 1 {
 			return fmt.Errorf("Resource path cannot be the entire project folder: %s", resourcePath)
 		}
-		err := domain.CopyDir(resourcePath, classifiedPath)
+		err := util.CopyDir(resourcePath, classifiedPath)
 		if err != nil {
 			return err
 		}

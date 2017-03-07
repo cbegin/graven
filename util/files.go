@@ -1,4 +1,4 @@
-package domain
+package util
 
 import (
 	"os"
@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"fmt"
 	"io/ioutil"
+	"hash"
+	"crypto/md5"
 )
 
 // CopyFile copies the contents of the file named src to the file named
@@ -104,4 +106,70 @@ func CopyDir(src string, dst string) error {
 	}
 
 	return err
+}
+
+func CompareFileContents(a, b string) (bool, error) {
+	adata, err := ioutil.ReadFile(a)
+	if err != nil {
+		return false, fmt.Errorf("File compare error (a): %v", err)
+
+	}
+	bdata, err := ioutil.ReadFile(b)
+	if err != nil {
+		return false, fmt.Errorf("File compare error (b): %v", err)
+	}
+	return string(adata) == string(bdata), nil
+}
+
+func MD5File(filePath string, h hash.Hash) error {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	if _, err := io.Copy(h, file); err != nil {
+		return err
+	}
+	return nil
+}
+
+func GetMD5Walker(basePath string, h hash.Hash) func(fp string, fi os.FileInfo, err error) error {
+	return func(fp string, fi os.FileInfo, err error) error {
+		if err != nil {
+			return nil // skip on error
+		}
+		if fi.IsDir() {
+			return nil // ignore directories
+		}
+		shortPath := fp[len(basePath):]
+		_, err = h.Write([]byte(shortPath))
+		if err != nil {
+			return err
+		}
+		MD5File(fp, h)
+		return nil
+	}
+}
+
+func MD5Dir(basePath string) ([]byte, error) {
+	var result []byte
+	h := md5.New()
+	err := filepath.Walk(basePath, GetMD5Walker(basePath, h))
+	if err != nil {
+		return result, err
+	}
+	result = h.Sum(result)
+	return result, nil
+}
+
+func CompareDir(a, b string) (bool, error) {
+	ahash, err := MD5Dir(a)
+	if err != nil {
+		return false, err
+	}
+	bhash, err := MD5Dir(b)
+	if err != nil {
+		return false, err
+	}
+	return string(ahash) == string(bhash), nil
 }
