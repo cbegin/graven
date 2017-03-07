@@ -3,4 +3,5 @@ graven
 target
 Makefile
 temp
+.DS_Store
 
