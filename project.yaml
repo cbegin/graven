@@ -1,43 +1,50 @@
 name: github.com/org/myProject
-version: 0.0.1
+version: 0.0.4
 artifacts:
 - classifier: darwin
+  targets:
+  - executable: bin/gvn
+    package: .
+    flags: ""
+    env: {}
+  - executable: bin/hello
+    package: ./hello
+    flags: ""
+    env: {}
+  archive: tgz
   resources: []
   env:
     GOARCH: amd64
     GOOS: darwin
+- classifier: linux
   targets:
   - executable: bin/gvn
     package: .
     flags: ""
-  - executable: bin/hello 
+    env: {}
+  - executable: bin/hello
     package: ./hello
     flags: ""
-  archive: tgz
-- classifier: linux
+    env: {}
+  archive: tar.gz
   resources: []
   env:
     GOARCH: amd64
     GOOS: linux
-  targets:
-  - executable: bin/gvn
-    package: .
-    flags: ""
-  - executable: bin/hello
-    package: ./hello
-    flags: ""
-  archive: tar.gz
 - classifier: win
-  resources: []
-  env:
-    GOARCH: amd64
-    GOOS: windows
   targets:
   - executable: gvn.exe
     package: .
     flags: ""
+    env: {}
   - executable: hello.exe
     package: ./hello
     flags: ""
+    env: {}
   archive: zip
+  resources: []
+  env:
+    GOARCH: amd64
+    GOOS: windows
 repositories: []
+resources: []

@@ -31,6 +31,7 @@ func release(c *cli.Context) error {
 		return err
 	}
 
+	oldVersion := project.Version
 	arg := c.Args().First()
 	if err := bumpVersion(project, arg); err != nil {
 		return err
@@ -38,6 +39,8 @@ func release(c *cli.Context) error {
 	if err := writeVersionFile(project); err != nil {
 		return err
 	}
+	newVersion := project.Version
+	fmt.Printf("Promoted version %v => %v\n", oldVersion, newVersion)
 	return pkg(c)
 }
 

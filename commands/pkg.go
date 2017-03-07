@@ -59,6 +59,8 @@ func packageArtifact(project *domain.Project, artifact *domain.Artifact) error {
 	source := project.TargetPath(artifact.Classifier)
 	dest := project.TargetPath(targetFile)
 	temp := fmt.Sprintf("%s.tmp", dest)
+	fmt.Printf("Packaging %v\n", targetFile)
+	defer fmt.Printf("Done %v\n", targetFile)
 	switch artifact.Archive {
 	case "zip":
 		err := util.ZipDir(source, dest)
