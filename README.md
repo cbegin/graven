@@ -61,7 +61,6 @@ which is considered a good thing for now
 - Unit Tests
 - A functional test project suite
 - Interfaces around likely integration points (repository support)
-- bug in freeze .frozen metadata error
 - docker support
 
 
