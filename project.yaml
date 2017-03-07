@@ -1,4 +1,4 @@
-name: github.com/org/myProject
+name: github.com/cbegin/graven
 version: 0.0.4
 artifacts:
 - classifier: darwin

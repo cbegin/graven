@@ -21,7 +21,17 @@ var Version="{{.Version}}"`
 
 var BumpCommand = cli.Command{
 	Name: "bump",
-	Usage:       "Increments the version (major, minor, patch) or sets the qualifier (-SNAPSHOT)",
+	Usage:       "Manage the version (major, minor, patch) and clear or set qualifier (e.g. DEV)",
+	Description: `
+	Bump manages incremental version updates using simple semantic versioning practices.
+
+	The valid arguments are:
+
+	major - bumps the major version X._._
+	minor - bumps the minor version _.X._
+	patch - bumps the patch version _._.X
+	clear - clears the qualifier if any
+	_____ - Anything else, sets the qualifier (e.g. SNAPSHOT, DEV, ALPHA)`,
 	Action: bump,
 }
 
@@ -34,7 +44,8 @@ func bump(c *cli.Context) error {
 	oldVersion := project.Version
 	arg := c.Args().First()
 	if arg == "" {
-		return fmt.Errorf("Missing argument: major, minor, patch, current or any -QUALIFIER.")
+		fmt.Printf("%v\n", oldVersion)
+		return nil
 	}
 	if err := bumpVersion(project, arg); err != nil {
 		return err
@@ -121,7 +132,7 @@ func bumpVersion(project *domain.Project, arg string) error {
 	case "patch":
 		version.Patch++
 		version.Qualifier = ""
-	case "current":
+	case "clear":
 		version.Qualifier = ""
 	case "":
 	default:

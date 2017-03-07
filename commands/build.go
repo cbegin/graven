@@ -29,6 +29,10 @@ func build(c *cli.Context) error {
 		return err
 	}
 
+	if err := writeVersionFile(project); err != nil {
+		fmt.Println(err)
+	}
+
 	var merr error
 	mutex := sync.Mutex{}
 	wg := sync.WaitGroup{}
@@ -75,8 +79,8 @@ func buildTarget(project *domain.Project, artifact *domain.Artifact, target *dom
 }
 
 func runBuildCommand(classifiedPath string, project *domain.Project, artifact *domain.Artifact, target *domain.Target) error {
-	fmt.Printf("Building %v-%v-%v-%v\n", project.Name, project.Version, artifact.Classifier, target.Executable)
-	defer fmt.Printf("Done %v-%v-%v-%v\n", project.Name, project.Version, artifact.Classifier, target.Executable)
+	fmt.Printf("Building %v %v %v %v\n", project.Name, project.Version, artifact.Classifier, target.Executable)
+	defer fmt.Printf("Done %v %v %v %v\n", project.Name, project.Version, artifact.Classifier, target.Executable)
 	var c *exec.Cmd
 	if target.Flags == "" {
 		c = exec.Command("go", "build", "-o", path.Join(classifiedPath, target.Executable), target.Package)
