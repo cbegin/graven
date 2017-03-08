@@ -9,6 +9,7 @@ import (
 
 	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
+	"github.com/hashicorp/go-multierror"
 )
 
 var TestCommand = cli.Command{
@@ -23,10 +24,14 @@ func tester(c *cli.Context) error {
 		return err
 	}
 
-	return filepath.Walk(project.ProjectPath(), getTestWalkerFunc(project))
+	var merr error
+	if err := filepath.Walk(project.ProjectPath(), getTestWalkerFunc(project, merr)); err != nil {
+		merr = multierror.Append(merr, err)
+	}
+	return merr
 }
 
-func getTestWalkerFunc(project *domain.Project) filepath.WalkFunc {
+func getTestWalkerFunc(project *domain.Project, merr error) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			subDir := path[len(project.ProjectPath()):]
@@ -36,10 +41,12 @@ func getTestWalkerFunc(project *domain.Project) filepath.WalkFunc {
 				"vendor":struct{}{},
 				"target":struct{}{},
 				".git":struct{}{}}) {
-				_ = runTestCommand(subDir, project)
+				if err := runTestCommand(subDir, project); err != nil {
+					merr = multierror.Append(merr, err)
+				}
 			}
 		}
-		return nil
+		return merr
 	}
 }
 
@@ -66,13 +73,18 @@ func runTestCommand(testPackage string, project *domain.Project) error {
 	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
 	cmd.Env = environment
 
-	err := cmd.Run()
-	if err != nil {
-		return fmt.Errorf("Build error. %v", err)
+
+	if err := cmd.Start(); err != nil {
+		return fmt.Errorf("Error starting tests. %v", err)
+	}
+
+	if err := cmd.Wait(); err != nil {
+		return fmt.Errorf("Error state returned after tests. %v", err)
 	}
 
 	if !cmd.ProcessState.Success() {
 		return fmt.Errorf("Build command exited in an error state. %v", cmd)
 	}
-	return err
+
+	return nil
 }
