@@ -15,5 +15,5 @@ func TestShouldLoadProject(t *testing.T) {
 	assert.True(t, strings.HasSuffix(p.Name, "graven"))
 	assert.Equal(t, p.Version, version.Version)
 	assert.Equal(t, 3, len(p.Artifacts))
-	assert.Equal(t, 0, len(p.Resources))
+	assert.Equal(t, 1, len(p.Resources))
 }

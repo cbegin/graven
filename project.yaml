@@ -47,4 +47,6 @@ artifacts:
     GOARCH: amd64
     GOOS: windows
 repositories: []
-resources: []
+resources:
+  - "LICENSE"
+

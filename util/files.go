@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"hash"
 	"crypto/md5"
+	"path"
 )
 
 // CopyFile copies the contents of the file named src to the file named
@@ -64,17 +65,27 @@ func CopyDir(src string, dst string) error {
 	if err != nil {
 		return err
 	}
+
+	mode := si.Mode()
 	if !si.IsDir() {
-		return fmt.Errorf("source is not a directory: %s", src)
+		dirsi, err := os.Stat(path.Dir(src))
+		if err != nil {
+			return err
+		}
+		mode = dirsi.Mode()
+	}
+
+	err = os.MkdirAll(dst, mode)
+	if err != nil {
+		return err
+	}
+
+	if !si.IsDir() {
+		return CopyFile(src, path.Join(dst, path.Base(src)) )
 	}
 
 	_, err = os.Stat(dst)
 	if err != nil && !os.IsNotExist(err) {
-		return err
-	}
-
-	err = os.MkdirAll(dst, si.Mode())
-	if err != nil {
 		return err
 	}
 
