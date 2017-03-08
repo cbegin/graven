@@ -25,13 +25,13 @@ func tester(c *cli.Context) error {
 	}
 
 	var merr error
-	if err := filepath.Walk(project.ProjectPath(), getTestWalkerFunc(project, merr)); err != nil {
+	if err := filepath.Walk(project.ProjectPath(), getTestWalkerFunc(project, &merr)); err != nil {
 		merr = multierror.Append(merr, err)
 	}
 	return merr
 }
 
-func getTestWalkerFunc(project *domain.Project, merr error) filepath.WalkFunc {
+func getTestWalkerFunc(project *domain.Project, merr *error) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			subDir := path[len(project.ProjectPath()):]
@@ -42,11 +42,11 @@ func getTestWalkerFunc(project *domain.Project, merr error) filepath.WalkFunc {
 				"target":struct{}{},
 				".git":struct{}{}}) {
 				if err := runTestCommand(subDir, project); err != nil {
-					merr = multierror.Append(merr, err)
+					*merr = multierror.Append(*merr, err)
 				}
 			}
 		}
-		return merr
+		return nil
 	}
 }
 
