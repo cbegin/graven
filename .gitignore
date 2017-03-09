@@ -1,4 +1,4 @@
-vendor
+vendor/*
 graven
 target
 Makefile
