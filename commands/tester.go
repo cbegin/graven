@@ -70,7 +70,9 @@ func runTestCommand(testPackage string, project *domain.Project) error {
 
 	environment := []string{}
 	gopath, _ := os.LookupEnv("GOPATH")
+	path, _ := os.LookupEnv("PATH")
 	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
+	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
 	cmd.Env = environment
 
 

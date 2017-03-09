@@ -62,7 +62,8 @@ func (p *Project) ProjectPath(subdirs ...string) string {
 	return projectPath
 }
 
-func FindProject() (*Project, error) {
+var FindProject = internalFindProject
+func internalFindProject() (*Project, error) {
 	wd, _ := os.Getwd()
 	cwd := wd
 	for len(cwd) > 1 {
