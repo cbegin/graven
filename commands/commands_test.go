@@ -1,11 +1,15 @@
 package commands
 
 import (
-	"github.com/cbegin/graven/domain"
+	"os"
 	"testing"
+
+	"github.com/cbegin/graven/domain"
 	"github.com/stretchr/testify/assert"
 	"github.com/urfave/cli"
-	"os"
+	"path"
+	"fmt"
+	"github.com/cbegin/graven/hello/version"
 )
 
 func init() {
@@ -61,13 +65,40 @@ func TestShouldPackageTargetDirectory(t *testing.T) {
 	err = pkg(c)
 	assert.NoError(t, err)
 
-	//├── hello-0.0.1-darwin.tgz
-	//├── hello-0.0.1-linux.tar.gz
-	//├── hello-0.0.1-win.zip
+	darwinPath := fmt.Sprintf("../hello/target/hello-%s-darwin.tgz", version.Version)
+	linuxPath := fmt.Sprintf("../hello/target/hello-%s-linux.tar.gz", version.Version)
+	winPath := fmt.Sprintf("../hello/target/hello-%s-win.zip", version.Version)
 
-	assert.True(t, PathExists("../hello/target/darwin"));
-	assert.True(t, PathExists("../hello/target/linux"));
-	assert.True(t, PathExists("../hello/target/win"));
+	assert.True(t, PathExists(darwinPath));
+	assert.True(t, PathExists(linuxPath));
+	assert.True(t, PathExists(winPath));
+}
+
+func TestShouldInitDirectory(t *testing.T) {
+	tempdir := "../temp"
+	_ = os.RemoveAll(tempdir)
+	err := os.MkdirAll(tempdir,0755)
+	assert.NoError(t, err)
+	defer os.RemoveAll(tempdir)
+
+	c := &cli.Context{}
+
+	wd, err := os.Getwd()
+	assert.NoError(t, err)
+	defer os.Chdir(wd) // making double sure we change the working directory back
+
+	err = os.Chdir(tempdir)
+	assert.NoError(t, err)
+
+	err = initialize(c)
+	assert.NoError(t, err)
+
+	err = os.Chdir(wd)
+	assert.NoError(t, err)
+
+	assert.True(t, PathExists(path.Join(tempdir,"version", "version.go")));
+	assert.True(t, PathExists(path.Join(tempdir, "main.go")));
+	assert.True(t, PathExists(path.Join(tempdir, "project.yaml")));
 }
 
 func PathExists(name string) bool {
