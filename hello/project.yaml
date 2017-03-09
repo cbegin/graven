@@ -1,0 +1,43 @@
+name: github.com/org/hello
+version: 0.0.1
+artifacts:
+- classifier: darwin
+  targets:
+  - executable: hello
+    package: .
+    flags: ""
+    env: {}
+  archive: tgz
+  resources:
+      - "resources/a"
+  env:
+    GOARCH: amd64
+    GOOS: darwin
+- classifier: linux
+  targets:
+  - executable: hello
+    package: .
+    flags: "-v"
+    env: {}
+  archive: tar.gz
+  resources:
+    - "resources/a"
+  env:
+    GOARCH: amd64
+    GOOS: linux
+- classifier: win
+  targets:
+  - executable: hello.exe
+    package: .
+    flags: ""
+    env: {}
+  archive: zip
+  resources:
+    - "resources/b"
+  env:
+    GOARCH: amd64
+    GOOS: windows
+repositories: []
+resources:
+  - "resources/3.txt"
+  - "Readme.md"

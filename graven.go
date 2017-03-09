@@ -15,9 +15,6 @@ func main() {
 	app.Name = "graven"
 	app.Usage = "A build automation tool for Go."
 
-	// TODO:
-	// new -- initializes new directory and project.yaml
-
 	app.Commands = []cli.Command{
 		commands.BuildCommand,
 		commands.InfoCommand,

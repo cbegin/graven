@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"github.com/cbegin/graven/hello/version"
+	"github.com/fatih/color"
+)
 
 func main() {
-	fmt.Println("Hello")
+	color.Magenta("Hello %v\n", version.Version)
 }
