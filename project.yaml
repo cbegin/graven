@@ -7,10 +7,6 @@ artifacts:
     package: .
     flags: ""
     env: {}
-  - executable: bin/hello
-    package: ./hello
-    flags: ""
-    env: {}
   archive: tgz
   resources: []
   env:
@@ -22,10 +18,6 @@ artifacts:
     package: .
     flags: ""
     env: {}
-  - executable: bin/hello
-    package: ./hello
-    flags: ""
-    env: {}
   archive: tar.gz
   resources: []
   env:
@@ -35,10 +27,6 @@ artifacts:
   targets:
   - executable: gvn.exe
     package: .
-    flags: ""
-    env: {}
-  - executable: hello.exe
-    package: ./hello
     flags: ""
     env: {}
   archive: zip

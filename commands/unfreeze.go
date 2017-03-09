@@ -21,7 +21,7 @@ func unfreeze(c *cli.Context) error {
 		return err
 	}
 
-	govendorFile, err := domain.ReadGovendorFile(project)
+	govendorFile, err := domain.LoadGovendorFile(project)
 	if err != nil {
 		return err
 	}

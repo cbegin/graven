@@ -38,7 +38,7 @@ func (g *GovendorPackage) ArchiveFileName() string {
 	return fmt.Sprintf("%v-%v.zip", name, revision)
 }
 
-func ReadGovendorFile (project *Project) (*GovendorFile, error) {
+func LoadGovendorFile(project *Project) (*GovendorFile, error) {
 	govendorFile := &GovendorFile{}
 
 	vendorFilePath := project.ProjectPath("vendor", "vendor.json")
