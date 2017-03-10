@@ -16,6 +16,8 @@ func init() {
 	domain.FindProject = func () (*domain.Project, error) {
 		return domain.LoadProject("../hello/project.yaml")
 	}
+	c := &cli.Context{}
+	_ = unfreeze(c)
 }
 
 func TestShouldBuildTargetDirectory(t *testing.T) {
@@ -115,6 +117,22 @@ func TestShouldFreezeResources(t *testing.T) {
 	assert.True(t, PathExists("../hello/.freezer/golang-org-x-sys-unix-99f16d856c9836c42d24e7ab64ea72916925fa97.zip"));
 
 }
+
+func TestShouldUnfreezeResources(t *testing.T) {
+	c := &cli.Context{}
+
+	_ = os.RemoveAll("../hello/vendor/github.com")
+	_ = os.RemoveAll("../hello/vendor/golang.org")
+
+	err := unfreeze(c)
+	assert.NoError(t, err)
+
+	assert.True(t, PathExists("../hello/vendor/github.com/fatih"));
+	assert.True(t, PathExists("../hello/vendor/github.com/mattn"));
+	assert.True(t, PathExists("../hello/vendor/golang.org/x"));
+
+}
+
 
 func PathExists(name string) bool {
 	if _, err := os.Stat(name); err != nil {
