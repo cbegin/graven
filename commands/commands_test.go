@@ -101,6 +101,21 @@ func TestShouldInitDirectory(t *testing.T) {
 	assert.True(t, PathExists(path.Join(tempdir, "project.yaml")));
 }
 
+func TestShouldFreezeResources(t *testing.T) {
+	c := &cli.Context{}
+
+	_ = os.RemoveAll("../hello/.freezer")
+
+	err := freeze(c)
+	assert.NoError(t, err)
+
+	assert.True(t, PathExists("../hello/.freezer/github-com-fatih-color-9131ab34cf20d2f6d83fdc67168a5430d1c7dc23.zip"));
+	assert.True(t, PathExists("../hello/.freezer/github-com-mattn-go-colorable-acb9493f2794fd0f820de7a27a217dafbb1b65ea.zip"));
+	assert.True(t, PathExists("../hello/.freezer/github-com-mattn-go-isatty-57fdcb988a5c543893cc61bce354a6e24ab70022.zip"));
+	assert.True(t, PathExists("../hello/.freezer/golang-org-x-sys-unix-99f16d856c9836c42d24e7ab64ea72916925fa97.zip"));
+
+}
+
 func PathExists(name string) bool {
 	if _, err := os.Stat(name); err != nil {
 		if os.IsNotExist(err) {

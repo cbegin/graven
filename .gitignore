@@ -1,6 +1,5 @@
-vendor/*
+vendor
 graven
 target
 .DS_Store
-hello/.freezer
 temp
