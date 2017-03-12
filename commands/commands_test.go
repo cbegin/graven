@@ -133,6 +133,13 @@ func TestShouldUnfreezeResources(t *testing.T) {
 
 }
 
+func TestShouldRunTests(t *testing.T) {
+	c := &cli.Context{}
+
+	err := tester(c)
+	assert.NoError(t, err)
+}
+
 func TestShouldBumpPatchVersion(t *testing.T) {
 	// clean up before and after
 	resetVersion()
