@@ -1,39 +1,43 @@
-name: github.com/cbegin/graven
-version: 0.2.0
+name: github.com/org/hello
+version: 0.0.1
 artifacts:
 - classifier: darwin
   targets:
-  - executable: bin/gvn
+  - executable: hello
     package: .
     flags: ""
     env: {}
   archive: tgz
-  resources: []
+  resources:
+      - "resources/a"
   env:
     GOARCH: amd64
     GOOS: darwin
 - classifier: linux
   targets:
-  - executable: bin/gvn
+  - executable: hello
     package: .
-    flags: ""
+    flags: "-v"
     env: {}
   archive: tar.gz
-  resources: []
+  resources:
+    - "resources/a"
   env:
     GOARCH: amd64
     GOOS: linux
 - classifier: win
   targets:
-  - executable: gvn.exe
+  - executable: hello.exe
     package: .
     flags: ""
     env: {}
   archive: zip
-  resources: []
+  resources:
+    - "resources/b"
   env:
     GOARCH: amd64
     GOOS: windows
 repositories: []
 resources:
-- LICENSE
+  - "resources/3.txt"
+  - "Readme.md"

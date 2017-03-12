@@ -8,3 +8,7 @@ import (
 func main() {
 	color.Magenta("Hello %v\n", version.Version)
 }
+
+func add(a, b int) int {
+	return a + b
+}
