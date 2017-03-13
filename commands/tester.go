@@ -19,9 +19,18 @@ var TestCommand = cli.Command{
 }
 
 func tester(c *cli.Context) error {
+	if err := clean(c); err != nil {
+		return err
+	}
+
 	project, err := domain.FindProject()
 	if err != nil {
 		return err
+	}
+
+	err = os.MkdirAll(project.TargetPath("reports"), 0755)
+	if err != nil {
+		return fmt.Errorf("Could not create reports directory. %v", err)
 	}
 
 	var merr error
@@ -61,8 +70,10 @@ func contains(strings []string, exclusions map[string]struct{}) bool {
 
 func runTestCommand(testPackage string, project *domain.Project) error {
 	relativePath := "." + testPackage
-	fmt.Println(relativePath)
-	cmd := exec.Command("go", "test", "-p", "4", "-cover", "-parallel", "4", relativePath)
+
+	coverOut := fmt.Sprintf("-coverprofile=%s.out", project.TargetPath("reports", testPackage))
+
+	cmd := exec.Command("go", "test", "-covermode=atomic", coverOut, relativePath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin
@@ -82,6 +93,39 @@ func runTestCommand(testPackage string, project *domain.Project) error {
 
 	if err := cmd.Wait(); err != nil {
 		return fmt.Errorf("Error state returned after tests. %v", err)
+	}
+
+	if !cmd.ProcessState.Success() {
+		return fmt.Errorf("Build command exited in an error state. %v", cmd)
+	}
+
+	return runCoverageCommand(testPackage, project)
+}
+
+func runCoverageCommand(testPackage string, project *domain.Project) error {
+	coverOut := fmt.Sprintf("-html=%s.out", project.TargetPath("reports", testPackage))
+	coverHtml := fmt.Sprintf("-o=%s.html", project.TargetPath("reports", testPackage))
+
+	cmd := exec.Command("go", "tool", "cover", coverOut, coverHtml)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+	cmd.Dir = project.ProjectPath()
+
+	environment := []string{}
+	gopath, _ := os.LookupEnv("GOPATH")
+	path, _ := os.LookupEnv("PATH")
+	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
+	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
+	cmd.Env = environment
+
+
+	if err := cmd.Start(); err != nil {
+		return fmt.Errorf("Error generating coverage HTML. %v", err)
+	}
+
+	if err := cmd.Wait(); err != nil {
+		return fmt.Errorf("Error state returned after generating coverage HTML. %v", err)
 	}
 
 	if !cmd.ProcessState.Success() {
