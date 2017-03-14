@@ -73,7 +73,7 @@ func runTestCommand(testPackage string, project *domain.Project) error {
 
 	coverOut := fmt.Sprintf("-coverprofile=%s.out", project.TargetPath("reports", testPackage))
 
-	cmd := exec.Command("go", "test", "-covermode=atomic", coverOut, relativePath)
+	cmd := exec.Command("go", "test", "-v", "-parallel=4", "-p=4", "-covermode=atomic", coverOut, relativePath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin
