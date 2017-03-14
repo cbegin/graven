@@ -1,8 +1,9 @@
 package main
 
 import (
-	"go.riotgames.com/pipe/bt/Godeps/_workspace/src/github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestShouldAddTwoNumbers(t *testing.T) {
