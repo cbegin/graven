@@ -1,4 +1,4 @@
-name: github.com/cbegin/graven
+name: graven
 version: 0.2.0
 artifacts:
 - classifier: darwin
@@ -34,6 +34,10 @@ artifacts:
   env:
     GOARCH: amd64
     GOOS: windows
-repositories: []
+repositories:
+  github:
+    type: git
+    owner: cbegin
+    repo: graven
 resources:
 - LICENSE

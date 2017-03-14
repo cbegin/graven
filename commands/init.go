@@ -138,7 +138,7 @@ func initialize(c *cli.Context) error {
 	}
 
 	newProject := &domain.Project{}
-	newProject.Name = "github.com/org/myProject"
+	newProject.Name = path.Base(wd)
 	newProject.Version = "0.0.1"
 	newProject.Artifacts = artifacts
 

@@ -18,7 +18,7 @@ type Project struct {
 	Name         string       `yaml:"name"`
 	Version      string       `yaml:"version"`
 	Artifacts    []Artifact   `yaml:"artifacts"`
-	Repositories []Repository `yaml:"repositories"`
+	Repositories map[string]map[string]string `yaml:"repositories"`
 	Resources    []string     `yaml:"resources"`
 }
 
@@ -60,6 +60,10 @@ func (p *Project) ProjectPath(subdirs ...string) string {
 		projectPath = path.Join(projectPath, s)
 	}
 	return projectPath
+}
+
+func (a *Artifact) ArtifactFile(project *Project) string {
+	return fmt.Sprintf("%s-%s-%s.%s", project.Name, project.Version, a.Classifier, a.Archive)
 }
 
 var FindProject = internalFindProject

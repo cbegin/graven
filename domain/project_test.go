@@ -2,7 +2,6 @@ package domain
 
 import (
 	"testing"
-	"strings"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/cbegin/graven/hello/version"
@@ -11,14 +10,14 @@ import (
 func TestShouldFindProject(t *testing.T) {
 	p, err := FindProject()
 	assert.NoError(t, err)
-	assert.True(t, strings.HasSuffix(p.Name, "graven"))
+	assert.Equal(t, p.Name, "graven")
 }
 
 func TestShouldLoadProject(t *testing.T) {
 	p, err := LoadProject("../hello/project.yaml")
 	assert.NoError(t, err)
 
-	assert.True(t, strings.HasSuffix(p.Name, "hello"))
+	assert.Equal(t, p.Name, "hello")
 	assert.Equal(t, p.Version, version.Version)
 	assert.Equal(t, 3, len(p.Artifacts))
 	assert.Equal(t, 2, len(p.Resources))
@@ -36,6 +35,6 @@ func TestShouldLoadProject(t *testing.T) {
 	for _, g := range linux.Targets {
 		assert.Equal(t, "hello", g.Executable)
 		assert.Equal(t, ".", g.Package)
-		assert.Equal(t, "-v", g.Flags)
+		assert.Equal(t, "-p=4", g.Flags)
 	}
 }

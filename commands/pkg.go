@@ -2,7 +2,6 @@ package commands
 
 import (
 	"os"
-	"strings"
 	"fmt"
 	"sync"
 
@@ -19,10 +18,6 @@ var PackageCommand = cli.Command{
 }
 
 func pkg(c *cli.Context) error {
-	if err := clean(c); err != nil {
-		return err
-	}
-
 	if err := build(c); err != nil {
 		return err
 	}
@@ -53,9 +48,7 @@ func pkg(c *cli.Context) error {
 }
 
 func packageArtifact(project *domain.Project, artifact *domain.Artifact) error {
-	nameParts := strings.Split(project.Name, "/")
-	shortName := nameParts[len(nameParts) - 1:][0]
-	targetFile := fmt.Sprintf("%s-%s-%s.%s", shortName, project.Version, artifact.Classifier, artifact.Archive)
+	targetFile := artifact.ArtifactFile(project)
 	source := project.TargetPath(artifact.Classifier)
 	dest := project.TargetPath(targetFile)
 	temp := fmt.Sprintf("%s.tmp", dest)

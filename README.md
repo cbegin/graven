@@ -1,5 +1,3 @@
-_Status: This is a proof of concept. The code was written during about 10 episodes of The 100. I'll post some next steps soon, to bring the code to production level._
-
 # graven
 
 Graven is a build management tool for Go projects. It takes light
@@ -50,7 +48,7 @@ While Graven takes queues from Maven and Leiningen, it also casts out
 the annoying, verbose and repetitive aspects that most developers
 agree weigh Maven down. 
 
-So Graven embrases:
+So Graven embraces:
 
 * A much simpler build artifact based on light YAML
 * Batteries included, no plugins - none are even supported yet, 
@@ -58,10 +56,8 @@ which is considered a good thing for now
 
 ## TODO
 
-- Unit Tests
-- A functional test project suite
 - Interfaces around likely integration points (repository support)
-- docker support
+- docker support?
 
 
 

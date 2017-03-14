@@ -1,4 +1,4 @@
-name: github.com/org/hello
+name: hello
 version: 0.0.1
 artifacts:
 - classifier: darwin
@@ -17,7 +17,7 @@ artifacts:
   targets:
   - executable: hello
     package: .
-    flags: "-v"
+    flags: "-p=4"
     env: {}
   archive: tar.gz
   resources:
@@ -37,7 +37,7 @@ artifacts:
   env:
     GOARCH: amd64
     GOOS: windows
-repositories: []
+repositories:
 resources:
   - "resources/3.txt"
   - "Readme.md"
