@@ -59,5 +59,31 @@ which is considered a good thing for now
 - Interfaces around likely integration points (repository support)
 - docker support?
 
+```
+NAME:
+   graven - A build automation tool for Go.
+
+USAGE:
+   graven [global options] command [command options] [arguments...]
+
+VERSION:
+   0.1.0
+
+COMMANDS:
+     build     Builds the current project
+     info      Prints the known information about a project
+     clean     Cleans the target directory and its contents
+     package   Produces packaged archive for deployment
+     bump      Manage the version (major, minor, patch) and clear or set qualifier (e.g. DEV)
+     test      Finds and runs tests in this project
+     freeze    Freezes vendor dependencies to avoid having to check in source
+     unfreeze  Unfreezes vendor dependencies
+     init      Initializes a project directory
+     help, h   Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --help, -h     show help
+   --version, -v  print the version
+```
 
 
