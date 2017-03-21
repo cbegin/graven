@@ -60,6 +60,8 @@ which is considered a good thing for now
 - Interfaces around likely integration points (repository support)
 - docker support?
 
+# Usage
+
 ```
 NAME:
    graven - A build automation tool for Go.
