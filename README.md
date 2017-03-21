@@ -56,6 +56,7 @@ which is considered a good thing for now
 
 ## TODO
 
+- Deploy command for pushing to Github releases and Maven/Nexus repos
 - Interfaces around likely integration points (repository support)
 - docker support?
 
