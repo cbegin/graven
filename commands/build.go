@@ -79,8 +79,8 @@ func buildTarget(project *domain.Project, artifact *domain.Artifact, target *dom
 }
 
 func runBuildCommand(classifiedPath string, project *domain.Project, artifact *domain.Artifact, target *domain.Target) error {
-	fmt.Printf("Building %v %v %v %v\n", project.Name, project.Version, artifact.Classifier, target.Executable)
-	defer fmt.Printf("Done %v %v %v %v\n", project.Name, project.Version, artifact.Classifier, target.Executable)
+	fmt.Printf("Building %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
+	defer fmt.Printf("Done %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
 	var c *exec.Cmd
 	if target.Flags == "" {
 		c = exec.Command("go", "build", "-o", path.Join(classifiedPath, target.Executable), target.Package)

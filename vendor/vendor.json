@@ -15,6 +15,12 @@
 			"revision": ""
 		},
 		{
+			"checksumSHA1": "Isa9x3nvIJ12hvgdvUUBty+yplU=",
+			"path": "github.com/bgentry/speakeasy",
+			"revision": "675b82c74c0ed12283ee81ba8a534c8982c07b85",
+			"revisionTime": "2016-10-13T10:26:35Z"
+		},
+		{
 			"checksumSHA1": "dvabztWVQX8f6oMLRyv4dLH+TGY=",
 			"path": "github.com/davecgh/go-spew/spew",
 			"revision": "346938d642f2ec3594ed81d874461961cd0faa76",
