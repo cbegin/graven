@@ -199,9 +199,6 @@ func verifyRepoState(project *domain.Project) error {
 		if strings.TrimSpace(stdout) != "" || strings.TrimSpace(stderr) != "" {
 			return fmt.Errorf("Cannot deploy with uncommitted changes.")
 		}
-
-		fmt.Println(stdout)
-		fmt.Println(stderr)
 		return nil
 	}, project, "status", "--porcelain"); err != nil {
 		return err
