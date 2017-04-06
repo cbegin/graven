@@ -14,9 +14,12 @@ import (
 	"golang.org/x/oauth2"
 	"gopkg.in/yaml.v2"
 	"github.com/bgentry/speakeasy"
+	"github.com/cbegin/graven/util"
+	"strings"
 )
 
 type ConfigMap map[string]map[string]string
+type Validator func(stdout, stderr string) error
 
 var DeployCommand = cli.Command{
 	Name: "deploy",
@@ -31,6 +34,15 @@ var DeployCommand = cli.Command{
 }
 
 func deploy(c *cli.Context) error {
+	project, err := domain.FindProject()
+	if err != nil {
+		return err
+	}
+
+	if err := verifyRepoState(project); err != nil {
+		return err
+	}
+
 	if c.Bool("login") {
 		return loginToGithub()
 	}
@@ -39,7 +51,7 @@ func deploy(c *cli.Context) error {
 		return err
 	}
 
-	return deployToGithub()
+	return deployToGithub(project)
 }
 
 func loginToGithub() error {
@@ -57,11 +69,7 @@ func loginToGithub() error {
 	return nil
 }
 
-func deployToGithub() error {
-	project, err := domain.FindProject()
-	if err != nil {
-		return err
-	}
+func deployToGithub(project *domain.Project) error {
 
 	gh, ctx, err := authenticate()
 	if err != nil {
@@ -98,7 +106,7 @@ func deployToGithub() error {
 		opts := &github.UploadOptions{
 			Name: filename,
 		}
-		_,_,err = gh.Repositories.UploadReleaseAsset(ctx, ownerName, repoName, *release.ID, opts, sourceFile)
+		_, _, err = gh.Repositories.UploadReleaseAsset(ctx, ownerName, repoName, *release.ID, opts, sourceFile)
 		if err != nil {
 			return err
 		}
@@ -169,4 +177,57 @@ func writeConfig(config ConfigMap) (error) {
 	}
 
 	return nil
+}
+
+func verifyRepoState(project *domain.Project) error {
+	remoteName := "origin"
+	branchName := "master"
+
+	// Check if on expected branch (e.g. master)
+	if err := verifyGitState(func(stdout, stderr string) error {
+		actualBranch := strings.TrimSpace(stdout)
+		if actualBranch != branchName {
+			return fmt.Errorf("Expected to be on branch %v but found branch %v", branchName, actualBranch)
+		}
+		return nil
+	}, project, "rev-parse", "--abbrev-ref", "HEAD"); err != nil {
+		return err
+	}
+
+	// Ensure no uncommitted changes
+	if err := verifyGitState(func(stdout, stderr string) error {
+		if strings.TrimSpace(stdout) != "" || strings.TrimSpace(stderr) != "" {
+			return fmt.Errorf("Cannot deploy with uncommitted changes.")
+		}
+
+		fmt.Println(stdout)
+		fmt.Println(stderr)
+		return nil
+	}, project, "status", "--porcelain"); err != nil {
+		return err
+	}
+
+	// Check if changes exist on server
+	if err := verifyGitState(func(stdout, stderr string) error {
+		fmt.Println(stdout)
+		return nil
+	}, project, "fetch", "--dry-run", remoteName, branchName); err != nil {
+		return err
+	}
+
+	if err := verifyGitState(func(stdout, stderr string) error {
+		return nil
+	}, project, "rev-parse", branchName, fmt.Sprintf("%v/%v", remoteName, branchName)); err != nil {
+		return err
+	}
+
+	return fmt.Errorf("Testing...")
+}
+
+func verifyGitState(validator Validator, project *domain.Project, args... string) error {
+	sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", args...)
+	if err != nil {
+		return fmt.Errorf("ERROR running Git command: %v\n", err)
+	}
+	return validator(sout, serr)
 }
