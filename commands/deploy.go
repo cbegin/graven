@@ -208,7 +208,7 @@ func verifyRepoState(project *domain.Project) error {
 	if err := verifyGitState(func(stdout, stderr string) error {
 		lineCount := len(strings.Split(strings.TrimSpace(stderr), "\n"))
 		if lineCount > 2 {
-			return fmt.Errorf("Changes were detected on the server for this branch.")
+			return fmt.Errorf("Changes were detected on the remote %v for branch %v.", remoteName, branchName)
 		}
 		return nil
 	}, project, "fetch", "--dry-run", remoteName, branchName); err != nil {
@@ -219,14 +219,14 @@ func verifyRepoState(project *domain.Project) error {
 	if err := verifyGitState(func(stdout, stderr string) error {
 		parts := strings.Split(strings.TrimSpace(stdout), "\n")
 		if strings.TrimSpace(parts[0]) != strings.TrimSpace(parts[1]) {
-			return fmt.Errorf("Not all local changes have been pushed to the server.")
+			return fmt.Errorf("Not all local changes for branch %v have been pushed to remote %v.", branchName, remoteName)
 		}
 		return nil
 	}, project, "rev-parse", branchName, fmt.Sprintf("%v/%v", remoteName, branchName)); err != nil {
 		return err
 	}
 
-	return fmt.Errorf("Testing...")
+	return nil
 }
 
 func verifyGitState(validator Validator, project *domain.Project, args... string) error {
