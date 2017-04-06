@@ -206,7 +206,7 @@ func verifyRepoState(project *domain.Project) error {
 
 	// Check if changes exist on server
 	if err := verifyGitState(func(stdout, stderr string) error {
-		fmt.Println(stderr)
+		fmt.Println(strings.TrimSpace(stderr))
 		return nil
 	}, project, "fetch", "--dry-run", remoteName, branchName); err != nil {
 		return err
