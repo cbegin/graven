@@ -1,5 +1,5 @@
 name: graven
-version: 0.2.0
+version: 0.3.0
 artifacts:
 - classifier: darwin
   targets:
@@ -36,8 +36,8 @@ artifacts:
     GOOS: windows
 repositories:
   github:
-    type: git
     owner: cbegin
     repo: graven
+    type: git
 resources:
 - LICENSE
