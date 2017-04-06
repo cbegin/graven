@@ -99,7 +99,7 @@ clean
 build
 test
 package
-deploy
+deploy (ensure on master, committed, pulled and pushed)
 bump
 ```
 
