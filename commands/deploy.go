@@ -217,8 +217,10 @@ func verifyRepoState(project *domain.Project) error {
 
 	// Check if local changes are pushed
 	if err := verifyGitState(func(stdout, stderr string) error {
-		fmt.Println(stdout)
-		
+		parts := strings.Split(strings.TrimSpace(stdout), "\n")
+		if strings.TrimSpace(parts[0]) != strings.TrimSpace(parts[1]) {
+			return fmt.Errorf("Not all local changes have been pushed to the server.")
+		}
 		return nil
 	}, project, "rev-parse", branchName, fmt.Sprintf("%v/%v", remoteName, branchName)); err != nil {
 		return err
