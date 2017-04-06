@@ -207,13 +207,19 @@ func verifyRepoState(project *domain.Project) error {
 	// Check if changes exist on server
 	if err := verifyGitState(func(stdout, stderr string) error {
 		lineCount := len(strings.Split(strings.TrimSpace(stderr), "\n"))
-		fmt.Println(lineCount)
+		if lineCount > 2 {
+			return fmt.Errorf("Changes were detected on the server for this branch.")
+		}
 		return nil
 	}, project, "fetch", "--dry-run", remoteName, branchName); err != nil {
 		return err
 	}
 
+	// Check if local changes are pushed
 	if err := verifyGitState(func(stdout, stderr string) error {
+		fmt.Println(stdout)
+		fmt.Println(stderr)
+
 		return nil
 	}, project, "rev-parse", branchName, fmt.Sprintf("%v/%v", remoteName, branchName)); err != nil {
 		return err
