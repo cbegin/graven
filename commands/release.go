@@ -21,10 +21,10 @@ import (
 type ConfigMap map[string]map[string]string
 type Validator func(stdout, stderr string) error
 
-var DeployCommand = cli.Command{
-	Name: "deploy",
-	Usage:       "Deploys artifacts to a repository",
-	Action: deploy,
+var ReleaseCommand = cli.Command{
+	Name: "release",
+	Usage:       "Releases artifacts to repositories",
+	Action: release,
 	Flags: []cli.Flag{
 		cli.BoolFlag{
 			Name: "login",
@@ -33,7 +33,7 @@ var DeployCommand = cli.Command{
 	},
 }
 
-func deploy(c *cli.Context) error {
+func release(c *cli.Context) error {
 	project, err := domain.FindProject()
 	if err != nil {
 		return err
@@ -51,7 +51,7 @@ func deploy(c *cli.Context) error {
 		return err
 	}
 
-	return deployToGithub(project)
+	return releaseToGithub(project)
 }
 
 func loginToGithub() error {
@@ -69,7 +69,7 @@ func loginToGithub() error {
 	return nil
 }
 
-func deployToGithub(project *domain.Project) error {
+func releaseToGithub(project *domain.Project) error {
 
 	gh, ctx, err := authenticate()
 	if err != nil {
@@ -119,7 +119,7 @@ func deployToGithub(project *domain.Project) error {
 func authenticate() (*github.Client, context.Context, error) {
 	config, err := readConfig()
 	if err != nil {
-		return nil, nil, fmt.Errorf("Error reading configuration (try: deploy --login): %v", err)
+		return nil, nil, fmt.Errorf("Error reading configuration (try: release --login): %v", err)
 	}
 
 	ctx := context.Background()
@@ -197,7 +197,7 @@ func verifyRepoState(project *domain.Project) error {
 	// Ensure no uncommitted changes
 	if err := verifyGitState(func(stdout, stderr string) error {
 		if strings.TrimSpace(stdout) != "" || strings.TrimSpace(stderr) != "" {
-			return fmt.Errorf("Cannot deploy with uncommitted changes.")
+			return fmt.Errorf("Cannot release with uncommitted changes.")
 		}
 		return nil
 	}, project, "status", "--porcelain"); err != nil {

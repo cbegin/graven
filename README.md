@@ -56,13 +56,13 @@ which is considered a good thing for now
 
 ## TODO
 
-- Deploy command for pushing to Github releases and Maven/Nexus repos
 - Interfaces around likely integration points (repository support)
 - docker support?
 
 # Usage
 
 ```
+$ ./graven
 NAME:
    graven - A build automation tool for Go.
 
@@ -70,7 +70,7 @@ USAGE:
    graven [global options] command [command options] [arguments...]
 
 VERSION:
-   0.2.0
+   0.3.0
 
 COMMANDS:
      build     Builds the current project
@@ -82,7 +82,7 @@ COMMANDS:
      freeze    Freezes vendor dependencies to avoid having to check in source
      unfreeze  Unfreezes vendor dependencies
      init      Initializes a project directory
-     deploy    Deploys artifacts to a repository
+     release   Releases artifacts to repositories
      help, h   Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
@@ -92,14 +92,14 @@ GLOBAL OPTIONS:
 # Workflow Example
 
 ```
-TODO - put a common workflow here from init through to deploy
+TODO - put a common workflow here from init through to release
 
 init
 clean
 build
 test
 package
-deploy (ensure on master, committed, pulled and pushed)
+release 
 bump
 ```
 
