@@ -218,8 +218,7 @@ func verifyRepoState(project *domain.Project) error {
 	// Check if local changes are pushed
 	if err := verifyGitState(func(stdout, stderr string) error {
 		fmt.Println(stdout)
-		fmt.Println(stderr)
-
+		
 		return nil
 	}, project, "rev-parse", branchName, fmt.Sprintf("%v/%v", remoteName, branchName)); err != nil {
 		return err
