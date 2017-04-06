@@ -93,5 +93,13 @@ GLOBAL OPTIONS:
 
 ```
 TODO - put a common workflow here from init through to deploy
+
+init
+clean
+build
+test
+package
+deploy
+bump
 ```
 
