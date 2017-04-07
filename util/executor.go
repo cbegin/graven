@@ -21,7 +21,7 @@ func RunCommand(cwd string, env []string, cmd string, args ...string) (string, s
 
 	err := c.Run()
 	if err != nil {
-		return stdout.String(), stderr.String(), fmt.Errorf("Errr running command: %v\n%v", cmd, err)
+		return stdout.String(), stderr.String(), fmt.Errorf("Error running command: %v\n%v", cmd, err)
 	}
 
 	if !c.ProcessState.Success() {

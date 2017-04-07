@@ -91,13 +91,14 @@ func releaseToGithub(project *domain.Project) error {
 		Name: &releaseName,
 	}
 
-	{
-		sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", "tag", tagName)
+	if sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", "tag", tagName); err != nil {
 		fmt.Printf("Tagging  %v\n%v\n%v\n", sout, serr, err)
+		return err
 	}
-	{
-		sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", "push", "--tags")
+
+	if sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", "push", "--tags"); err != nil {
 		fmt.Printf("PushTags %v\n%v\n%v\n", sout, serr, err)
+		return err
 	}
 
 	release, _, err = gh.Repositories.CreateRelease(ctx, ownerName, repoName, release)
