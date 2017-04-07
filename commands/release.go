@@ -92,12 +92,12 @@ func releaseToGithub(project *domain.Project) error {
 	}
 
 	if sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", "tag", tagName); err != nil {
-		fmt.Printf("Tagging  %v\n%v\n%v\n", sout, serr, err)
+		fmt.Printf("Tagging  %v\n%v\n", sout, serr)
 		return err
 	}
 
 	if sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", "push", "--tags"); err != nil {
-		fmt.Printf("PushTags %v\n%v\n%v\n", sout, serr, err)
+		fmt.Printf("PushTags %v\n%v\n", sout, serr)
 		return err
 	}
 
