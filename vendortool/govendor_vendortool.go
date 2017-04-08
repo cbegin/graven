@@ -1,4 +1,4 @@
-package domain
+package vendortool
 
 import (
 	"strings"
@@ -7,6 +7,7 @@ import (
 	"os"
 	"io/ioutil"
 	"encoding/json"
+	"github.com/cbegin/graven/domain"
 )
 
 type GovendorPackage struct {
@@ -38,15 +39,26 @@ func (g *GovendorPackage) ArchiveFileName() string {
 	return fmt.Sprintf("%v-%v.zip", name, revision)
 }
 
-func LoadGovendorFile(project *Project) (*GovendorFile, error) {
-	govendorFile := &GovendorFile{}
+func (g *GovendorPackage) PackagePath() string {
+	return g.Path
+}
 
+func (f *GovendorFile) LoadFile(project *domain.Project) error {
 	vendorFilePath := project.ProjectPath("vendor", "vendor.json")
 	vendorFile, err := os.Open(vendorFilePath)
 	vendorFileBytes, err := ioutil.ReadAll(vendorFile)
-	err = json.Unmarshal(vendorFileBytes, govendorFile)
+	err = json.Unmarshal(vendorFileBytes, f)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return govendorFile, nil
+	return nil
+}
+
+func (f *GovendorFile) Dependencies() []PackageDepencency {
+	deps := make([]PackageDepencency, len(f.Packages))
+	for i, dx := range f.Packages {
+		d := dx
+		deps[i] = &d
+	}
+	return deps
 }

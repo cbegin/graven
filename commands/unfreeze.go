@@ -7,6 +7,7 @@ import (
 	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
+	"github.com/cbegin/graven/vendortool"
 )
 
 var UnfreezeCommand = cli.Command{
@@ -21,15 +22,17 @@ func unfreeze(c *cli.Context) error {
 		return err
 	}
 
-	govendorFile, err := domain.LoadGovendorFile(project)
+	var vendorTool vendortool.VendorTool = &vendortool.GovendorFile{}
+
+	err = vendorTool.LoadFile(project)
 	if err != nil {
 		return err
 	}
 
-	for _, p := range govendorFile.Packages {
+	for _, p := range vendorTool.Dependencies() {
 		sourceFile := project.ProjectPath(".freezer", p.ArchiveFileName())
-		targetDir := project.ProjectPath("vendor", p.Path)
-		frozenFile := project.ProjectPath("vendor", p.Path, ".frozen")
+		targetDir := project.ProjectPath("vendor", p.PackagePath())
+		frozenFile := project.ProjectPath("vendor", p.PackagePath(), ".frozen")
 
 		_, err := os.Stat(sourceFile)
 		if !os.IsNotExist(err) {
@@ -37,9 +40,9 @@ func unfreeze(c *cli.Context) error {
 			if err != nil {
 				return err
 			}
-			fmt.Printf("%s => %s\n", p.ArchiveFileName(), p.Path)
+			fmt.Printf("%s => %s\n", p.ArchiveFileName(), p.PackagePath())
 		} else {
-			fmt.Printf("MISSING frozen dependency: %s => %s\n", p.ArchiveFileName(), p.Path)
+			fmt.Printf("MISSING frozen dependency: %s => %s\n", p.ArchiveFileName(), p.PackagePath())
 		}
 
 		_ = os.Remove(frozenFile)
