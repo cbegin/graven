@@ -4,21 +4,17 @@ import (
 	"fmt"
 	"context"
 	"os"
-	"io/ioutil"
-	"os/user"
-	"path"
 
 	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
-	"gopkg.in/yaml.v2"
 	"github.com/bgentry/speakeasy"
 	"github.com/cbegin/graven/util"
 	"strings"
+	"github.com/cbegin/graven/config"
 )
 
-type ConfigMap map[string]map[string]string
 type Validator func(stdout, stderr string) error
 
 var ReleaseCommand = cli.Command{
@@ -56,13 +52,14 @@ func release(c *cli.Context) error {
 
 func loginToGithub() error {
 	token, err := readSecret("Please type or paste a github token (will not echo): ")
-	config, err := readConfig()
-	if err != nil {
-		config = ConfigMap{}
+	config := config.NewConfig()
+	if err := config.Read(); err != nil {
+		// ignore
 	}
-	config["github"] = map[string]string{}
-	config["github"]["token"] = token
-	err = writeConfig(config)
+	ghConfig := map[string]string{}
+	ghConfig["token"] = token
+	config.Set("github", ghConfig)
+	err = config.Write()
 	if err != nil {
 		return fmt.Errorf("Error writing configuration file. %v", err)
 	}
@@ -127,14 +124,19 @@ func releaseToGithub(project *domain.Project) error {
 }
 
 func authenticate() (*github.Client, context.Context, error) {
-	config, err := readConfig()
-	if err != nil {
+	config := config.NewConfig()
+	if err := config.Read(); err != nil {
 		return nil, nil, fmt.Errorf("Error reading configuration (try: release --login): %v", err)
+	}
+
+	token, ok := config.GetMap("github")["token"]
+	if !ok {
+		return nil, nil, fmt.Errorf("Configuration missing token (try: release --login).")
 	}
 
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: config["github"]["token"]},
+		&oauth2.Token{AccessToken: token.(string)},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 
@@ -149,44 +151,6 @@ func readSecret(prompt string) (string, error) {
 		return "", fmt.Errorf("Error reading secret from terminal: %v", err)
 	}
 	return password, nil
-}
-
-func readConfig() (ConfigMap, error) {
-	usr, err := user.Current()
-	if err != nil {
-		return nil, err
-	}
-	file, err := os.Open(path.Join(usr.HomeDir, ".graven.yaml"))
-	if err != nil {
-		return nil, err
-	}
-	bytes, err := ioutil.ReadAll(file)
-	if err != nil {
-		return nil, err
-	}
-	config := ConfigMap{}
-	err = yaml.Unmarshal(bytes, config)
-	if err != nil {
-		return nil, err
-	}
-	return config, nil
-}
-
-func writeConfig(config ConfigMap) (error) {
-	usr, err := user.Current()
-	if err != nil {
-		return err
-	}
-	bytes, err := yaml.Marshal(config)
-	if err != nil {
-		return err
-	}
-	err = ioutil.WriteFile(path.Join(usr.HomeDir, ".graven.yaml"), bytes, 0600)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func verifyRepoState(project *domain.Project) error {
