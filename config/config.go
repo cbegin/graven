@@ -12,7 +12,7 @@ const DefaultConfigFileName = ".graven.yaml"
 
 type Config struct {
 	configFileName string
-	data map[string]interface{}
+	data map[string]string
 }
 
 func NewConfig() Config {
@@ -26,29 +26,8 @@ func (c Config) Set(name string, value interface{}) {
 	c.data[name] = value
 }
 
-func (c Config) Get(name string) interface{} {
+func (c Config) Get(name string) string {
 	return c.data[name]
-}
-
-func (c Config) GetString(name string) string {
-	if v, ok := c.data[name]; ok {
-		return v.(string)
-	}
-	return ""
-}
-
-func (c Config) GetMap(name string) map[string]interface{} {
-	if v, ok := c.data[name]; ok {
-		return v.(map[string]interface{})
-	}
-	return map[string]interface{}{}
-}
-
-func (c Config) GetMaps(name string) []map[string]interface{} {
-	if v, ok := c.data[name]; ok {
-		return v.([]map[string]interface{})
-	}
-	return []map[string]interface{}{}
 }
 
 func (c Config) Read() error {

@@ -13,5 +13,5 @@ func TestShouldFoo(t *testing.T) {
 	})
 	c.Read()
 	fmt.Printf("\n%+v\n\n", c.Get("foo"))
-	fmt.Printf("\n%+v\n\n", c.GetString("bar"))
+	fmt.Printf("\n%+v\n\n", c.Get("bar"))
 }
