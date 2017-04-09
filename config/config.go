@@ -76,7 +76,7 @@ func (c Config) Write() error {
 	if err != nil {
 		return err
 	}
-	bytes, err := yaml.Marshal(c)
+	bytes, err := yaml.Marshal(c.data)
 	if err != nil {
 		return err
 	}
