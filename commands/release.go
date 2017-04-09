@@ -59,6 +59,7 @@ func loginToGithub() error {
 	ghConfig := map[string]string{}
 	ghConfig["token"] = token
 	config.Set("github", ghConfig)
+	fmt.Printf("%+v", config)
 	err = config.Write()
 	if err != nil {
 		return fmt.Errorf("Error writing configuration file. %v", err)
