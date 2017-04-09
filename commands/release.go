@@ -56,10 +56,7 @@ func loginToGithub() error {
 	if err := config.Read(); err != nil {
 		// ignore
 	}
-	ghConfig := map[string]string{}
-	ghConfig["token"] = token
-	config.Set("github", ghConfig)
-	fmt.Printf("%+v", config)
+	config.Set("github", "token", token)
 	err = config.Write()
 	if err != nil {
 		return fmt.Errorf("Error writing configuration file. %v", err)
@@ -130,14 +127,14 @@ func authenticate() (*github.Client, context.Context, error) {
 		return nil, nil, fmt.Errorf("Error reading configuration (try: release --login): %v", err)
 	}
 
-	token, ok := config.GetMap("github")["token"]
-	if !ok {
+	token := config.Get("github", "token")
+	if token == "" {
 		return nil, nil, fmt.Errorf("Configuration missing token (try: release --login).")
 	}
 
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: token.(string)},
+		&oauth2.Token{AccessToken: token},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 
