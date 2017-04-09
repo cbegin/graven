@@ -64,7 +64,7 @@ func (c Config) Read() error {
 	if err != nil {
 		return err
 	}
-	err = yaml.Unmarshal(bytes, c)
+	err = yaml.Unmarshal(bytes, c.data)
 	if err != nil {
 		return err
 	}
