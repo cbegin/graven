@@ -2,16 +2,14 @@ package config
 
 import (
 	"testing"
-	"fmt"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestShouldFoo(t *testing.T) {
+func TestShouldWriteAndReadProperty(t *testing.T) {
 	c := NewConfig()
-	c.Set("foo", []map[string]interface{}{
-		{"a":1},
-		{"b":map[string]int{"c":2}},
-	})
-	c.Read()
-	fmt.Printf("\n%+v\n\n", c.Get("foo"))
-	fmt.Printf("\n%+v\n\n", c.Get("bar"))
+	c.Set("foo", "bar", "baz")
+	c.Write()
+	c2 := NewConfig()
+	c2.Read()
+	assert.Equal(t, "baz", c2.Get("foo", "bar"))
 }
