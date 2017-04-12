@@ -79,7 +79,7 @@ USAGE:
    graven [global options] command [command options] [arguments...]
 
 VERSION:
-   0.3.0
+   0.5.0
 
 COMMANDS:
      build     Builds the current project
