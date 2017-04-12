@@ -54,14 +54,6 @@ So Graven embraces:
 * Batteries included, no plugins - none are even supported yet, 
 which is considered a good thing for now
 
-## TODO
-
-- Interfaces around likely integration points
-   x go tool 
-   x vendor 
-   o vcs
-   o repository
-
 # Usage
 
 ```
@@ -94,15 +86,63 @@ GLOBAL OPTIONS:
 ```
 # Workflow Example
 
-```
-TODO - put a common workflow here from init through to release
+Whether your starting an entirely new project, or working with existing source, the 
+workflow should be the same. 
 
-init
-clean
-build
-test
-package
-release 
-bump
+Not all of these steps are always necessary. See below for a description of implied 
+workflow dependencies.
+
 ```
+
+# Once per project, run the init command and modify
+# default project.yaml with relevant names and repos etc.
+$ cd ./some/working/directory
+$ graven init
+$ vi project.yaml
+
+# Typical development cycle
+$ graven clean
+$ graven build
+$ graven test
+$ graven package
+
+# When you're ready to release
+$ graven release --login
+$ graven release
+$ graven bump [major|minor|patch|QUALIFIER]
+```
+
+A typical development cycle looks like this. The `init` command is run once per project, 
+then clean, build, test and package are typically used throughout the development cycle.
+Releases occur less frequently, and versions are bumped after the release.
+
+The `freeze` and `unfreeze` commands are on a completely independent flow and can be 
+executed any time. 
+
+```
+                               +----------+                           
+                             > |  build   | \                         
+                            /  +----------+  \                        
+                           /                  \                       
+                          /                    v                      
+ +----------+    +----------+                 +----------+            
+ |   init   |--->|   clean  |                 |   test   |            
+ +----------+    +----------+                 +----------+            
+                           ^                   /                        
+                            \                 /                         
+                             \ +----------+  /                          
+                              \| package  |<-                           
+    +----------+               +----------+                           
+    |  freeze  |                     |                                
+    +----------+                     v                                
+          |                    +----------+                           
+          |                    |  release |                           
+    +-----v----+               +----------+                           
+    | unfreeze |                     |                                
+    +----------+                     |                                
+                               +-----v----+                           
+                               |   bump   |                           
+                               +----------+                           
+```
+
 

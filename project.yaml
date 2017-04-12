@@ -3,7 +3,7 @@ version: 0.4.3
 artifacts:
 - classifier: darwin
   targets:
-  - executable: bin/gvn
+  - executable: bin/graven
     package: .
     flags: ""
     env: {}
@@ -14,7 +14,7 @@ artifacts:
     GOOS: darwin
 - classifier: linux
   targets:
-  - executable: bin/gvn
+  - executable: bin/graven
     package: .
     flags: ""
     env: {}
@@ -25,7 +25,7 @@ artifacts:
     GOOS: linux
 - classifier: win
   targets:
-  - executable: gvn.exe
+  - executable: graven.exe
     package: .
     flags: ""
     env: {}
