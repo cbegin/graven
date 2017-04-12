@@ -54,6 +54,20 @@ So Graven embraces:
 * Batteries included, no plugins - none are even supported yet, 
 which is considered a good thing for now
 
+# Dependencies
+
+Graven currently requires the following tools to be on your path:
+
+```
+go - the Go build tool, used to compile and test your application.
+git - used during the release process to validate the state of your repo, and tag your repo.
+govendor - used during the freeze/unfreeze process to lock in your dependencies.
+```
+
+Of course if you don't plan to use the `release` command or the `freeze` and `unfreeze` commands, you
+can still use `graven` just for building, testing and packaging, and thus would only require the
+`go` tool. 
+
 # Usage
 
 ```
