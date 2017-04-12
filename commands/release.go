@@ -9,7 +9,6 @@ import (
 	"github.com/cbegin/graven/domain"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
-	"github.com/bgentry/speakeasy"
 	"github.com/cbegin/graven/util"
 	"strings"
 	"github.com/cbegin/graven/config"
@@ -30,6 +29,10 @@ var ReleaseCommand = cli.Command{
 }
 
 func release(c *cli.Context) error {
+	if c.Bool("login") {
+		return loginToGithub()
+	}
+
 	project, err := domain.FindProject()
 	if err != nil {
 		return err
@@ -37,10 +40,6 @@ func release(c *cli.Context) error {
 
 	if err := verifyRepoState(project); err != nil {
 		return err
-	}
-
-	if c.Bool("login") {
-		return loginToGithub()
 	}
 
 	if err := pkg(c); err != nil {
@@ -51,12 +50,11 @@ func release(c *cli.Context) error {
 }
 
 func loginToGithub() error {
-	token, err := readSecret("Please type or paste a github token (will not echo): ")
 	config := config.NewConfig()
 	if err := config.Read(); err != nil {
 		// ignore
 	}
-	config.Set("github", "token", token)
+	err := config.SetSecret("github", "token", "Please type or paste a github token (will not echo): ")
 	err = config.Write()
 	if err != nil {
 		return fmt.Errorf("Error writing configuration file. %v", err)
@@ -141,14 +139,6 @@ func authenticate() (*github.Client, context.Context, error) {
 	client := github.NewClient(tc)
 
 	return client, ctx, nil
-}
-
-func readSecret(prompt string) (string, error) {
-	password, err := speakeasy.Ask(prompt)
-	if err != nil {
-		return "", fmt.Errorf("Error reading secret from terminal: %v", err)
-	}
-	return password, nil
 }
 
 func verifyRepoState(project *domain.Project) error {

@@ -6,6 +6,8 @@ import (
 	"os"
 	"os/user"
 	"path"
+	"github.com/bgentry/speakeasy"
+	"fmt"
 )
 
 const DefaultConfigFileName = ".graven.yaml"
@@ -36,6 +38,15 @@ func (c Config) Get(group, name string) string {
 		return g[name]
 	}
 	return ""
+}
+
+func (c Config) SetSecret(group, name, prompt string) error {
+	password, err := speakeasy.Ask(prompt)
+	if err != nil {
+		return fmt.Errorf("Error reading secret from terminal: %v", err)
+	}
+	c.Set(group, name, password)
+	return nil
 }
 
 func (c Config) Read() error {
