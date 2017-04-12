@@ -56,9 +56,11 @@ which is considered a good thing for now
 
 ## TODO
 
-- Break out config class
-- Interfaces around likely integration points (go tool, vendor, vcs, repository)
-- docker support?
+- Interfaces around likely integration points
+   x go tool 
+   x vendor 
+   o vcs
+   o repository
 
 # Usage
 

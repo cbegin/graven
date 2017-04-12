@@ -9,9 +9,7 @@ import (
 	"github.com/cbegin/graven/util"
 )
 
-type GoBuildTool struct {
-
-}
+type GoBuildTool struct {}
 
 func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact *domain.Artifact, target *domain.Target) error {
 	fmt.Printf("Building %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)

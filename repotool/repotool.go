@@ -1,4 +1,4 @@
-package repository
+package repotool
 
 import "github.com/cbegin/graven/domain"
 

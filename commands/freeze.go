@@ -24,7 +24,8 @@ func freeze(c *cli.Context) error {
 		return err
 	}
 
-	var vendorTool vendortool.VendorTool = &vendortool.GovendorFile{}
+	// TODO: Make this configurable
+	var vendorTool vendortool.VendorTool = &vendortool.GovendorVendorTool{}
 
 	err = vendorTool.LoadFile(project)
 	if err != nil {

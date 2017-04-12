@@ -18,7 +18,7 @@ type GovendorPackage struct {
 	Comment      string `json:"comment,omitempty"`
 }
 
-type GovendorFile struct {
+type GovendorVendorTool struct {
 	Packages []GovendorPackage `json:"package,omitempty"`
 }
 
@@ -43,20 +43,20 @@ func (g *GovendorPackage) PackagePath() string {
 	return g.Path
 }
 
-func (f *GovendorFile) LoadFile(project *domain.Project) error {
+func (g *GovendorVendorTool) LoadFile(project *domain.Project) error {
 	vendorFilePath := project.ProjectPath("vendor", "vendor.json")
 	vendorFile, err := os.Open(vendorFilePath)
 	vendorFileBytes, err := ioutil.ReadAll(vendorFile)
-	err = json.Unmarshal(vendorFileBytes, f)
+	err = json.Unmarshal(vendorFileBytes, g)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (f *GovendorFile) Dependencies() []PackageDepencency {
-	deps := make([]PackageDepencency, len(f.Packages))
-	for i, dx := range f.Packages {
+func (g *GovendorVendorTool) Dependencies() []PackageDepencency {
+	deps := make([]PackageDepencency, len(g.Packages))
+	for i, dx := range g.Packages {
 		d := dx
 		deps[i] = &d
 	}
