@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"github.com/cbegin/graven/util"
+	"path/filepath"
 )
 
 type GoBuildTool struct {}
@@ -56,7 +57,14 @@ func  (g *GoBuildTool) Test(testPackage string, project *domain.Project) error {
 func runTestCommand(testPackage string, project *domain.Project) error {
 	relativePath := "." + testPackage
 
-	coverOut := fmt.Sprintf("-coverprofile=%s.out", project.TargetPath("reports", testPackage))
+	coverPath := project.TargetPath("reports", testPackage)
+
+	if err := os.MkdirAll(filepath.Dir(coverPath), 0777); err != nil {
+		return err
+	}
+
+
+	coverOut := fmt.Sprintf("-coverprofile=%s.out", coverPath)
 
 	cmd := exec.Command("go", "test", "-v", "-parallel=4", "-p=4", "-covermode=atomic", coverOut, relativePath)
 	cmd.Stdout = os.Stdout
