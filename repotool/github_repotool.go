@@ -1,14 +1,15 @@
 package repotool
 
 import (
-	"github.com/cbegin/graven/config"
 	"fmt"
 	"os"
+	"context"
+
+	"github.com/cbegin/graven/config"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/vcstool"
-	"context"
 )
 
 type GithubRepoTool struct {}

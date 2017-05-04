@@ -8,7 +8,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
 	"path"
 
 	"github.com/cbegin/graven/domain"

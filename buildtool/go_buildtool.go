@@ -1,13 +1,14 @@
 package builder
 
 import (
-	"github.com/cbegin/graven/domain"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"fmt"
 	"os"
+
+	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
-	"path/filepath"
 )
 
 type GoBuildTool struct {}

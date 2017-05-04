@@ -3,14 +3,14 @@ package commands
 import (
 	"os"
 	"testing"
-
 	"fmt"
+	"path"
+
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/hello/version"
 	"github.com/cbegin/graven/util"
 	"github.com/stretchr/testify/assert"
 	"github.com/urfave/cli"
-	"path"
 )
 
 func init() {

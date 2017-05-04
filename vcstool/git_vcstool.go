@@ -3,6 +3,7 @@ package vcstool
 import (
 	"strings"
 	"fmt"
+
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
 )

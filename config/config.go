@@ -1,13 +1,14 @@
 package config
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"os/user"
 	"path"
-	"github.com/bgentry/speakeasy"
 	"fmt"
+
+	"github.com/bgentry/speakeasy"
+	"gopkg.in/yaml.v2"
 )
 
 const DefaultConfigFileName = ".graven.yaml"
