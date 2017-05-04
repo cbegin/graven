@@ -2,19 +2,19 @@ package commands
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
-	"fmt"
 
-	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
 	"github.com/cbegin/graven/vendortool"
+	"github.com/urfave/cli"
 )
 
 var FreezeCommand = cli.Command{
-	Name:        "freeze",
-	Usage:       "Freezes vendor dependencies to avoid having to check in source",
+	Name:   "freeze",
+	Usage:  "Freezes vendor dependencies to avoid having to check in source",
 	Action: freeze,
 }
 
@@ -76,4 +76,3 @@ func freeze(c *cli.Context) error {
 
 	return err
 }
-

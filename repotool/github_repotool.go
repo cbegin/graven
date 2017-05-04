@@ -1,18 +1,18 @@
 package repotool
 
 import (
+	"context"
 	"fmt"
 	"os"
-	"context"
 
 	"github.com/cbegin/graven/config"
-	"github.com/google/go-github/github"
-	"golang.org/x/oauth2"
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/vcstool"
+	"github.com/google/go-github/github"
+	"golang.org/x/oauth2"
 )
 
-type GithubRepoTool struct {}
+type GithubRepoTool struct{}
 
 func (g *GithubRepoTool) Login() error {
 	config := config.NewConfig()
@@ -46,7 +46,7 @@ func (g *GithubRepoTool) Release(project *domain.Project) error {
 	releaseName := tagName
 	release := &github.RepositoryRelease{
 		TagName: &tagName,
-		Name: &releaseName,
+		Name:    &releaseName,
 	}
 
 	// TODO: Make this configurable

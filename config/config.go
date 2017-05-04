@@ -1,11 +1,11 @@
 package config
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/user"
 	"path"
-	"fmt"
 
 	"github.com/bgentry/speakeasy"
 	"gopkg.in/yaml.v2"
@@ -15,7 +15,7 @@ const DefaultConfigFileName = ".graven.yaml"
 
 type Config struct {
 	configFileName string
-	data map[string]map[string]string
+	data           map[string]map[string]string
 }
 
 func NewConfig() Config {

@@ -1,14 +1,14 @@
 package vcstool
 
 import (
-	"strings"
 	"fmt"
+	"strings"
 
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
 )
 
-type GitVCSTool struct {}
+type GitVCSTool struct{}
 
 type Validator func(stdout, stderr string) error
 
@@ -24,7 +24,6 @@ func (g *GitVCSTool) Tag(project *domain.Project, tagName string) error {
 	}
 	return nil
 }
-
 
 func (g *GitVCSTool) VerifyRepoState(project *domain.Project) error {
 	remoteName := "origin"
@@ -76,7 +75,7 @@ func (g *GitVCSTool) VerifyRepoState(project *domain.Project) error {
 	return nil
 }
 
-func verifyGitState(validator Validator, project *domain.Project, args... string) error {
+func verifyGitState(validator Validator, project *domain.Project, args ...string) error {
 	sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", args...)
 	if err != nil {
 		return fmt.Errorf("ERROR running Git command: %v\n", err)

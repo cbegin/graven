@@ -1,13 +1,13 @@
 package util
 
 import (
-	"strings"
-	"os"
-	"io"
-	"compress/gzip"
-	"archive/zip"
-	"path/filepath"
 	"archive/tar"
+	"archive/zip"
+	"compress/gzip"
+	"io"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 func ZipDir(source, target string) error {
@@ -86,7 +86,7 @@ func UnzipDir(archive, target string) error {
 		}
 		defer fileReader.Close()
 
-		targetFile, err := os.OpenFile(path, os.O_WRONLY | os.O_CREATE | os.O_TRUNC, file.Mode())
+		targetFile, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
 		if err != nil {
 			return err
 		}
@@ -171,7 +171,7 @@ func UntarDir(tarball, target string) error {
 			continue
 		}
 
-		file, err := os.OpenFile(path, os.O_CREATE | os.O_TRUNC | os.O_WRONLY, info.Mode())
+		file, err := os.OpenFile(path, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, info.Mode())
 		if err != nil {
 			return err
 		}

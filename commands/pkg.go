@@ -1,19 +1,19 @@
 package commands
 
 import (
-	"os"
 	"fmt"
+	"os"
 	"sync"
 
-	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
-	"github.com/hashicorp/go-multierror"
 	"github.com/cbegin/graven/util"
+	"github.com/hashicorp/go-multierror"
+	"github.com/urfave/cli"
 )
 
 var PackageCommand = cli.Command{
-	Name: "package",
-	Usage:       "Produces packaged archive for deployment",
+	Name:   "package",
+	Usage:  "Produces packaged archive for deployment",
 	Action: pkg,
 }
 

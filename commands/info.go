@@ -3,14 +3,14 @@ package commands
 import (
 	"fmt"
 
-	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
+	"github.com/urfave/cli"
 	"gopkg.in/yaml.v2"
 )
 
 var InfoCommand = cli.Command{
-	Name: "info",
-	Usage:       "Prints the known information about a project",
+	Name:   "info",
+	Usage:  "Prints the known information about a project",
 	Action: info,
 }
 

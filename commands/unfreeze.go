@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
 	"github.com/cbegin/graven/vendortool"
+	"github.com/urfave/cli"
 )
 
 var UnfreezeCommand = cli.Command{
-	Name: "unfreeze",
-	Usage:       "Unfreezes vendor dependencies",
+	Name:   "unfreeze",
+	Usage:  "Unfreezes vendor dependencies",
 	Action: unfreeze,
 }
 

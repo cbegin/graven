@@ -2,19 +2,19 @@ package commands
 
 import (
 	"fmt"
-	"path/filepath"
 	"os"
+	"path/filepath"
 	"strings"
 
-	"github.com/urfave/cli"
+	"github.com/cbegin/graven/buildtool"
 	"github.com/cbegin/graven/domain"
 	"github.com/hashicorp/go-multierror"
-	"github.com/cbegin/graven/buildtool"
+	"github.com/urfave/cli"
 )
 
 var TestCommand = cli.Command{
-	Name: "test",
-	Usage:       "Finds and runs tests in this project",
+	Name:   "test",
+	Usage:  "Finds and runs tests in this project",
 	Action: tester,
 }
 
@@ -47,11 +47,11 @@ func getTestWalkerFunc(project *domain.Project, merr *error) filepath.WalkFunc {
 		if info.IsDir() {
 			subDir := path[len(project.ProjectPath()):]
 			subDirParts := strings.Split(subDir, string(filepath.Separator))
-			matches, _ := filepath.Glob(filepath.Join(path, "*_test*"));
+			matches, _ := filepath.Glob(filepath.Join(path, "*_test*"))
 			if len(matches) > 0 && !contains(subDirParts, map[string]struct{}{
-				"vendor":struct{}{},
-				"target":struct{}{},
-				".git":struct{}{}}) {
+				"vendor": struct{}{},
+				"target": struct{}{},
+				".git":   struct{}{}}) {
 
 				if err := buildTool.Test(subDir, project); err != nil {
 					*merr = multierror.Append(*merr, err)
@@ -70,4 +70,3 @@ func contains(strings []string, exclusions map[string]struct{}) bool {
 	}
 	return false
 }
-

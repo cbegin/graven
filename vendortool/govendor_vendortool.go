@@ -1,12 +1,12 @@
 package vendortool
 
 import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"strings"
 	"time"
-	"fmt"
-	"os"
-	"io/ioutil"
-	"encoding/json"
 
 	"github.com/cbegin/graven/domain"
 )
@@ -24,7 +24,7 @@ type GovendorVendorTool struct {
 }
 
 func (g *GovendorPackage) ArchiveFileName() string {
-	chars := []string{"/","."}
+	chars := []string{"/", "."}
 	name := g.Path
 	for _, c := range chars {
 		name = strings.Replace(name, c, "-", -1)

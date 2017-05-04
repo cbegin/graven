@@ -16,7 +16,7 @@ func TestShouldParseMajorMinorPatchQualifier(t *testing.T) {
 	assert.Equal(t, "1.2.3-DEV", v.ToString())
 }
 
-func TestShouldParseMajorMinorPatch (t *testing.T) {
+func TestShouldParseMajorMinorPatch(t *testing.T) {
 	v := Version{}
 	v.Parse("1.2.3")
 	assert.Equal(t, 1, v.Major)
@@ -26,7 +26,7 @@ func TestShouldParseMajorMinorPatch (t *testing.T) {
 	assert.Equal(t, "1.2.3", v.ToString())
 }
 
-func TestShouldParseMajorMinor (t *testing.T) {
+func TestShouldParseMajorMinor(t *testing.T) {
 	v := Version{}
 	v.Parse("1.2")
 	assert.Equal(t, 1, v.Major)
@@ -36,7 +36,7 @@ func TestShouldParseMajorMinor (t *testing.T) {
 	assert.Equal(t, "1.2.0", v.ToString())
 }
 
-func TestShouldParseMajor (t *testing.T) {
+func TestShouldParseMajor(t *testing.T) {
 	v := Version{}
 	v.Parse("1")
 	assert.Equal(t, 1, v.Major)
@@ -46,13 +46,13 @@ func TestShouldParseMajor (t *testing.T) {
 	assert.Equal(t, "1.0.0", v.ToString())
 }
 
-func TestShouldParseBadQualifierFormat (t *testing.T) {
+func TestShouldParseBadQualifierFormat(t *testing.T) {
 	v := Version{}
 	err := v.Parse("1-1-1")
 	assert.NotNil(t, err)
 }
 
-func TestShouldParseBadVersionFormat (t *testing.T) {
+func TestShouldParseBadVersionFormat(t *testing.T) {
 	v := Version{}
 	err := v.Parse("1.1.1.1")
 	assert.NotNil(t, err)

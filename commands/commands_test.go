@@ -1,10 +1,10 @@
 package commands
 
 import (
-	"os"
-	"testing"
 	"fmt"
+	"os"
 	"path"
+	"testing"
 
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/hello/version"

@@ -1,18 +1,18 @@
 package commands
 
 import (
-	"os"
-	"io/ioutil"
 	"fmt"
+	"io/ioutil"
+	"os"
 	"text/template"
 
-	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
+	"github.com/urfave/cli"
 	"gopkg.in/yaml.v2"
 )
 
 const (
-	versionPackage = "version"
+	versionPackage  = "version"
 	versionFileName = "version.go"
 	versionTemplate = `// graven - This file was generated. It will be overwritten. Do not modify.
 package {{.Package}}
@@ -20,8 +20,8 @@ var Version="{{.Version}}"`
 )
 
 var BumpCommand = cli.Command{
-	Name: "bump",
-	Usage:       "Manage the version (major, minor, patch) and clear or set qualifier (e.g. DEV)",
+	Name:  "bump",
+	Usage: "Manage the version (major, minor, patch) and clear or set qualifier (e.g. DEV)",
 	Description: `
 	Bump manages incremental version updates using simple semantic versioning practices.
 
@@ -68,7 +68,7 @@ func writeVersionFile(project *domain.Project) error {
 
 	_ = os.Mkdir(versionPath, 0755) // ignore error. we'll catch file errors later
 
-	file, err := os.Create(versionFile);
+	file, err := os.Create(versionFile)
 	defer file.Close()
 	if err != nil {
 		return err
@@ -165,4 +165,3 @@ func bumpVersion(project *domain.Project, arg string) error {
 
 	return nil
 }
-

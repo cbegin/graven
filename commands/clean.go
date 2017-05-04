@@ -3,13 +3,13 @@ package commands
 import (
 	"os"
 
-	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
+	"github.com/urfave/cli"
 )
 
 var CleanCommand = cli.Command{
-	Name: "clean",
-	Usage:       "Cleans the target directory and its contents",
+	Name:   "clean",
+	Usage:  "Cleans the target directory and its contents",
 	Action: clean,
 }
 

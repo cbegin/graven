@@ -1,17 +1,17 @@
 package builder
 
 import (
+	"fmt"
+	"os"
 	"os/exec"
 	"path"
 	"path/filepath"
-	"fmt"
-	"os"
 
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
 )
 
-type GoBuildTool struct {}
+type GoBuildTool struct{}
 
 func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact *domain.Artifact, target *domain.Target) error {
 	fmt.Printf("Building %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
@@ -47,7 +47,7 @@ func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact
 
 }
 
-func  (g *GoBuildTool) Test(testPackage string, project *domain.Project) error {
+func (g *GoBuildTool) Test(testPackage string, project *domain.Project) error {
 	err := runTestCommand(testPackage, project)
 	if err != nil {
 		return err
@@ -64,7 +64,6 @@ func runTestCommand(testPackage string, project *domain.Project) error {
 		return err
 	}
 
-
 	coverOut := fmt.Sprintf("-coverprofile=%s.out", coverPath)
 
 	cmd := exec.Command("go", "test", "-v", "-parallel=4", "-p=4", "-covermode=atomic", coverOut, relativePath)
@@ -79,7 +78,6 @@ func runTestCommand(testPackage string, project *domain.Project) error {
 	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
 	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
 	cmd.Env = environment
-
 
 	if err := cmd.Start(); err != nil {
 		return fmt.Errorf("Error starting tests. %v", err)
@@ -112,7 +110,6 @@ func runCoverageCommand(testPackage string, project *domain.Project) error {
 	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
 	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
 	cmd.Env = environment
-
 
 	if err := cmd.Start(); err != nil {
 		return fmt.Errorf("Error generating coverage HTML. %v", err)

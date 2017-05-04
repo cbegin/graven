@@ -1,9 +1,9 @@
 package domain
 
 import (
-	"strings"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 type Version struct {
@@ -60,4 +60,3 @@ func (v *Version) ToString() string {
 		return fmt.Sprintf("%v.%v.%v", v.Major, v.Minor, v.Patch)
 	}
 }
-

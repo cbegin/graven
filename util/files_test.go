@@ -1,13 +1,13 @@
 package util
 
 import (
-	"testing"
 	"os"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCopyDir (t *testing.T) {
+func TestCopyDir(t *testing.T) {
 	CopyDir("../hello", "../temp/hello")
 	if same, err := CompareDir("../hello", "../temp/hello"); err != nil {
 		assert.FailNow(t, "Directory comparison failed: %v", err)

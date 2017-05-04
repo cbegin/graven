@@ -6,9 +6,9 @@ import (
 	"go/token"
 	"io/ioutil"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
-	"path"
 
 	"github.com/cbegin/graven/domain"
 	"github.com/urfave/cli"

@@ -3,8 +3,8 @@ package vendortool
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/cbegin/graven/domain"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestLoadVendorFile(t *testing.T) {

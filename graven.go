@@ -1,8 +1,8 @@
 package main
 
 import (
-	"os"
 	"fmt"
+	"os"
 
 	"github.com/cbegin/graven/commands"
 	"github.com/cbegin/graven/version"

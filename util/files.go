@@ -1,14 +1,14 @@
 package util
 
 import (
-	"os"
-	"io"
-	"path/filepath"
-	"fmt"
-	"io/ioutil"
-	"hash"
 	"crypto/md5"
+	"fmt"
+	"hash"
+	"io"
+	"io/ioutil"
+	"os"
 	"path"
+	"path/filepath"
 )
 
 // CopyFile copies the contents of the file named src to the file named
@@ -81,7 +81,7 @@ func CopyDir(src string, dst string) error {
 	}
 
 	if !si.IsDir() {
-		return CopyFile(src, path.Join(dst, path.Base(src)) )
+		return CopyFile(src, path.Join(dst, path.Base(src)))
 	}
 
 	_, err = os.Stat(dst)
@@ -105,7 +105,7 @@ func CopyDir(src string, dst string) error {
 			}
 		} else {
 			// Skip symlinks.
-			if entry.Mode() & os.ModeSymlink != 0 {
+			if entry.Mode()&os.ModeSymlink != 0 {
 				continue
 			}
 

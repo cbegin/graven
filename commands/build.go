@@ -5,11 +5,11 @@ import (
 	"os"
 	"sync"
 
+	"github.com/cbegin/graven/buildtool"
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
 	"github.com/hashicorp/go-multierror"
 	"github.com/urfave/cli"
-	"github.com/cbegin/graven/buildtool"
 )
 
 var BuildCommand = cli.Command{
@@ -78,4 +78,3 @@ func buildTarget(project *domain.Project, artifact *domain.Artifact, target *dom
 	var buildTool builder.BuildTool = &builder.GoBuildTool{}
 	return buildTool.Build(classifiedPath, project, artifact, target)
 }
-

@@ -1,20 +1,19 @@
 package commands
 
 import (
-	"github.com/urfave/cli"
 	"github.com/cbegin/graven/domain"
-	"github.com/cbegin/graven/vcstool"
 	"github.com/cbegin/graven/repotool"
+	"github.com/cbegin/graven/vcstool"
+	"github.com/urfave/cli"
 )
 
-
 var ReleaseCommand = cli.Command{
-	Name: "release",
-	Usage:       "Releases artifacts to repositories",
+	Name:   "release",
+	Usage:  "Releases artifacts to repositories",
 	Action: release,
 	Flags: []cli.Flag{
 		cli.BoolFlag{
-			Name: "login",
+			Name:  "login",
 			Usage: "Prompts for repo login credentials.",
 		},
 	},
@@ -46,6 +45,3 @@ func release(c *cli.Context) error {
 
 	return repoTool.Release(project)
 }
-
-
-

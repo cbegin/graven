@@ -14,12 +14,12 @@ const (
 )
 
 type Project struct {
-	FilePath     string       `yaml:",omitempty"`
-	Name         string       `yaml:"name"`
-	Version      string       `yaml:"version"`
-	Artifacts    []Artifact   `yaml:"artifacts"`
+	FilePath     string                       `yaml:",omitempty"`
+	Name         string                       `yaml:"name"`
+	Version      string                       `yaml:"version"`
+	Artifacts    []Artifact                   `yaml:"artifacts"`
 	Repositories map[string]map[string]string `yaml:"repositories"`
-	Resources    []string     `yaml:"resources"`
+	Resources    []string                     `yaml:"resources"`
 }
 
 type Artifact struct {
@@ -67,6 +67,7 @@ func (a *Artifact) ArtifactFile(project *Project) string {
 }
 
 var FindProject = internalFindProject
+
 func internalFindProject() (*Project, error) {
 	wd, _ := os.Getwd()
 	cwd := wd

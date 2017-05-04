@@ -8,5 +8,3 @@ type VCSTool interface {
 	VerifyRepoState(project *domain.Project) error
 	Tag(project *domain.Project, tagname string) error
 }
-
-

@@ -3,8 +3,8 @@ package domain
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/cbegin/graven/hello/version"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestShouldFindProject(t *testing.T) {

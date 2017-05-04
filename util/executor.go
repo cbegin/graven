@@ -1,10 +1,10 @@
 package util
 
 import (
-	"fmt"
-	"os/exec"
-	"os"
 	"bytes"
+	"fmt"
+	"os"
+	"os/exec"
 )
 
 func RunCommand(cwd string, env []string, cmd string, args ...string) (string, string, error) {
@@ -29,5 +29,3 @@ func RunCommand(cwd string, env []string, cmd string, args ...string) (string, s
 	}
 	return stdout.String(), stderr.String(), err
 }
-
-
