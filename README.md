@@ -68,6 +68,12 @@ Of course if you don't plan to use the `release` command or the `freeze` and `un
 can still use `graven` just for building, testing and packaging, and thus would only require the
 `go` tool. 
 
+# Installation
+
+```
+go get github.com/cbegin/graven
+```
+
 # Usage
 
 ```
