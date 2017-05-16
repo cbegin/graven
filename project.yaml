@@ -36,6 +36,7 @@ artifacts:
     GOOS: windows
 repositories:
   github:
+    url: github.com
     owner: cbegin
     repo: graven
     type: git

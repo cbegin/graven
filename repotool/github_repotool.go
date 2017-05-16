@@ -82,6 +82,7 @@ func (g *GithubRepoTool) Release(project *domain.Project) error {
 
 func authenticate() (*github.Client, context.Context, error) {
 	config := config.NewConfig()
+
 	if err := config.Read(); err != nil {
 		return nil, nil, fmt.Errorf("Error reading configuration (try: release --login): %v", err)
 	}

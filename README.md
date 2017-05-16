@@ -160,4 +160,10 @@ executed any time.
                                +----------+                           
 ```
 
+## TODO
 
+- Base URL setting for Git repo tool
+- golang dep vendor tool support
+- glide vendor tool support
+- gb build tool support
+- nexus repo tool support
