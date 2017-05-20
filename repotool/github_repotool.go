@@ -10,6 +10,7 @@ import (
 	"github.com/cbegin/graven/vcstool"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
+	"net/url"
 )
 
 type GithubRepoTool struct{}
@@ -28,8 +29,7 @@ func (g *GithubRepoTool) Login() error {
 }
 
 func (g *GithubRepoTool) Release(project *domain.Project) error {
-
-	gh, ctx, err := authenticate()
+	gh, ctx, err := authenticate(project)
 	if err != nil {
 		return err
 	}
@@ -80,7 +80,7 @@ func (g *GithubRepoTool) Release(project *domain.Project) error {
 	return err
 }
 
-func authenticate() (*github.Client, context.Context, error) {
+func authenticate(project *domain.Project) (*github.Client, context.Context, error) {
 	config := config.NewConfig()
 
 	if err := config.Read(); err != nil {
@@ -99,6 +99,17 @@ func authenticate() (*github.Client, context.Context, error) {
 	tc := oauth2.NewClient(ctx, ts)
 
 	client := github.NewClient(tc)
+	if repo, hasRepo := project.Repositories["github"]; hasRepo {
+		if baseURL, hasBaseURL := repo["BaseURL"]; hasBaseURL {
+			if u, err := url.ParseRequestURI(baseURL); err != nil {
+				return nil, nil, fmt.Errorf("Error parsing repo URL : %v. Cause: %v", u, err)
+			} else {
+				client.BaseURL = u
+			}
+
+		}
+	}
+	fmt.Println(client.BaseURL)
 
 	return client, ctx, nil
 }

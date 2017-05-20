@@ -37,7 +37,7 @@ func unfreeze(c *cli.Context) error {
 
 		_, err := os.Stat(sourceFile)
 		if !os.IsNotExist(err) {
-			err = util.UnzipDir(sourceFile, targetDir)
+			err = util.UntarDir(sourceFile, targetDir)
 			if err != nil {
 				return err
 			}

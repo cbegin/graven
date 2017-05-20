@@ -37,7 +37,7 @@ func (g *GovendorPackage) ArchiveFileName() string {
 	} else {
 		revision = g.Revision
 	}
-	return fmt.Sprintf("%v-%v.zip", name, revision)
+	return fmt.Sprintf("%v-%v.tar", name, revision)
 }
 
 func (g *GovendorPackage) PackagePath() string {
