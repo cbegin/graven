@@ -172,6 +172,8 @@ func UntarDir(tarball, target string) error {
 				return err
 			}
 			continue
+		} else {
+			os.MkdirAll(filepath.Dir(path), 0755)
 		}
 
 		file, err := os.OpenFile(path, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, info.Mode())
