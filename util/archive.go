@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 func ZipDir(source, target string) error {
@@ -122,6 +123,9 @@ func TarDir(source, target string) error {
 				if err != nil {
 					return err
 				}
+				header.AccessTime = time.Unix(0, 0)
+				header.ChangeTime = time.Unix(0, 0)
+				header.ModTime = time.Unix(0, 0)
 
 				header.Name = strings.TrimPrefix(strings.TrimPrefix(path, source), "/")
 
@@ -132,7 +136,6 @@ func TarDir(source, target string) error {
 				if info.IsDir() {
 					return nil
 				}
-
 				file, err := os.Open(path)
 				if err != nil {
 					return err
