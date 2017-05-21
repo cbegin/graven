@@ -1,9 +1,7 @@
 package commands
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/cbegin/graven/domain"
@@ -47,29 +45,16 @@ func freeze(c *cli.Context) error {
 	for _, p := range vendorTool.Dependencies() {
 		sourcePath := project.ProjectPath("vendor", p.PackagePath())
 		targetFile := project.ProjectPath(".freezer", p.ArchiveFileName())
-		frozenFile := project.ProjectPath("vendor", p.PackagePath(), ".frozen")
 
 		if _, err := os.Stat(sourcePath); os.IsNotExist(err) {
 			fmt.Printf("MISSING dependency %v\n", p.PackagePath())
 			continue
 		}
 
-		j, err := json.Marshal(p)
-		if err != nil {
-			return err
-		}
-
-		err = ioutil.WriteFile(frozenFile, j, 0644)
-		if err != nil {
-			return err
-		}
-
 		err = util.TarDir(sourcePath, targetFile)
 		if err != nil {
 			return err
 		}
-
-		_ = os.Remove(frozenFile)
 
 		fmt.Printf("%s => %s\n", p.PackagePath(), p.ArchiveFileName())
 	}
