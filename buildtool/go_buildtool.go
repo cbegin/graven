@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 
 	"github.com/cbegin/graven/domain"
@@ -18,9 +17,9 @@ func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact
 	defer fmt.Printf("Done %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
 	var c *exec.Cmd
 	if target.Flags == "" {
-		c = exec.Command("go", "build", "-o", path.Join(outputPath, target.Executable), target.Package)
+		c = exec.Command("go", "build", "-o", filepath.Join(outputPath, target.Executable), target.Package)
 	} else {
-		c = exec.Command("go", "build", "-o", path.Join(outputPath, target.Executable), target.Flags, target.Package)
+		c = exec.Command("go", "build", "-o", filepath.Join(outputPath, target.Executable), target.Flags, target.Package)
 	}
 	c.Stdout = os.Stdout
 	c.Stderr = os.Stderr
@@ -32,7 +31,15 @@ func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact
 		environment = append(environment, fmt.Sprintf("%s=%s", k, v))
 	}
 	gopath, _ := os.LookupEnv("GOPATH")
+	path, _ := os.LookupEnv("PATH")
+	temp, _ := os.LookupEnv("TEMP")
+	tmp, _ := os.LookupEnv("TMP")
+	tmpdir, _ := os.LookupEnv("TMPDIR")
 	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
+	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TMPDIR", tmpdir))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TMP", tmp))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TEMP", temp))
 	c.Env = environment
 
 	err := c.Run()
@@ -75,8 +82,14 @@ func runTestCommand(testPackage string, project *domain.Project) error {
 	environment := []string{}
 	gopath, _ := os.LookupEnv("GOPATH")
 	path, _ := os.LookupEnv("PATH")
+	temp, _ := os.LookupEnv("TEMP")
+	tmp, _ := os.LookupEnv("TMP")
+	tmpdir, _ := os.LookupEnv("TMPDIR")
 	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
 	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TMPDIR", tmpdir))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TMP", tmp))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TEMP", temp))
 	cmd.Env = environment
 
 	if err := cmd.Start(); err != nil {
@@ -107,8 +120,14 @@ func runCoverageCommand(testPackage string, project *domain.Project) error {
 	environment := []string{}
 	gopath, _ := os.LookupEnv("GOPATH")
 	path, _ := os.LookupEnv("PATH")
+	temp, _ := os.LookupEnv("TEMP")
+	tmp, _ := os.LookupEnv("TMP")
+	tmpdir, _ := os.LookupEnv("TMPDIR")
 	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
 	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TMPDIR", tmpdir))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TMP", tmp))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TEMP", temp))
 	cmd.Env = environment
 
 	if err := cmd.Start(); err != nil {

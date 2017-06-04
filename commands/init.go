@@ -6,7 +6,6 @@ import (
 	"go/token"
 	"io/ioutil"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -78,7 +77,7 @@ func initialize(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	projectPath := path.Join(wd, "project.yaml")
+	projectPath := filepath.Join(wd, "project.yaml")
 	if _, err := os.Stat(projectPath); !os.IsNotExist(err) {
 		return fmt.Errorf("%v already exists. No changes made.", projectPath)
 	}
@@ -115,7 +114,7 @@ func initialize(c *cli.Context) error {
 		for _, p := range *packages {
 			if p.Package == "main" {
 				pkg := fmt.Sprintf(".%v", p.Path)
-				executable := path.Base(path.Join(wd, pkg))
+				executable := filepath.Base(filepath.Join(wd, pkg))
 				targets = append(targets, domain.Target{
 					Executable: fmt.Sprintf("%v%v", executable, template.Extension),
 					Package:    pkg,
@@ -137,7 +136,7 @@ func initialize(c *cli.Context) error {
 	}
 
 	newProject := &domain.Project{}
-	newProject.Name = path.Base(wd)
+	newProject.Name = filepath.Base(wd)
 	newProject.Version = "0.0.1"
 	newProject.Artifacts = artifacts
 

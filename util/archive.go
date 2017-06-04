@@ -33,10 +33,10 @@ func ZipDir(source, target string) error {
 				return err
 			}
 
-			header.Name = strings.TrimPrefix(strings.TrimPrefix(path, source), "/")
+			header.Name = strings.TrimPrefix(strings.TrimPrefix(path, source), PathSeparatorString)
 
 			if info.IsDir() {
-				header.Name += "/"
+				header.Name += PathSeparatorString
 			} else {
 				header.Method = zip.Deflate
 			}
@@ -127,7 +127,7 @@ func TarDir(source, target string) error {
 				header.ChangeTime = time.Unix(0, 0)
 				header.ModTime = time.Unix(0, 0)
 
-				header.Name = strings.TrimPrefix(strings.TrimPrefix(path, source), "/")
+				header.Name = strings.TrimPrefix(strings.TrimPrefix(path, source), PathSeparatorString)
 
 				if err := tarball.WriteHeader(header); err != nil {
 					return err
