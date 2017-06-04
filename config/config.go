@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/user"
-	"path"
+	"path/filepath"
 
 	"github.com/bgentry/speakeasy"
 	"gopkg.in/yaml.v2"
@@ -55,7 +55,7 @@ func (c Config) Read() error {
 	if err != nil {
 		return err
 	}
-	file, err := os.Open(path.Join(usr.HomeDir, c.configFileName))
+	file, err := os.Open(filepath.Join(usr.HomeDir, c.configFileName))
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func (c Config) Write() error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(path.Join(usr.HomeDir, c.configFileName), bytes, 0600)
+	err = ioutil.WriteFile(filepath.Join(usr.HomeDir, c.configFileName), bytes, 0600)
 	if err != nil {
 		return err
 	}

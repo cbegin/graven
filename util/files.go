@@ -7,8 +7,11 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
-	"path"
 	"path/filepath"
+)
+
+var (
+	PathSeparatorString = fmt.Sprintf("%c", os.PathSeparator)
 )
 
 // CopyFile copies the contents of the file named src to the file named
@@ -68,7 +71,7 @@ func CopyDir(src string, dst string) error {
 
 	mode := si.Mode()
 	if !si.IsDir() {
-		dirsi, err := os.Stat(path.Dir(src))
+		dirsi, err := os.Stat(filepath.Dir(src))
 		if err != nil {
 			return err
 		}
@@ -81,7 +84,7 @@ func CopyDir(src string, dst string) error {
 	}
 
 	if !si.IsDir() {
-		return CopyFile(src, path.Join(dst, path.Base(src)))
+		return CopyFile(src, filepath.Join(dst, filepath.Base(src)))
 	}
 
 	_, err = os.Stat(dst)

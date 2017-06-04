@@ -33,7 +33,6 @@ func unfreeze(c *cli.Context) error {
 	for _, p := range vendorTool.Dependencies() {
 		sourceFile := project.ProjectPath(".freezer", p.ArchiveFileName())
 		targetDir := project.ProjectPath("vendor", p.PackagePath())
-		frozenFile := project.ProjectPath("vendor", p.PackagePath(), ".frozen")
 
 		_, err := os.Stat(sourceFile)
 		if !os.IsNotExist(err) {
@@ -45,8 +44,6 @@ func unfreeze(c *cli.Context) error {
 		} else {
 			fmt.Printf("MISSING frozen dependency: %s => %s\n", p.ArchiveFileName(), p.PackagePath())
 		}
-
-		_ = os.Remove(frozenFile)
 	}
 
 	return nil
