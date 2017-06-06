@@ -3,7 +3,7 @@ package domain
 import (
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 
 	"gopkg.in/yaml.v2"
 )
@@ -49,15 +49,15 @@ type Repository struct {
 func (p *Project) TargetPath(subdirs ...string) string {
 	targetPath := p.ProjectPath(TargetDirName)
 	for _, s := range subdirs {
-		targetPath = path.Join(targetPath, s)
+		targetPath = filepath.Join(targetPath, s)
 	}
 	return targetPath
 }
 
 func (p *Project) ProjectPath(subdirs ...string) string {
-	projectPath := path.Dir(p.FilePath)
+	projectPath := filepath.Dir(p.FilePath)
 	for _, s := range subdirs {
-		projectPath = path.Join(projectPath, s)
+		projectPath = filepath.Join(projectPath, s)
 	}
 	return projectPath
 }
@@ -72,12 +72,12 @@ func internalFindProject() (*Project, error) {
 	wd, _ := os.Getwd()
 	cwd := wd
 	for len(cwd) > 1 {
-		p := path.Join(cwd, ProjectFileName)
+		p := filepath.Join(cwd, ProjectFileName)
 		_, err := os.Stat(p)
 		if !os.IsNotExist(err) {
 			return LoadProject(p)
 		}
-		cwd = path.Dir(cwd)
+		cwd = filepath.Dir(cwd)
 	}
 	return nil, fmt.Errorf("Could not find project file in (or in any parent of) %v", wd)
 }

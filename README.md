@@ -173,3 +173,7 @@ executed any time.
 - glide vendor tool support
 - gb build tool support
 - nexus repo tool support
+
+- Windows problems
+  - Go tool temporary directory ($TMPDIR) needs to be set in environment
+  - Base directory detection for project yaml seems to break

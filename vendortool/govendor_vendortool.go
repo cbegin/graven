@@ -8,6 +8,8 @@ import (
 	"strings"
 	"time"
 
+	"path/filepath"
+
 	"github.com/cbegin/graven/domain"
 )
 
@@ -24,7 +26,7 @@ type GovendorVendorTool struct {
 }
 
 func (g *GovendorPackage) ArchiveFileName() string {
-	chars := []string{"/", "."}
+	chars := []string{"/", "\\", "."}
 	name := g.Path
 	for _, c := range chars {
 		name = strings.Replace(name, c, "-", -1)
@@ -41,7 +43,8 @@ func (g *GovendorPackage) ArchiveFileName() string {
 }
 
 func (g *GovendorPackage) PackagePath() string {
-	return g.Path
+	osIndependentPath := filepath.Join(strings.FieldsFunc(g.Path, func(r rune) bool { return r == '\\' || r == '/' })...)
+	return osIndependentPath
 }
 
 func (g *GovendorVendorTool) LoadFile(project *domain.Project) error {
