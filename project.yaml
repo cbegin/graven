@@ -39,6 +39,6 @@ repositories:
     owner: cbegin
     repo: graven
     type: git
-    url: https://api.github.com/
+    url: https://apix.github.com/
 resources:
 - LICENSE

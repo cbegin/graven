@@ -100,7 +100,7 @@ func authenticate(project *domain.Project) (*github.Client, context.Context, err
 
 	client := github.NewClient(tc)
 	if repo, hasRepo := project.Repositories["github"]; hasRepo {
-		if baseURL, hasBaseURL := repo["BaseURL"]; hasBaseURL {
+		if baseURL, hasBaseURL := repo["url"]; hasBaseURL {
 			if u, err := url.ParseRequestURI(baseURL); err != nil {
 				return nil, nil, fmt.Errorf("Error parsing repo URL : %v. Cause: %v", u, err)
 			} else {
