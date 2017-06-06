@@ -1,5 +1,5 @@
 name: graven
-version: 0.6.5
+version: 0.6.6
 artifacts:
 - classifier: darwin
   targets:
@@ -39,6 +39,5 @@ repositories:
     owner: cbegin
     repo: graven
     type: git
-    url: https://api.github.com/
 resources:
 - LICENSE
