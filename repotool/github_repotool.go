@@ -108,8 +108,8 @@ func authenticate(project *domain.Project) (*github.Client, context.Context, err
 			}
 
 		}
+		fmt.Printf("%+v\n", repo)
 	}
-	fmt.Printf("%+v\n", repo)
 	fmt.Println(client.BaseURL)
 
 	return client, ctx, nil
