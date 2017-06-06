@@ -108,7 +108,13 @@ func runTestCommand(testPackage string, project *domain.Project) error {
 }
 
 func runCoverageCommand(testPackage string, project *domain.Project) error {
-	coverOut := fmt.Sprintf("-html=%s.out", project.TargetPath("reports", testPackage))
+	coverOutPath := fmt.Sprintf("%s.out", project.TargetPath("reports", testPackage))
+
+	if _, err := os.Stat(coverOutPath); os.IsNotExist(err) {
+		return nil
+	}
+
+	coverOut := fmt.Sprintf("-html=%s", coverOutPath)
 	coverHtml := fmt.Sprintf("-o=%s.html", project.TargetPath("reports", testPackage))
 
 	cmd := exec.Command("go", "tool", "cover", coverOut, coverHtml)
