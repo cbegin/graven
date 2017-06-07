@@ -166,14 +166,78 @@ executed any time.
                                +----------+                           
 ```
 
+# project.yaml
+
+For many projects, only minimal interaction will be needed with `project.yaml`
+after initialization. The following documented structure (derived from this
+very project) will help better understand what you can do with it. 
+
+```yaml
+# Name, initially derived from parent directory. 
+name: graven
+# Version is typically managed with the graven bump command.
+version: 0.6.6
+# List of artifacts. Each artifact builds one or more packages into executables,
+# and provides compiler flags, environment variables, and resources.
+# Upon initialization, an artifact config will be generated for darwin, linux and
+# windows. You can safely delete any artifacts you don't need. The classifier
+# will be used in artifact names and target build directory names.
+artifacts:
+- classifier: darwin
+  # Each target is a package/executable combo with compiler flags and environment variables.
+  targets:
+  - executable: bin/graven
+    package: .
+    flags: ""
+    env: {}
+  # archive supports zip and tar.gz (or tgz, as a single dot alias)
+  archive: tgz
+  resources: []
+  # Environment variables, can be set at project, artifact and target level.
+  env:
+    GOARCH: amd64
+    GOOS: darwin
+- classifier: linux
+  targets:
+  - executable: bin/graven
+    package: .
+    flags: ""
+    env: {}
+  archive: tar.gz
+  resources: []
+  env:
+    GOARCH: amd64
+    GOOS: linux
+- classifier: win
+  targets:
+  - executable: graven.exe
+    package: .
+    flags: ""
+    env: {}
+  archive: zip
+  resources: []
+  env:
+    GOARCH: amd64
+    GOOS: windows
+# Configures an repository for deployment. Currently only supports github.
+# 
+repositories:
+  github:
+    # URL for private git repos can be set here
+    # url: https://api.github.com/
+    owner: cbegin
+    repo: graven
+    type: git
+# Resources will be included in the packaged archive. Can be overridden at 
+# artifact level.
+resources:
+- LICENSE
+```
+
+
 ## TODO
 
-- Base URL setting for Git repo tool
 - golang dep vendor tool support
 - glide vendor tool support
 - gb build tool support
 - nexus repo tool support
-
-- Windows problems
-  - Go tool temporary directory ($TMPDIR) needs to be set in environment
-  - Base directory detection for project yaml seems to break
