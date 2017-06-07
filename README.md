@@ -220,7 +220,7 @@ artifacts:
     GOARCH: amd64
     GOOS: windows
 # Configures an repository for deployment. Currently only supports github.
-# 
+# Use graven release --login to set the github token.
 repositories:
   github:
     # URL for private git repos can be set here
