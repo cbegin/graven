@@ -185,6 +185,8 @@ version: 0.6.6
 artifacts:
 - classifier: darwin
   # Each target is a package/executable combo with compiler flags and environment variables.
+  # Upon initialization, a target will be created for each main package found in the path.
+  # You can safely delete any you don't want.
   targets:
   - executable: bin/graven
     package: .
