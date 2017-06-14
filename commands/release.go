@@ -23,13 +23,13 @@ func release(c *cli.Context) error {
 	//TODO: Make this configurable
 	var repoTool repotool.RepoTool = &repotool.GithubRepoTool{}
 
-	if c.Bool("login") {
-		return repoTool.Login()
-	}
-
 	project, err := domain.FindProject()
 	if err != nil {
 		return err
+	}
+
+	if c.Bool("login") {
+		return repoTool.Login(project)
 	}
 
 	//TODO: Make this configurable
