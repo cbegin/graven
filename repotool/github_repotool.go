@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"net/url"
 
 	"github.com/cbegin/graven/config"
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/vcstool"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
-	"net/url"
 )
 
 type GithubRepoTool struct{}
@@ -59,7 +59,7 @@ func (g *GithubRepoTool) Release(project *domain.Project) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Created release %v/%v:%v\n", ownerName, repoName, *release.Name)
+	fmt.Printf("Created release %v/%v (%v):%v\n", ownerName, repoName, release.GetID(), release.GetName())
 
 	for _, a := range project.Artifacts {
 		filename := a.ArtifactFile(project)
@@ -70,7 +70,8 @@ func (g *GithubRepoTool) Release(project *domain.Project) error {
 		opts := &github.UploadOptions{
 			Name: filename,
 		}
-		_, _, err = gh.Repositories.UploadReleaseAsset(ctx, ownerName, repoName, *release.ID, opts, sourceFile)
+
+		_, _, err = gh.Repositories.UploadReleaseAsset(ctx, ownerName, repoName, release.GetID(), opts, sourceFile)
 		if err != nil {
 			return err
 		}
@@ -101,10 +102,17 @@ func authenticate(project *domain.Project) (*github.Client, context.Context, err
 	client := github.NewClient(tc)
 	if repo, hasRepo := project.Repositories["github"]; hasRepo {
 		if baseURL, hasBaseURL := repo["url"]; hasBaseURL {
-			if u, err := url.ParseRequestURI(baseURL); err != nil {
+			apiUrl := fmt.Sprintf("%v/api/v3/", baseURL)
+			uploadUrl := fmt.Sprintf("%v/api/uploads/", baseURL)
+			if u, err := url.ParseRequestURI(apiUrl); err != nil {
 				return nil, nil, fmt.Errorf("Error parsing repo URL : %v. Cause: %v", u, err)
 			} else {
 				client.BaseURL = u
+			}
+			if u, err := url.ParseRequestURI(uploadUrl); err != nil {
+				return nil, nil, fmt.Errorf("Error parsing repo URL : %v. Cause: %v", u, err)
+			} else {
+				client.UploadURL = u
 			}
 
 		}
