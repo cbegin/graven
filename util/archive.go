@@ -8,7 +8,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 func ZipDir(source, target string) error {
@@ -87,7 +86,7 @@ func UnzipDir(archive, target string) error {
 		}
 		defer fileReader.Close()
 
-		targetFile, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
+		targetFile, err := os.OpenFile(path, os.O_WRONLY | os.O_CREATE | os.O_TRUNC, file.Mode())
 		if err != nil {
 			return err
 		}
@@ -101,7 +100,7 @@ func UnzipDir(archive, target string) error {
 	return nil
 }
 
-func TarDir(source, target string) error {
+func TarDir(source, target string, fullHeader bool) error {
 	tarfile, err := os.Create(target)
 	if err != nil {
 		return err
@@ -123,11 +122,15 @@ func TarDir(source, target string) error {
 				if err != nil {
 					return err
 				}
-				header.AccessTime = time.Unix(0, 0)
-				header.ChangeTime = time.Unix(0, 0)
-				header.ModTime = time.Unix(0, 0)
 
-				header.Name = strings.TrimPrefix(strings.TrimPrefix(path, source), PathSeparatorString)
+				if !fullHeader {
+					oldHeader := header
+					header := &tar.Header{}
+					header.Name = strings.TrimPrefix(strings.TrimPrefix(path, source), PathSeparatorString)
+					header.Mode = oldHeader.Mode
+					header.Size = oldHeader.Size
+					header.ModTime = oldHeader.ModTime
+				}
 
 				if err := tarball.WriteHeader(header); err != nil {
 					return err
@@ -176,7 +179,7 @@ func UntarDir(tarball, target string) error {
 			os.MkdirAll(filepath.Dir(path), 0755)
 		}
 
-		file, err := os.OpenFile(path, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, info.Mode())
+		file, err := os.OpenFile(path, os.O_CREATE | os.O_TRUNC | os.O_WRONLY, info.Mode())
 		if err != nil {
 			return err
 		}

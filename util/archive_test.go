@@ -32,7 +32,7 @@ func TestZipUnzip(t *testing.T) {
 
 func TestTarUntar(t *testing.T) {
 	os.Mkdir("../temp", 0755)
-	if err := TarDir("../hello", "../temp/hello.tar.gz"); err != nil {
+	if err := TarDir("../hello", "../temp/hello.tar.gz", true); err != nil {
 		fmt.Printf("Tar error: %v", err)
 		t.FailNow()
 	}

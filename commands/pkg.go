@@ -63,7 +63,7 @@ func packageArtifact(project *domain.Project, artifact *domain.Artifact) error {
 	case "tgz":
 		fallthrough
 	case "tar.gz":
-		err := util.TarDir(source, dest)
+		err := util.TarDir(source, dest, true)
 		if err != nil {
 			return err
 		}
