@@ -127,7 +127,6 @@ func TarDir(source, target string, fullHeader bool) error {
 					oldHeader := header
 					header := &tar.Header{}
 					header.Name = strings.TrimPrefix(strings.TrimPrefix(path, source), PathSeparatorString)
-					header.Mode = oldHeader.Mode
 					header.Size = oldHeader.Size
 					header.ModTime = oldHeader.ModTime
 				}
