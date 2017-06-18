@@ -8,7 +8,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"fmt"
 )
 
 func ZipDir(source, target string, compress bool) error {
@@ -101,7 +100,6 @@ func UnzipDir(archive, target string) error {
 
 		os.Chtimes(targetFile.Name(), file.ModTime(), file.ModTime())
 
-		fmt.Println(file.ModTime());
 	}
 
 	return nil
