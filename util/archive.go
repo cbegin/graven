@@ -35,13 +35,6 @@ func ZipDir(source, target string, compress bool) error {
 
 			header.Name = strings.TrimPrefix(strings.TrimPrefix(path, source), PathSeparatorString)
 
-			// Normalize the time, since the bit shifting method used in the
-			// core package tends to yield mixed results
-
-			fmt.Printf("%b\n", header.ModifiedTime)
-
-			//header.ModifiedTime = (header.ModifiedTime & 075)
-
 			if info.IsDir() {
 				header.Name += PathSeparatorString
 			} else if compress {
@@ -105,6 +98,10 @@ func UnzipDir(archive, target string) error {
 		if _, err := io.Copy(targetFile, fileReader); err != nil {
 			return err
 		}
+
+		os.Chtimes(targetFile.Name(), file.ModTime(), file.ModTime())
+
+		fmt.Println(file.ModTime());
 	}
 
 	return nil
