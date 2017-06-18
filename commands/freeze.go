@@ -51,7 +51,7 @@ func freeze(c *cli.Context) error {
 			continue
 		}
 
-		err = util.TarDir(sourcePath, targetFile, false)
+		err = util.ZipDir(sourcePath, targetFile, false)
 		if err != nil {
 			return err
 		}

@@ -56,14 +56,14 @@ func packageArtifact(project *domain.Project, artifact *domain.Artifact) error {
 	defer fmt.Printf("Done %v\n", targetFile)
 	switch artifact.Archive {
 	case "zip":
-		err := util.ZipDir(source, dest)
+		err := util.ZipDir(source, dest, true)
 		if err != nil {
 			return err
 		}
 	case "tgz":
 		fallthrough
 	case "tar.gz":
-		err := util.TarDir(source, dest, true)
+		err := util.TarDir(source, dest)
 		if err != nil {
 			return err
 		}

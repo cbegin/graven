@@ -10,7 +10,7 @@ import (
 
 func TestZipUnzip(t *testing.T) {
 	os.Mkdir("../temp", 0755)
-	if err := ZipDir("../hello", "../temp/hello.zip"); err != nil {
+	if err := ZipDir("../hello", "../temp/hello.zip", true); err != nil {
 		fmt.Printf("Zip error: %v", err)
 		t.FailNow()
 	}
@@ -32,7 +32,7 @@ func TestZipUnzip(t *testing.T) {
 
 func TestTarUntar(t *testing.T) {
 	os.Mkdir("../temp", 0755)
-	if err := TarDir("../hello", "../temp/hello.tar.gz", true); err != nil {
+	if err := TarDir("../hello", "../temp/hello.tar.gz"); err != nil {
 		fmt.Printf("Tar error: %v", err)
 		t.FailNow()
 	}

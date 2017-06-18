@@ -14,5 +14,5 @@ func TestLoadVendorFile(t *testing.T) {
 	err = vendorTool.LoadFile(p)
 	assert.NoError(t, err)
 	assert.Equal(t, 4, len(vendorTool.Dependencies()))
-	assert.Equal(t, "github-com-fatih-color-9131ab34cf20d2f6d83fdc67168a5430d1c7dc23.tar", vendorTool.Dependencies()[0].ArchiveFileName())
+	assert.Equal(t, "github-com-fatih-color-9131ab34cf20d2f6d83fdc67168a5430d1c7dc23.zip", vendorTool.Dependencies()[0].ArchiveFileName())
 }

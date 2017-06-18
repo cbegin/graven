@@ -8,9 +8,10 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"fmt"
 )
 
-func ZipDir(source, target string) error {
+func ZipDir(source, target string, compress bool) error {
 	zipfile, err := os.Create(target)
 	if err != nil {
 		return err
@@ -34,10 +35,19 @@ func ZipDir(source, target string) error {
 
 			header.Name = strings.TrimPrefix(strings.TrimPrefix(path, source), PathSeparatorString)
 
+			// Normalize the time, since the bit shifting method used in the
+			// core package tends to yield mixed results
+
+			fmt.Printf("%b\n", header.ModifiedTime)
+
+			//header.ModifiedTime = (header.ModifiedTime & 075)
+
 			if info.IsDir() {
 				header.Name += PathSeparatorString
-			} else {
+			} else if compress {
 				header.Method = zip.Deflate
+			} else {
+				header.Method = zip.Store
 			}
 
 			writer, err := archive.CreateHeader(header)
@@ -100,7 +110,7 @@ func UnzipDir(archive, target string) error {
 	return nil
 }
 
-func TarDir(source, target string, fullHeader bool) error {
+func TarDir(source, target string) error {
 	tarfile, err := os.Create(target)
 	if err != nil {
 		return err
@@ -121,14 +131,6 @@ func TarDir(source, target string, fullHeader bool) error {
 				header, err := tar.FileInfoHeader(info, info.Name())
 				if err != nil {
 					return err
-				}
-
-				if !fullHeader {
-					oldHeader := header
-					header := &tar.Header{}
-					header.Name = strings.TrimPrefix(strings.TrimPrefix(path, source), PathSeparatorString)
-					header.Size = oldHeader.Size
-					header.ModTime = oldHeader.ModTime
 				}
 
 				if err := tarball.WriteHeader(header); err != nil {
