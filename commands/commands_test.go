@@ -111,10 +111,13 @@ func TestShouldFreezeResources(t *testing.T) {
 	err := freeze(c)
 	assert.NoError(t, err)
 
-	assert.True(t, pathExists("../hello/.freezer/github-com-fatih-color-9131ab34cf20d2f6d83fdc67168a5430d1c7dc23.zip"))
-	assert.True(t, pathExists("../hello/.freezer/github-com-mattn-go-colorable-acb9493f2794fd0f820de7a27a217dafbb1b65ea.zip"))
-	assert.True(t, pathExists("../hello/.freezer/github-com-mattn-go-isatty-57fdcb988a5c543893cc61bce354a6e24ab70022.zip"))
-	assert.True(t, pathExists("../hello/.freezer/golang-org-x-sys-unix-99f16d856c9836c42d24e7ab64ea72916925fa97.zip"))
+	assert.True(t, pathExists("../hello/.freezer/github-com-davecgh-go-spew-spew-346938d642f2ec3594ed81d874461961cd0faa76.zip"))
+	assert.True(t, pathExists("../hello/.freezer/github-com-fatih-color-62e9147c64a1ed519147b62a56a14e83e2be02c1.zip"))
+	assert.True(t, pathExists("../hello/.freezer/github-com-mattn-go-colorable-941b50ebc6efddf4c41c8e4537a5f68a4e686b24.zip"))
+	assert.True(t, pathExists("../hello/.freezer/github-com-mattn-go-isatty-fc9e8d8ef48496124e79ae0df75490096eccf6fe.zip"))
+	assert.True(t, pathExists("../hello/.freezer/github-com-pmezard-go-difflib-difflib-792786c7400a136282c1664665ae0a8db921c6c2.zip"))
+	assert.True(t, pathExists("../hello/.freezer/github-com-stretchr-testify-assert-f6abca593680b2315d2075e0f5e2a9751e3f431a.zip"))
+	assert.True(t, pathExists("../hello/.freezer/golang-org-x-sys-unix-fb4cac33e3196ff7f507ab9b2d2a44b0142f5b5a.zip"))
 
 }
 

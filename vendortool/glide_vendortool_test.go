@@ -7,12 +7,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestLoadGovendorFile(t *testing.T) {
-	vendorTool := &GovendorVendorTool{}
+func TestLoadGlideFile(t *testing.T) {
+	vendorTool := &GlideVendorTool{}
 	p, err := domain.LoadProject("../hello/project.yaml")
 	assert.NoError(t, err)
 	err = vendorTool.LoadFile(p)
 	assert.NoError(t, err)
 	assert.Equal(t, 7, len(vendorTool.Dependencies()))
-	assert.Equal(t, "github-com-davecgh-go-spew-spew-346938d642f2ec3594ed81d874461961cd0faa76.zip", vendorTool.Dependencies()[0].ArchiveFileName())
+	assert.Equal(t, "github-com-fatih-color-570b54cabe6b8eb0bc2dfce68d964677d63b5260.zip", vendorTool.Dependencies()[0].ArchiveFileName())
 }

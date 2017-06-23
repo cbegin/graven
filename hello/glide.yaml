@@ -1,0 +1,7 @@
+package: github.com/cbegin/graven/hello
+import:
+- package: github.com/fatih/color
+testImport:
+- package: github.com/stretchr/testify
+  subpackages:
+  - assert
