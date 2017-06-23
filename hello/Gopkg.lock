@@ -7,10 +7,10 @@
   revision = "6d212800a42e8ab5c146b8ace3490ee17e5225f9"
 
 [[projects]]
+  branch = "master"
   name = "github.com/fatih/color"
   packages = ["."]
-  revision = "570b54cabe6b8eb0bc2dfce68d964677d63b5260"
-  version = "v1.5.0"
+  revision = "62e9147c64a1ed519147b62a56a14e83e2be02c1"
 
 [[projects]]
   name = "github.com/mattn/go-colorable"
@@ -41,6 +41,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6e594e500b313b04e78aec945d444901645d3daf9e770dbe965f77f3ee4af3a2"
+  inputs-digest = "62f1bcb600d0ed362b4afb4ad3a06f0d8b1f75e36f0b81ce91d429586f6e549e"
   solver-name = "gps-cdcl"
   solver-version = 1
