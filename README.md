@@ -61,12 +61,11 @@ Graven currently requires the following tools to be on your path:
 ```
 go - the Go build tool, used to compile and test your application.
 git - used during the release process to validate the state of your repo, and tag your repo.
-govendor - used during the freeze/unfreeze process to lock in your dependencies.
 ```
 
-Of course if you don't plan to use the `release` command or the `freeze` and `unfreeze` commands, you
-can still use `graven` just for building, testing and packaging, and thus would only require the
-`go` tool. 
+Of course if you don't plan to use the `release` command commands, you
+can still use `graven` just for building, testing and packaging, and thus 
+would only require the `go` tool. 
 
 # Installation
 
@@ -235,6 +234,27 @@ repositories:
 resources:
 - LICENSE
 ```
+
+## A note about freeze/unfreeze
+
+Graven's freeze and unfreeze commands may seem odd to many idiomatic Go programmers.
+And others will trigger on concerns surrounding "binaries in Github". 
+I'll write up an explanation around the motivation for this feature and why
+you need not worry about these particular "binaries" in Github.
+
+That said... the freeze and unfreeze commands are entirely optional and separate from
+primary graven workflow (see below). So if you enjoy cluttering your repo with thousands 
+of lines of third party code (likely more than your own app has) in your vendor directory,
+you can continue to do so! Whoohoo! :-)
+
+#### But if you choose to try them out...
+
+Graven's freeze and unfreeze commands understand three vendor file formats.
+It automatically selects the vendor file to use in priority order as follows:
+
+* Govendor: `vendor/vendor.json`
+* Glide: `glide.lock`
+* Dep: `Gopkg.lock`
 
 
 ## TODO
