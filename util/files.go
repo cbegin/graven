@@ -187,3 +187,12 @@ func CompareDir(a, b string) (bool, error) {
 	}
 	return string(ahash) == string(bhash), nil
 }
+
+func PathExists(name string) bool {
+	if _, err := os.Stat(name); err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+	}
+	return true
+}

@@ -9,6 +9,7 @@ import (
 
 	"github.com/cbegin/graven/domain"
 	"github.com/pelletier/go-toml"
+	"github.com/cbegin/graven/util"
 )
 
 type DepPackage struct {
@@ -18,6 +19,10 @@ type DepPackage struct {
 
 type DepVendorTool struct {
 	Imports []DepPackage `toml:"projects,omitempty"`
+}
+
+func (g *DepVendorTool) Name() string {
+	return "dep"
 }
 
 func (g *DepPackage) ArchiveFileName() string {
@@ -35,9 +40,17 @@ func (g *DepPackage) PackagePath() string {
 	return osIndependentPath
 }
 
+func (g *DepVendorTool) VendorFileExists(project *domain.Project) bool {
+	vendorFilePath := project.ProjectPath("Gopkg.lock")
+	return util.PathExists(vendorFilePath)
+}
+
 func (g *DepVendorTool) LoadFile(project *domain.Project) error {
 	vendorFilePath := project.ProjectPath("Gopkg.lock")
 	vendorFile, err := os.Open(vendorFilePath)
+	if err != nil {
+		return err
+	}
 	vendorFileBytes, err := ioutil.ReadAll(vendorFile)
 	err = toml.Unmarshal(vendorFileBytes, g)
 	if err != nil {

@@ -9,6 +9,7 @@ import (
 
 	"github.com/cbegin/graven/domain"
 	"gopkg.in/yaml.v2"
+	"github.com/cbegin/graven/util"
 )
 
 type GlidePackage struct {
@@ -19,6 +20,10 @@ type GlidePackage struct {
 type GlideVendorTool struct {
 	Imports []GlidePackage `yaml:"imports,omitempty"`
 	TestImports []GlidePackage `yaml:"testImports,omitempty"`
+}
+
+func (g *GlideVendorTool) Name() string {
+	return "glide"
 }
 
 func (g *GlidePackage) ArchiveFileName() string {
@@ -36,9 +41,17 @@ func (g *GlidePackage) PackagePath() string {
 	return osIndependentPath
 }
 
+func (g *GlideVendorTool) VendorFileExists(project *domain.Project) bool {
+	vendorFilePath := project.ProjectPath("glide.lock")
+	return util.PathExists(vendorFilePath)
+}
+
 func (g *GlideVendorTool) LoadFile(project *domain.Project) error {
 	vendorFilePath := project.ProjectPath("glide.lock")
 	vendorFile, err := os.Open(vendorFilePath)
+	if err != nil {
+		return err
+	}
 	vendorFileBytes, err := ioutil.ReadAll(vendorFile)
 	err = yaml.Unmarshal(vendorFileBytes, g)
 	if err != nil {

@@ -239,7 +239,5 @@ resources:
 
 ## TODO
 
-- golang dep vendor tool support
-- glide vendor tool support
 - gb build tool support
-- nexus repo tool support
+- nexus repo tool support (releases and freezing?)

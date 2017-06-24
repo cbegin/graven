@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 
 	"github.com/cbegin/graven/domain"
+	"github.com/cbegin/graven/util"
 )
 
 type GovendorPackage struct {
@@ -23,6 +24,10 @@ type GovendorPackage struct {
 
 type GovendorVendorTool struct {
 	Packages []GovendorPackage `json:"package,omitempty"`
+}
+
+func (g *GovendorVendorTool) Name() string {
+	return "govendor"
 }
 
 func (g *GovendorPackage) ArchiveFileName() string {
@@ -47,9 +52,17 @@ func (g *GovendorPackage) PackagePath() string {
 	return osIndependentPath
 }
 
+func (g *GovendorVendorTool) VendorFileExists(project *domain.Project) bool {
+	vendorFilePath := project.ProjectPath("vendor", "vendor.json")
+	return util.PathExists(vendorFilePath)
+}
+
 func (g *GovendorVendorTool) LoadFile(project *domain.Project) error {
 	vendorFilePath := project.ProjectPath("vendor", "vendor.json")
 	vendorFile, err := os.Open(vendorFilePath)
+	if err != nil {
+		return err
+	}
 	vendorFileBytes, err := ioutil.ReadAll(vendorFile)
 	err = json.Unmarshal(vendorFileBytes, g)
 	if err != nil {

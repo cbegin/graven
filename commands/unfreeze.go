@@ -6,7 +6,6 @@ import (
 
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
-	"github.com/cbegin/graven/vendortool"
 	"github.com/urfave/cli"
 )
 
@@ -22,8 +21,10 @@ func unfreeze(c *cli.Context) error {
 		return err
 	}
 
-	// TODO: Make this configurable
-	var vendorTool vendortool.VendorTool = &vendortool.GovendorVendorTool{}
+	vendorTool, err := selectVendorTool(project)
+	if err != nil {
+		return err
+	}
 
 	err = vendorTool.LoadFile(project)
 	if err != nil {

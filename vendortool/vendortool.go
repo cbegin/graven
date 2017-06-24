@@ -3,6 +3,8 @@ package vendortool
 import "github.com/cbegin/graven/domain"
 
 type VendorTool interface {
+	Name() string
+	VendorFileExists(project *domain.Project) bool
 	LoadFile(project *domain.Project) error
 	Dependencies() []PackageDepencency
 }

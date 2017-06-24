@@ -10,10 +10,27 @@ import (
 	"github.com/urfave/cli"
 )
 
+var supportedVendorTools = []vendortool.VendorTool{
+	&vendortool.GovendorVendorTool{},
+	&vendortool.GlideVendorTool{},
+	&vendortool.DepVendorTool{},
+}
+
 var FreezeCommand = cli.Command{
 	Name:   "freeze",
 	Usage:  "Freezes vendor dependencies to avoid having to check in source",
 	Action: freeze,
+}
+
+
+func selectVendorTool(project *domain.Project) (vendortool.VendorTool, error) {
+	for _, vt := range supportedVendorTools {
+		if vt.VendorFileExists(project) {
+			fmt.Printf("Using %v vendor tool.\n", vt.Name())
+			return vt, nil
+		}
+	}
+	return nil, fmt.Errorf("Could not find supported vendor file.")
 }
 
 func freeze(c *cli.Context) error {
@@ -22,8 +39,10 @@ func freeze(c *cli.Context) error {
 		return err
 	}
 
-	// TODO: Make this configurable
-	var vendorTool vendortool.VendorTool = &vendortool.GovendorVendorTool{}
+	vendorTool, err := selectVendorTool(project)
+	if err != nil {
+		return err
+	}
 
 	err = vendorTool.LoadFile(project)
 	if err != nil {

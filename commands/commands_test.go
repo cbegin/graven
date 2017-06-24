@@ -30,20 +30,20 @@ func TestShouldBuildTargetDirectory(t *testing.T) {
 	err = build(c)
 	assert.NoError(t, err)
 
-	assert.True(t, pathExists("../hello/target/darwin/1.txt"))
-	assert.True(t, pathExists("../hello/target/darwin/3.txt"))
-	assert.True(t, pathExists("../hello/target/darwin/hello"))
-	assert.True(t, pathExists("../hello/target/darwin/Readme.md"))
+	assert.True(t, util.PathExists("../hello/target/darwin/1.txt"))
+	assert.True(t, util.PathExists("../hello/target/darwin/3.txt"))
+	assert.True(t, util.PathExists("../hello/target/darwin/hello"))
+	assert.True(t, util.PathExists("../hello/target/darwin/Readme.md"))
 
-	assert.True(t, pathExists("../hello/target/linux/1.txt"))
-	assert.True(t, pathExists("../hello/target/linux/3.txt"))
-	assert.True(t, pathExists("../hello/target/linux/hello"))
-	assert.True(t, pathExists("../hello/target/linux/Readme.md"))
+	assert.True(t, util.PathExists("../hello/target/linux/1.txt"))
+	assert.True(t, util.PathExists("../hello/target/linux/3.txt"))
+	assert.True(t, util.PathExists("../hello/target/linux/hello"))
+	assert.True(t, util.PathExists("../hello/target/linux/Readme.md"))
 
-	assert.True(t, pathExists("../hello/target/win/2.txt"))
-	assert.True(t, pathExists("../hello/target/win/3.txt"))
-	assert.True(t, pathExists("../hello/target/win/hello.exe"))
-	assert.True(t, pathExists("../hello/target/win/Readme.md"))
+	assert.True(t, util.PathExists("../hello/target/win/2.txt"))
+	assert.True(t, util.PathExists("../hello/target/win/3.txt"))
+	assert.True(t, util.PathExists("../hello/target/win/hello.exe"))
+	assert.True(t, util.PathExists("../hello/target/win/Readme.md"))
 }
 
 func TestShouldCleanTargetDirectory(t *testing.T) {
@@ -55,7 +55,7 @@ func TestShouldCleanTargetDirectory(t *testing.T) {
 	err = clean(c)
 	assert.NoError(t, err)
 
-	assert.False(t, pathExists("../hello/target/darwin/hello"))
+	assert.False(t, util.PathExists("../hello/target/darwin/hello"))
 }
 
 func TestShouldPackageTargetDirectory(t *testing.T) {
@@ -71,9 +71,9 @@ func TestShouldPackageTargetDirectory(t *testing.T) {
 	linuxPath := fmt.Sprintf("../hello/target/hello-%s-linux.tar.gz", version.Version)
 	winPath := fmt.Sprintf("../hello/target/hello-%s-win.zip", version.Version)
 
-	assert.True(t, pathExists(darwinPath))
-	assert.True(t, pathExists(linuxPath))
-	assert.True(t, pathExists(winPath))
+	assert.True(t, util.PathExists(darwinPath))
+	assert.True(t, util.PathExists(linuxPath))
+	assert.True(t, util.PathExists(winPath))
 }
 
 func TestShouldInitDirectory(t *testing.T) {
@@ -98,9 +98,9 @@ func TestShouldInitDirectory(t *testing.T) {
 	err = os.Chdir(wd)
 	assert.NoError(t, err)
 
-	assert.True(t, pathExists(path.Join(tempdir, "version", "version.go")))
-	assert.True(t, pathExists(path.Join(tempdir, "main.go")))
-	assert.True(t, pathExists(path.Join(tempdir, "project.yaml")))
+	assert.True(t, util.PathExists(path.Join(tempdir, "version", "version.go")))
+	assert.True(t, util.PathExists(path.Join(tempdir, "main.go")))
+	assert.True(t, util.PathExists(path.Join(tempdir, "project.yaml")))
 }
 
 func TestShouldFreezeResources(t *testing.T) {
@@ -111,13 +111,13 @@ func TestShouldFreezeResources(t *testing.T) {
 	err := freeze(c)
 	assert.NoError(t, err)
 
-	assert.True(t, pathExists("../hello/.freezer/github-com-davecgh-go-spew-spew-346938d642f2ec3594ed81d874461961cd0faa76.zip"))
-	assert.True(t, pathExists("../hello/.freezer/github-com-fatih-color-62e9147c64a1ed519147b62a56a14e83e2be02c1.zip"))
-	assert.True(t, pathExists("../hello/.freezer/github-com-mattn-go-colorable-941b50ebc6efddf4c41c8e4537a5f68a4e686b24.zip"))
-	assert.True(t, pathExists("../hello/.freezer/github-com-mattn-go-isatty-fc9e8d8ef48496124e79ae0df75490096eccf6fe.zip"))
-	assert.True(t, pathExists("../hello/.freezer/github-com-pmezard-go-difflib-difflib-792786c7400a136282c1664665ae0a8db921c6c2.zip"))
-	assert.True(t, pathExists("../hello/.freezer/github-com-stretchr-testify-assert-f6abca593680b2315d2075e0f5e2a9751e3f431a.zip"))
-	assert.True(t, pathExists("../hello/.freezer/golang-org-x-sys-unix-fb4cac33e3196ff7f507ab9b2d2a44b0142f5b5a.zip"))
+	assert.True(t, util.PathExists("../hello/.freezer/github-com-davecgh-go-spew-spew-346938d642f2ec3594ed81d874461961cd0faa76.zip"))
+	assert.True(t, util.PathExists("../hello/.freezer/github-com-fatih-color-62e9147c64a1ed519147b62a56a14e83e2be02c1.zip"))
+	assert.True(t, util.PathExists("../hello/.freezer/github-com-mattn-go-colorable-941b50ebc6efddf4c41c8e4537a5f68a4e686b24.zip"))
+	assert.True(t, util.PathExists("../hello/.freezer/github-com-mattn-go-isatty-fc9e8d8ef48496124e79ae0df75490096eccf6fe.zip"))
+	assert.True(t, util.PathExists("../hello/.freezer/github-com-pmezard-go-difflib-difflib-792786c7400a136282c1664665ae0a8db921c6c2.zip"))
+	assert.True(t, util.PathExists("../hello/.freezer/github-com-stretchr-testify-assert-f6abca593680b2315d2075e0f5e2a9751e3f431a.zip"))
+	assert.True(t, util.PathExists("../hello/.freezer/golang-org-x-sys-unix-fb4cac33e3196ff7f507ab9b2d2a44b0142f5b5a.zip"))
 
 }
 
@@ -130,9 +130,9 @@ func TestShouldUnfreezeResources(t *testing.T) {
 	err := unfreeze(c)
 	assert.NoError(t, err)
 
-	assert.True(t, pathExists("../hello/vendor/github.com/fatih"))
-	assert.True(t, pathExists("../hello/vendor/github.com/mattn"))
-	assert.True(t, pathExists("../hello/vendor/golang.org/x"))
+	assert.True(t, util.PathExists("../hello/vendor/github.com/fatih"))
+	assert.True(t, util.PathExists("../hello/vendor/github.com/mattn"))
+	assert.True(t, util.PathExists("../hello/vendor/golang.org/x"))
 
 }
 
@@ -216,11 +216,3 @@ func resetVersion() {
 	util.CopyFile("../hello/version/version.fixture", "../hello/version/version.go")
 }
 
-func pathExists(name string) bool {
-	if _, err := os.Stat(name); err != nil {
-		if os.IsNotExist(err) {
-			return false
-		}
-	}
-	return true
-}
