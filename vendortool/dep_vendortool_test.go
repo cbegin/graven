@@ -9,7 +9,7 @@ import (
 
 func TestLoadDepFile(t *testing.T) {
 	vendorTool := &DepVendorTool{}
-	p, err := domain.LoadProject("../hello/project.yaml")
+	p, err := domain.LoadProject("../test_fixtures/hello/project.yaml")
 	assert.NoError(t, err)
 	err = vendorTool.LoadFile(p)
 	assert.NoError(t, err)

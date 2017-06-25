@@ -10,7 +10,7 @@ import (
 
 func TestZipUnzip(t *testing.T) {
 	os.Mkdir("../temp", 0755)
-	if err := ZipDir("../hello", "../temp/hello.zip", true); err != nil {
+	if err := ZipDir("../test_fixtures/hello", "../temp/hello.zip", true); err != nil {
 		fmt.Printf("Zip error: %v", err)
 		t.FailNow()
 	}
@@ -20,7 +20,7 @@ func TestZipUnzip(t *testing.T) {
 		t.FailNow()
 	}
 
-	if same, err := CompareFileContents("../hello/hello.go", "../temp/hello/hello.go"); err != nil {
+	if same, err := CompareFileContents("../test_fixtures/hello/hello.go", "../temp/hello/hello.go"); err != nil {
 		fmt.Printf("Error comparing files: %v", err)
 		t.FailNow()
 	} else {
@@ -32,7 +32,7 @@ func TestZipUnzip(t *testing.T) {
 
 func TestTarUntar(t *testing.T) {
 	os.Mkdir("../temp", 0755)
-	if err := TarDir("../hello", "../temp/hello.tar.gz"); err != nil {
+	if err := TarDir("../test_fixtures/hello", "../temp/hello.tar.gz"); err != nil {
 		fmt.Printf("Tar error: %v", err)
 		t.FailNow()
 	}
@@ -42,7 +42,7 @@ func TestTarUntar(t *testing.T) {
 		t.FailNow()
 	}
 
-	if same, err := CompareFileContents("../hello/hello.go", "../temp/hello/hello.go"); err != nil {
+	if same, err := CompareFileContents("../test_fixtures/hello/hello.go", "../temp/hello/hello.go"); err != nil {
 		fmt.Printf("Error comparing files: %v", err)
 		t.FailNow()
 	} else {

@@ -9,7 +9,7 @@ import (
 
 func TestLoadGlideFile(t *testing.T) {
 	vendorTool := &GlideVendorTool{}
-	p, err := domain.LoadProject("../hello/project.yaml")
+	p, err := domain.LoadProject("../test_fixtures/hello/project.yaml")
 	assert.NoError(t, err)
 	err = vendorTool.LoadFile(p)
 	assert.NoError(t, err)

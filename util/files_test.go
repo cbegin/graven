@@ -8,8 +8,8 @@ import (
 )
 
 func TestCopyDir(t *testing.T) {
-	CopyDir("../hello", "../temp/hello")
-	if same, err := CompareDir("../hello", "../temp/hello"); err != nil {
+	CopyDir("../test_fixtures/hello", "../temp/hello")
+	if same, err := CompareDir("../test_fixtures/hello", "../temp/hello"); err != nil {
 		assert.FailNow(t, "Directory comparison failed: %v", err)
 	} else {
 		assert.True(t, same)
@@ -18,7 +18,7 @@ func TestCopyDir(t *testing.T) {
 }
 
 func TestCompareDirTrue(t *testing.T) {
-	if same, err := CompareDir("../hello", "../hello"); err != nil {
+	if same, err := CompareDir("../test_fixtures/hello", "../test_fixtures/hello"); err != nil {
 		assert.FailNow(t, "Directory comparison failed: %v", err)
 	} else {
 		assert.True(t, same)
@@ -26,7 +26,7 @@ func TestCompareDirTrue(t *testing.T) {
 }
 
 func TestCompareDirFalse(t *testing.T) {
-	if same, err := CompareDir("../resources", "../hello"); err != nil {
+	if same, err := CompareDir("../resources", "../test_fixtures/hello"); err != nil {
 		assert.FailNow(t, "Directory comparison failed", "%v", err)
 	} else {
 		assert.False(t, same)
@@ -34,7 +34,7 @@ func TestCompareDirFalse(t *testing.T) {
 }
 
 func TestCompareDirFalseReverse(t *testing.T) {
-	if same, err := CompareDir("../hello", "../resources"); err != nil {
+	if same, err := CompareDir("../test_fixtures/hello", "../resources"); err != nil {
 		assert.FailNow(t, "Directory comparison failed", "%v", err)
 	} else {
 		assert.False(t, same)
@@ -42,7 +42,7 @@ func TestCompareDirFalseReverse(t *testing.T) {
 }
 
 func TestCompareMissingDir(t *testing.T) {
-	if same, err := CompareDir("../fakedir", "../hello"); err != nil {
+	if same, err := CompareDir("../fakedir", "../test_fixtures/hello"); err != nil {
 		assert.Error(t, err)
 	} else {
 		assert.False(t, same)

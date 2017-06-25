@@ -3,7 +3,7 @@ package domain
 import (
 	"testing"
 
-	"github.com/cbegin/graven/hello/version"
+	"github.com/cbegin/graven/test_fixtures/hello/version"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,7 +14,7 @@ func TestShouldFindProject(t *testing.T) {
 }
 
 func TestShouldLoadProject(t *testing.T) {
-	p, err := LoadProject("../hello/project.yaml")
+	p, err := LoadProject("../test_fixtures/hello/project.yaml")
 	assert.NoError(t, err)
 
 	assert.Equal(t, p.Name, "hello")

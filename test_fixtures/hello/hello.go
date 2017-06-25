@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cbegin/graven/hello/version"
+	"github.com/cbegin/graven/test_fixtures/hello/version"
 	"github.com/fatih/color"
 )
 

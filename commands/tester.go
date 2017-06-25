@@ -47,7 +47,7 @@ func getTestWalkerFunc(project *domain.Project, merr *error) filepath.WalkFunc {
 		if info.IsDir() {
 			subDir := path[len(project.ProjectPath()):]
 			subDirParts := strings.Split(subDir, string(filepath.Separator))
-			matches, _ := filepath.Glob(filepath.Join(path, "*_test*"))
+			matches, _ := filepath.Glob(filepath.Join(path, "*_test.go"))
 			if len(matches) > 0 && !contains(subDirParts, map[string]struct{}{
 				"vendor": struct{}{},
 				"target": struct{}{},
