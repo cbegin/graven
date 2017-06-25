@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 
 	"github.com/cbegin/graven/buildtool"
 	"github.com/cbegin/graven/domain"
@@ -33,14 +34,16 @@ func tester(c *cli.Context) error {
 		return fmt.Errorf("Could not create reports directory. %v", err)
 	}
 
+	waitGroup := &sync.WaitGroup{}
 	var merr error
-	if err := filepath.Walk(project.ProjectPath(), getTestWalkerFunc(project, &merr)); err != nil {
+	if err := filepath.Walk(project.ProjectPath(), getTestWalkerFunc(project, waitGroup, &merr)); err != nil {
 		merr = multierror.Append(merr, err)
 	}
+	waitGroup.Wait()
 	return merr
 }
 
-func getTestWalkerFunc(project *domain.Project, merr *error) filepath.WalkFunc {
+func getTestWalkerFunc(project *domain.Project, waitGroup *sync.WaitGroup, merr *error) filepath.WalkFunc {
 	// TODO - Make this configurable
 	var buildTool builder.BuildTool = &builder.GoBuildTool{}
 	return func(path string, info os.FileInfo, err error) error {
@@ -52,10 +55,14 @@ func getTestWalkerFunc(project *domain.Project, merr *error) filepath.WalkFunc {
 				"vendor": struct{}{},
 				"target": struct{}{},
 				".git":   struct{}{}}) {
-
-				if err := buildTool.Test(subDir, project); err != nil {
-					*merr = multierror.Append(*merr, err)
-				}
+				fmt.Printf("Testing %v\n", subDir)
+				waitGroup.Add(1)
+				go func() {
+					if err := buildTool.Test(subDir, project); err != nil {
+						*merr = multierror.Append(*merr, err)
+					}
+					waitGroup.Done()
+				}()
 			}
 		}
 		return nil

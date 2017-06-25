@@ -73,7 +73,7 @@ func runTestCommand(testPackage string, project *domain.Project) error {
 
 	coverOut := fmt.Sprintf("-coverprofile=%s.out", coverPath)
 
-	cmd := exec.Command("go", "test", "-v", "-parallel=4", "-p=4", "-covermode=atomic", coverOut, relativePath)
+	cmd := exec.Command("go", "test", "-v", "-covermode=atomic", coverOut, relativePath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin
@@ -104,7 +104,7 @@ func runTestCommand(testPackage string, project *domain.Project) error {
 		return fmt.Errorf("Build command exited in an error state. %v", cmd)
 	}
 
-	return runCoverageCommand(testPackage, project)
+	return nil
 }
 
 func runCoverageCommand(testPackage string, project *domain.Project) error {
