@@ -259,5 +259,4 @@ It automatically selects the vendor file to use in priority order as follows:
 
 ## TODO
 
-- gb build tool support
 - nexus repo tool support (releases and freezing?)
