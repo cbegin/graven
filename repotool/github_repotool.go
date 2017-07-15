@@ -28,19 +28,19 @@ func (g *GithubRepoTool) Login(project *domain.Project, repo string) error {
 	return nil
 }
 
-func (g *GithubRepoTool) Release(project *domain.Project) error {
-	gh, ctx, err := authenticate(project)
+func (g *GithubRepoTool) Release(project *domain.Project, repo string) error {
+	gh, ctx, err := authenticate(project, repo)
 	if err != nil {
 		return err
 	}
 
-	repo, ok := project.Repositories["github"]
+	repository, ok := project.Repositories[repo]
 	if !ok {
 		return fmt.Errorf("Sorry, could not find gihub repo configuration")
 	}
 
-	ownerName := repo["owner"]
-	repoName := repo["repo"]
+	ownerName := repository["owner"]
+	repoName := repository["repo"]
 
 	tagName := fmt.Sprintf("v%s", project.Version)
 	releaseName := tagName
@@ -81,14 +81,14 @@ func (g *GithubRepoTool) Release(project *domain.Project) error {
 	return err
 }
 
-func authenticate(project *domain.Project) (*github.Client, context.Context, error) {
+func authenticate(project *domain.Project, repo string) (*github.Client, context.Context, error) {
 	config := config.NewConfig()
 
 	if err := config.Read(); err != nil {
 		return nil, nil, fmt.Errorf("Error reading configuration (try: release --login): %v", err)
 	}
 
-	token := config.Get(project.Name, "github")
+	token := config.Get(project.Name, repo)
 	if token == "" {
 		return nil, nil, fmt.Errorf("Configuration missing token (try: release --login).")
 	}
@@ -100,8 +100,8 @@ func authenticate(project *domain.Project) (*github.Client, context.Context, err
 	tc := oauth2.NewClient(ctx, ts)
 
 	client := github.NewClient(tc)
-	if repo, hasRepo := project.Repositories["github"]; hasRepo {
-		if baseURL, hasBaseURL := repo["url"]; hasBaseURL {
+	if repository, hasRepo := project.Repositories[repo]; hasRepo {
+		if baseURL, hasBaseURL := repository["url"]; hasBaseURL {
 			apiUrl := fmt.Sprintf("%v/api/v3/", baseURL)
 			uploadUrl := fmt.Sprintf("%v/api/uploads/", baseURL)
 			if u, err := url.ParseRequestURI(apiUrl); err != nil {

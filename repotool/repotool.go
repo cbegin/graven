@@ -3,6 +3,6 @@ package repotool
 import "github.com/cbegin/graven/domain"
 
 type RepoTool interface {
-	Release(project *domain.Project) error
+	Release(project *domain.Project, repo string) error
 	Login(project *domain.Project, repo string) error
 }

@@ -33,5 +33,5 @@ func release(c *cli.Context) error {
 		return err
 	}
 
-	return repoTool.Release(project)
+	return repoTool.Release(project, "github")
 }

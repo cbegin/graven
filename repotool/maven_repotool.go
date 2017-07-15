@@ -26,7 +26,7 @@ func (m *MavenRepoTool) Login(project *domain.Project, repo string) error {
 	return nil
 }
 
-func (m *MavenRepoTool) Release(project *domain.Project) error {
+func (m *MavenRepoTool) Release(project *domain.Project, repo string) error {
 
 	return nil
 }
