@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"bufio"
 
 	"github.com/bgentry/speakeasy"
 	"gopkg.in/yaml.v2"
@@ -39,6 +40,19 @@ func (c Config) Get(group, name string) string {
 		return g[name]
 	}
 	return ""
+}
+
+func (c Config) SetPlainText(group, name, prompt string) error {
+	fmt.Print(prompt)
+
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+
+	if scanner.Err() != nil {
+		return fmt.Errorf("Error reading input from terminal: %v", scanner.Err())
+	}
+	c.Set(group, name, scanner.Text())
+	return nil
 }
 
 func (c Config) SetSecret(group, name, prompt string) error {

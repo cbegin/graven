@@ -15,12 +15,12 @@ import (
 
 type GithubRepoTool struct{}
 
-func (g *GithubRepoTool) Login(project *domain.Project) error {
+func (g *GithubRepoTool) Login(project *domain.Project, repo string) error {
 	config := config.NewConfig()
 	if err := config.Read(); err != nil {
 		// ignore
 	}
-	err := config.SetSecret("github", project.Name, "Please type or paste a github token (will not echo): ")
+	err := config.SetSecret(project.Name, repo, "Please type or paste a github token (will not echo): ")
 	err = config.Write()
 	if err != nil {
 		return fmt.Errorf("Error writing configuration file. %v", err)
@@ -88,7 +88,7 @@ func authenticate(project *domain.Project) (*github.Client, context.Context, err
 		return nil, nil, fmt.Errorf("Error reading configuration (try: release --login): %v", err)
 	}
 
-	token := config.Get("github", project.Name)
+	token := config.Get(project.Name, "github")
 	if token == "" {
 		return nil, nil, fmt.Errorf("Configuration missing token (try: release --login).")
 	}

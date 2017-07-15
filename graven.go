@@ -26,6 +26,7 @@ func main() {
 		commands.UnfreezeCommand,
 		commands.InitCommand,
 		commands.ReleaseCommand,
+		commands.RepoCommand,
 	}
 
 	err := app.Run(os.Args)

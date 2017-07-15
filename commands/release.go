@@ -11,12 +11,6 @@ var ReleaseCommand = cli.Command{
 	Name:   "release",
 	Usage:  "Releases artifacts to repositories",
 	Action: release,
-	Flags: []cli.Flag{
-		cli.BoolFlag{
-			Name:  "login",
-			Usage: "Prompts for repo login credentials.",
-		},
-	},
 }
 
 func release(c *cli.Context) error {
@@ -26,10 +20,6 @@ func release(c *cli.Context) error {
 	project, err := domain.FindProject()
 	if err != nil {
 		return err
-	}
-
-	if c.Bool("login") {
-		return repoTool.Login(project)
 	}
 
 	//TODO: Make this configurable

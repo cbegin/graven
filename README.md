@@ -224,11 +224,23 @@ artifacts:
 # Use graven release --login to set the github token.
 repositories:
   github:
-    # URL for private git repos can be set here
+    # Github repos only support releases
+    roles: release
+    # URL for private git repos can be set here. Defaults to Github.
     # url: https://api.github.com/
     owner: cbegin
     repo: graven
     type: git
+  artifactory:
+    # Supports both releases and dependencies
+    roles: release, dependency
+    url: http://localhost:8081/artifactory/releases/
+    type: maven
+  nexus:
+    # Supports both releases and dependencies
+    roles: release, dependency
+    url: http://localhost:8082/nexus/content/repositories/releases/
+    type: maven
 # Resources will be included in the packaged archive. Can be overridden at 
 # artifact level.
 resources:
@@ -261,3 +273,9 @@ It automatically selects the vendor file to use in priority order as follows:
 
 - gb build tool support
 - nexus repo tool support (releases and freezing?)
+- artifactory: admin / password
+- nexus: admin / admin123
+
+$ curl -u uploader:password -T greeting.txt -X PUT "http://localhost:8081/artifactory/releases/com/github/cbegin/graven/fc92ojlkj3/greeting.txt"
+$ curl -u admin:admin123 -T greeting.txt -X PUT http://localhost:8082/nexus/content/repositories/releases/com/github/cbegin/graven/fc92ojlkj3/greeting.txt
+

@@ -34,10 +34,19 @@ artifacts:
   env:
     GOARCH: amd64
     GOOS: windows
-repositories:
-  github:
-    owner: cbegin
-    repo: graven
-    type: git
 resources:
 - LICENSE
+repositories:
+  github:
+    type: github
+    roles: release, dependency
+    owner: cbegin
+    repo: graven
+  artifactory:
+    type: maven
+    roles: release, dependency
+    url: http://localhost:8081/artifactory/releases/
+  nexus:
+    type: maven
+    roles: release, dependency
+    url: http://localhost:8082/nexus/content/repositories/releases/
