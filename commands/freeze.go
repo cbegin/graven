@@ -74,8 +74,6 @@ func freeze(c *cli.Context) error {
 		if err != nil {
 			return err
 		}
-
-		fmt.Printf("%s => %s\n", p.PackagePath(), p.ArchiveFileName())
 	}
 
 	return err

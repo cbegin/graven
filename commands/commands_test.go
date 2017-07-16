@@ -120,7 +120,6 @@ func TestShouldFreezeResources(t *testing.T) {
 	assert.True(t, util.PathExists("../test_fixtures/hello/.freezer/github-com-mattn-go-isatty-fc9e8d8ef48496124e79ae0df75490096eccf6fe.zip"))
 	assert.True(t, util.PathExists("../test_fixtures/hello/.freezer/github-com-pmezard-go-difflib-difflib-792786c7400a136282c1664665ae0a8db921c6c2.zip"))
 	assert.True(t, util.PathExists("../test_fixtures/hello/.freezer/github-com-stretchr-testify-assert-f6abca593680b2315d2075e0f5e2a9751e3f431a.zip"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/.freezer/golang-org-x-sys-unix-fb4cac33e3196ff7f507ab9b2d2a44b0142f5b5a.zip"))
 
 }
 

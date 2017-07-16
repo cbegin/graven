@@ -36,14 +36,13 @@ func unfreeze(c *cli.Context) error {
 		targetDir := project.ProjectPath("vendor", p.PackagePath())
 
 		_, err := os.Stat(sourceFile)
-		if !os.IsNotExist(err) {
+		if os.IsNotExist(err) {
+			fmt.Printf("MISSING frozen dependency: %s => %s\n", p.ArchiveFileName(), p.PackagePath())
+		} else {
 			err = util.UnzipDir(sourceFile, targetDir)
 			if err != nil {
 				return err
 			}
-			fmt.Printf("%s => %s\n", p.ArchiveFileName(), p.PackagePath())
-		} else {
-			fmt.Printf("MISSING frozen dependency: %s => %s\n", p.ArchiveFileName(), p.PackagePath())
 		}
 	}
 
