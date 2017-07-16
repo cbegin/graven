@@ -8,7 +8,6 @@ import (
 
 	"github.com/cbegin/graven/config"
 	"github.com/cbegin/graven/domain"
-	"github.com/cbegin/graven/vcstool"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
@@ -36,7 +35,7 @@ func (g *GithubRepoTool) Release(project *domain.Project, repo string) error {
 
 	repository, ok := project.Repositories[repo]
 	if !ok {
-		return fmt.Errorf("Sorry, could not find gihub repo configuration")
+		return fmt.Errorf("Sorry, could not find repo configuration named %v", repo)
 	}
 
 	ownerName := repository["owner"]
@@ -47,12 +46,6 @@ func (g *GithubRepoTool) Release(project *domain.Project, repo string) error {
 	release := &github.RepositoryRelease{
 		TagName: &tagName,
 		Name:    &releaseName,
-	}
-
-	// TODO: Make this configurable
-	var vcsTool vcstool.VCSTool = &vcstool.GitVCSTool{}
-	if err := vcsTool.Tag(project, tagName); err != nil {
-		return err
 	}
 
 	release, _, err = gh.Repositories.CreateRelease(ctx, ownerName, repoName, release)

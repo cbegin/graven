@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"fmt"
+
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/repotool"
 	"github.com/cbegin/graven/vcstool"
@@ -33,5 +35,22 @@ func release(c *cli.Context) error {
 		return err
 	}
 
-	return repoTool.Release(project, "github")
+	tagName := fmt.Sprintf("v%s", project.Version)
+	if err := vcsTool.Tag(project, tagName); err != nil {
+		return err
+	}
+
+	if err := repoTool.Release(project, "github"); err != nil {
+		return err
+	}
+
+	if bumpVersion(project, "patch"); err != nil {
+		return err
+	}
+
+	if bumpVersion(project, "DEV"); err != nil {
+		return err
+	}
+
+	return nil
 }

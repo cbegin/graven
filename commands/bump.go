@@ -16,6 +16,7 @@ const (
 	versionFileName = "version.go"
 	versionTemplate = `// graven - This file was generated. It will be overwritten. Do not modify.
 package {{.Package}}
+
 var Version="{{.Version}}"`
 )
 
