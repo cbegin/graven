@@ -16,9 +16,6 @@ var ReleaseCommand = cli.Command{
 }
 
 func release(c *cli.Context) error {
-	//TODO: Make this configurable
-	var repoTool repotool.RepoTool = &repotool.GithubRepoTool{}
-
 	project, err := domain.FindProject()
 	if err != nil {
 		return err
@@ -26,28 +23,35 @@ func release(c *cli.Context) error {
 
 	//TODO: Make this configurable
 	var vcsTool vcstool.VCSTool = &vcstool.GitVCSTool{}
-
 	if err := vcsTool.VerifyRepoState(project); err != nil {
 		return err
 	}
-
 	if err := pkg(c); err != nil {
 		return err
 	}
-
 	tagName := fmt.Sprintf("v%s", project.Version)
 	if err := vcsTool.Tag(project, tagName); err != nil {
 		return err
 	}
 
-	if err := repoTool.Release(project, "github"); err != nil {
-		return err
+	//TODO: Make this configurable
+
+	repoToolMap := map[string]repotool.RepoTool{}
+	repoToolMap["github"] = &repotool.GithubRepoTool{}
+	repoToolMap["maven"] = &repotool.MavenRepoTool{}
+	for repoName, repo := range project.Repositories {
+		if repoTool, ok := repoToolMap[repo["type"]]; ok {
+			if err := repoTool.Release(project, repoName); err != nil {
+				return err
+			}
+		} else {
+			fmt.Println("Unkown repository type %v: ", repo["type"])
+		}
 	}
 
 	if bumpVersion(project, "patch"); err != nil {
 		return err
 	}
-
 	if bumpVersion(project, "DEV"); err != nil {
 		return err
 	}
