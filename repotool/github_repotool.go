@@ -19,7 +19,7 @@ func (g *GithubRepoTool) Login(project *domain.Project, repo string) error {
 	if err := config.Read(); err != nil {
 		// ignore
 	}
-	err := config.SetSecret(project.Name, repo, "Please type or paste a github token (will not echo): ")
+	err := config.PromptSecret(project.Name, repo, "Please type or paste a github token (will not echo): ")
 	err = config.Write()
 	if err != nil {
 		return fmt.Errorf("Error writing configuration file. %v", err)
@@ -81,7 +81,10 @@ func authenticate(project *domain.Project, repo string) (*github.Client, context
 		return nil, nil, fmt.Errorf("Error reading configuration (try: release --login): %v", err)
 	}
 
-	token := config.Get(project.Name, repo)
+	token, err := config.GetSecret(project.Name, repo)
+	if err != nil {
+		return nil, nil, err
+	}
 	if token == "" {
 		return nil, nil, fmt.Errorf("Configuration missing token (try: release --login).")
 	}

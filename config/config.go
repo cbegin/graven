@@ -1,3 +1,13 @@
+// This is a minimalist config package. It uses a flat structure
+// and simple obfuscation to avoid over-the-shoulder or casual viewing
+// of passwords on the file system. Future implemenations may improve upon
+// the data structure and allow for user provided passwords that will
+// better protect the locally stored password.
+// Or we can try to find a config library that supports:
+//   - getting / setting values in a structured way (like Viper)
+//   - securely prompting for values (I suppose this could be externalized)
+//   - encrypting / decrypting / obfuscating stored values
+//   - loading and saving configuration (not just reading)
 package config
 
 import (
@@ -10,6 +20,7 @@ import (
 
 	"github.com/bgentry/speakeasy"
 	"gopkg.in/yaml.v2"
+	"github.com/cbegin/graven/util"
 )
 
 const DefaultConfigFileName = ".graven.yaml"
@@ -42,7 +53,18 @@ func (c Config) Get(group, name string) string {
 	return ""
 }
 
-func (c Config) SetPlainText(group, name, prompt string) error {
+func (c Config) GetSecret(group, name string) (string, error) {
+	if cipherText := c.Get(group, name); cipherText != "" {
+		plainText, err := util.Uncloak(cipherText)
+		if err != nil {
+			return "", err
+		}
+		return string(plainText), nil
+	}
+	return "", nil
+}
+
+func (c Config) PromptPlainText(group, name, prompt string) error {
 	fmt.Print(prompt)
 
 	scanner := bufio.NewScanner(os.Stdin)
@@ -55,12 +77,18 @@ func (c Config) SetPlainText(group, name, prompt string) error {
 	return nil
 }
 
-func (c Config) SetSecret(group, name, prompt string) error {
-	password, err := speakeasy.Ask(prompt)
+func (c Config) PromptSecret(group, name, prompt string) error {
+	plainText, err := speakeasy.Ask(prompt)
 	if err != nil {
 		return fmt.Errorf("Error reading secret from terminal: %v", err)
 	}
-	c.Set(group, name, password)
+
+	cipherText, err := util.Cloak(plainText)
+	if err != nil {
+		return fmt.Errorf("Error encrypting secret: %v", err)
+	}
+
+	c.Set(group, name, cipherText)
 	return nil
 }
 

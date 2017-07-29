@@ -27,12 +27,6 @@
 			"revisionTime": "2016-10-29T20:57:26Z"
 		},
 		{
-			"checksumSHA1": "AANTVr9CVVyzsgviODY6Wi2thuM=",
-			"path": "github.com/fatih/color",
-			"revision": "62e9147c64a1ed519147b62a56a14e83e2be02c1",
-			"revisionTime": "2017-05-23T20:24:04Z"
-		},
-		{
 			"checksumSHA1": "qlPUeFabwF4RKAOF1H+yBFU1Veg=",
 			"path": "github.com/golang/protobuf/proto",
 			"revision": "e325f446bebc2998605911c0a2650d9920361d4a",

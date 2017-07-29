@@ -20,10 +20,10 @@ func (m *MavenRepoTool) Login(project *domain.Project, repo string) error {
 	if err := config.Read(); err != nil {
 		// ignore
 	}
-	if err := config.SetPlainText(project.Name, fmt.Sprintf("%v-username", repo), "Username: "); err != nil {
+	if err := config.PromptPlainText(project.Name, fmt.Sprintf("%v-username", repo), "Username: "); err != nil {
 
 	}
-	if err := config.SetSecret(project.Name, fmt.Sprintf("%v-password", repo), "Password: "); err != nil {
+	if err := config.PromptSecret(project.Name, fmt.Sprintf("%v-password", repo), "Password: "); err != nil {
 
 	}
 	if err := config.Write(); err != nil {
@@ -40,7 +40,10 @@ func (m *MavenRepoTool) Release(project *domain.Project, repo string) error {
 	}
 
 	username := config.Get(project.Name, fmt.Sprintf("%v-username", repo))
-	password := config.Get(project.Name, fmt.Sprintf("%v-password", repo))
+	password, err := config.GetSecret(project.Name, fmt.Sprintf("%v-password", repo))
+	if err != nil {
+		return err
+	}
 
 	repository, ok := project.Repositories[repo]
 	if !ok {
