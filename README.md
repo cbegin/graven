@@ -273,5 +273,4 @@ It automatically selects the vendor file to use in priority order as follows:
 
 - maven repo tool support for dependencies
 - docker release repo support
-- obfuscate passwords
 
