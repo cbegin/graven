@@ -89,13 +89,16 @@ func uploadFile(uri, username, password, filepath string) error {
 	}
 	defer resp.Body.Close()
 	body := &bytes.Buffer{}
+
 	_, err = body.ReadFrom(resp.Body)
 	if err != nil {
 		return err
 	}
-	fmt.Println(resp.StatusCode)
-	fmt.Println(resp.Header)
-	fmt.Println(body)
+
+	if resp.StatusCode >= 400 {
+		return fmt.Errorf("Error [%v]: %v", resp.StatusCode, body)
+	}
+
 	return nil
 }
 

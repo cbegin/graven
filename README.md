@@ -271,5 +271,7 @@ It automatically selects the vendor file to use in priority order as follows:
 
 ## TODO
 
-- nexus repo tool support (releases and freezing?)
+- maven repo tool support for dependencies
+- docker release repo support
+- obfuscate passwords
 
