@@ -34,18 +34,16 @@ func release(c *cli.Context) error {
 		return err
 	}
 
-	//TODO: Make this configurable
-
 	repoToolMap := map[string]repotool.RepoTool{}
 	repoToolMap["github"] = &repotool.GithubRepoTool{}
 	repoToolMap["maven"] = &repotool.MavenRepoTool{}
 	for repoName, repo := range project.Repositories {
-		if repoTool, ok := repoToolMap[repo["type"]]; ok {
+		if repoTool, ok := repoToolMap[repo.Type]; ok {
 			if err := repoTool.Release(project, repoName); err != nil {
 				return err
 			}
 		} else {
-			fmt.Println("Unkown repository type %v: ", repo["type"])
+			fmt.Println("Unkown repository type %v: ", repo.Type)
 		}
 	}
 

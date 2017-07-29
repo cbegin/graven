@@ -10,7 +10,7 @@ import (
 
 const (
 	ProjectFileName = "project.yaml"
-	TargetDirName   = "target"
+	TargetDirName = "target"
 )
 
 type Project struct {
@@ -18,7 +18,7 @@ type Project struct {
 	Name         string                       `yaml:"name"`
 	Version      string                       `yaml:"version"`
 	Artifacts    []Artifact                   `yaml:"artifacts"`
-	Repositories map[string]map[string]string `yaml:"repositories"`
+	Repositories map[string]Repository        `yaml:"repositories"`
 	Resources    []string                     `yaml:"resources"`
 }
 
@@ -38,12 +38,14 @@ type Target struct {
 }
 
 type Repository struct {
-	Name     string `yaml:"name"`
-	URL      string `yaml:"url"`
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
-	Token    string `yaml:"token"`
-	Type     string `yaml:"type"`
+	Name       string `yaml:"name"`
+	URL        string `yaml:"url"`
+	GroupID    string `yaml:"group_id"`
+	ArtifactID string `yaml:"artifact_id"`
+	Owner      string `yaml:"owner"`
+	Repo       string `yaml:"repo"`
+	Type       string `yaml:"type"`
+	Roles      []string `yaml:"roles"`
 }
 
 func (p *Project) TargetPath(subdirs ...string) string {

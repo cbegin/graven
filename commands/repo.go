@@ -50,7 +50,7 @@ func repo(c *cli.Context) error {
 	}
 
 	if c.Bool("login") {
-		if repoTool, ok := repoTools[repository["type"]]; ok {
+		if repoTool, ok := repoTools[repository.Type]; ok {
 			err := repoTool.Login(project, repoName)
 			if err != nil {
 				return err

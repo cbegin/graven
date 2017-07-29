@@ -272,9 +272,4 @@ It automatically selects the vendor file to use in priority order as follows:
 ## TODO
 
 - nexus repo tool support (releases and freezing?)
-- artifactory: admin / password
-- nexus: admin / admin123
-
-$ curl -u uploader:password -T greeting.txt -X PUT "http://localhost:8081/artifactory/releases/com/github/cbegin/graven/fc92ojlkj3/greeting.txt"
-$ curl -u admin:admin123 -T greeting.txt -X PUT http://localhost:8082/nexus/content/repositories/releases/com/github/cbegin/graven/fc92ojlkj3/greeting.txt
 

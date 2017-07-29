@@ -51,9 +51,9 @@ func (m *MavenRepoTool) Release(project *domain.Project, repo string) error {
 		filename := a.ArtifactFile(project)
 		filepath := project.TargetPath(filename)
 
-		repoURL, err := url.Parse(repository["url"])
-		groupPath := strings.Replace(repository["group_id"], ".", "/", -1)
-		artifactId := repository["artifact_id"]
+		repoURL, err := url.Parse(repository.URL)
+		groupPath := strings.Replace(repository.GroupID, ".", "/", -1)
+		artifactId := repository.ArtifactID
 		repoURL.Path = path.Join(repoURL.Path, groupPath, artifactId, project.Version, filename)
 		if err != nil {
 			return err

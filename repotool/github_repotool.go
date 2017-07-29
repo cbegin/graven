@@ -38,8 +38,8 @@ func (g *GithubRepoTool) Release(project *domain.Project, repo string) error {
 		return fmt.Errorf("Sorry, could not find repo configuration named %v", repo)
 	}
 
-	ownerName := repository["owner"]
-	repoName := repository["repo"]
+	ownerName := repository.Owner
+	repoName := repository.Repo
 
 	tagName := fmt.Sprintf("v%s", project.Version)
 	releaseName := tagName
@@ -94,7 +94,7 @@ func authenticate(project *domain.Project, repo string) (*github.Client, context
 
 	client := github.NewClient(tc)
 	if repository, hasRepo := project.Repositories[repo]; hasRepo {
-		if baseURL, hasBaseURL := repository["url"]; hasBaseURL {
+		if baseURL := repository.URL; baseURL != "" {
 			apiUrl := fmt.Sprintf("%v/api/v3/", baseURL)
 			uploadUrl := fmt.Sprintf("%v/api/uploads/", baseURL)
 			if u, err := url.ParseRequestURI(apiUrl); err != nil {
