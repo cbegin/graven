@@ -2,15 +2,13 @@ package repotool
 
 import (
 	"fmt"
-	"os"
-	"net/http"
-	"bytes"
 	"net/url"
 	"path"
 	"strings"
 
 	"github.com/cbegin/graven/config"
 	"github.com/cbegin/graven/domain"
+	"github.com/cbegin/graven/util"
 )
 
 type MavenRepoTool struct{}
@@ -62,7 +60,7 @@ func (m *MavenRepoTool) Release(project *domain.Project, repo string) error {
 			return err
 		}
 
-		if err := uploadFile(repoURL.String(), username, password, filepath); err != nil {
+		if err := util.UploadFile(repoURL.String(), username, password, filepath); err != nil {
 			return err
 		}
 
@@ -70,38 +68,3 @@ func (m *MavenRepoTool) Release(project *domain.Project, repo string) error {
 	}
 	return nil
 }
-
-func uploadFile(uri, username, password, filepath string) error {
-	file, err := os.Open(filepath)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	req, err := http.NewRequest("PUT", uri, file)
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Content-Type", "application/octet-stream")
-	req.SetBasicAuth(username, password)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	body := &bytes.Buffer{}
-
-	_, err = body.ReadFrom(resp.Body)
-	if err != nil {
-		return err
-	}
-
-	if resp.StatusCode >= 400 {
-		return fmt.Errorf("Error [%v]: %v", resp.StatusCode, body)
-	}
-
-	return nil
-}
-

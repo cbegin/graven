@@ -1,5 +1,5 @@
 name: graven
-version: 0.9.5-DEV
+version: 0.9.9-DEV
 artifacts:
 - classifier: darwin
   targets:
@@ -35,6 +35,17 @@ artifacts:
     GOARCH: amd64
     GOOS: windows
 repositories:
+  artifactory:
+    name: ""
+    url: http://localhost:8081/artifactory/releases/
+    group_id: com.github.cbegin
+    artifact_id: graven
+    owner: ""
+    repo: ""
+    type: maven
+    roles:
+    - release
+    - dependency
   nexus:
     name: ""
     url: http://localhost:8082/nexus/content/repositories/releases/

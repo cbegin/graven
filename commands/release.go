@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/repotool"
@@ -23,15 +24,19 @@ func release(c *cli.Context) error {
 
 	//TODO: Make this configurable
 	var vcsTool vcstool.VCSTool = &vcstool.GitVCSTool{}
-	if err := vcsTool.VerifyRepoState(project); err != nil {
-		return err
+	if os.Getenv("TESTRELEASE") == "" {
+		if err := vcsTool.VerifyRepoState(project); err != nil {
+			return err
+		}
 	}
 	if err := pkg(c); err != nil {
 		return err
 	}
-	tagName := fmt.Sprintf("v%s", project.Version)
-	if err := vcsTool.Tag(project, tagName); err != nil {
-		return err
+	if os.Getenv("TESTRELEASE") == "" {
+		tagName := fmt.Sprintf("v%s", project.Version)
+		if err := vcsTool.Tag(project, tagName); err != nil {
+			return err
+		}
 	}
 
 	repoToolMap := map[string]repotool.RepoTool{}
