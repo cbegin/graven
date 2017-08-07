@@ -41,6 +41,10 @@ func (g *GlidePackage) PackagePath() string {
 	return osIndependentPath
 }
 
+func (g *GlidePackage) Tag() string {
+	return g.Version
+}
+
 func (g *GlideVendorTool) VendorFileExists(project *domain.Project) bool {
 	vendorFilePath := project.ProjectPath("glide.lock")
 	return util.PathExists(vendorFilePath)

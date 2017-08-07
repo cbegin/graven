@@ -40,6 +40,10 @@ func (g *DepPackage) PackagePath() string {
 	return osIndependentPath
 }
 
+func (g *DepPackage) Tag() string {
+	return g.Revision
+}
+
 func (g *DepVendorTool) VendorFileExists(project *domain.Project) bool {
 	vendorFilePath := project.ProjectPath("Gopkg.lock")
 	return util.PathExists(vendorFilePath)

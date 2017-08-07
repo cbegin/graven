@@ -36,7 +36,6 @@ artifacts:
     GOOS: windows
 repositories:
   artifactory:
-    name: ""
     url: http://localhost:8081/artifactory/releases/
     group_id: com.github.cbegin
     artifact_id: graven
@@ -47,7 +46,6 @@ repositories:
     - release
     - dependency
   nexus:
-    name: ""
     url: http://localhost:8082/nexus/content/repositories/releases/
     group_id: com.github.cbegin
     artifact_id: graven

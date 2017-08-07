@@ -8,6 +8,7 @@ import (
 	"github.com/cbegin/graven/util"
 	"github.com/cbegin/graven/vendortool"
 	"github.com/urfave/cli"
+	"github.com/cbegin/graven/repotool"
 )
 
 var supportedVendorTools = []vendortool.VendorTool{
@@ -73,6 +74,20 @@ func freeze(c *cli.Context) error {
 		err = util.ZipDir(sourcePath, targetFile, false)
 		if err != nil {
 			return err
+		}
+
+		for repoName, repo := range project.Repositories {
+			if repo.HasRole(domain.RepositoryRoleDependency) {
+				if repoTool, ok := repotool.RepoRegistry[repo.Type]; ok {
+					if err := repoTool.UploadDependency(project, repoName, targetFile, vendortool.Coordinates(p)); err != nil {
+						fmt.Println(err)
+					}
+
+				} else {
+					fmt.Printf("Unkown repository type %v for %v\n", repo.Type, repoName)
+					break
+				}
+			}
 		}
 	}
 

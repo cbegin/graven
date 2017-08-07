@@ -11,6 +11,9 @@ import (
 const (
 	ProjectFileName = "project.yaml"
 	TargetDirName = "target"
+
+	RepositoryRoleRelease = "release"
+	RepositoryRoleDependency = "dependency"
 )
 
 type Project struct {
@@ -38,7 +41,6 @@ type Target struct {
 }
 
 type Repository struct {
-	Name       string `yaml:"name"`
 	URL        string `yaml:"url"`
 	GroupID    string `yaml:"group_id"`
 	ArtifactID string `yaml:"artifact_id"`
@@ -66,6 +68,15 @@ func (p *Project) ProjectPath(subdirs ...string) string {
 
 func (a *Artifact) ArtifactFile(project *Project) string {
 	return fmt.Sprintf("%s-%s-%s.%s", project.Name, project.Version, a.Classifier, a.Archive)
+}
+
+func (r *Repository) HasRole(role string) bool {
+	for _, r := range r.Roles {
+		if r == role {
+			return true
+		}
+	}
+	return false
 }
 
 var FindProject = internalFindProject
@@ -113,3 +124,4 @@ func LoadProject(filepath string) (*Project, error) {
 	project.FilePath = filepath
 	return project, nil
 }
+

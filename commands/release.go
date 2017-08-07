@@ -39,16 +39,15 @@ func release(c *cli.Context) error {
 		}
 	}
 
-	repoToolMap := map[string]repotool.RepoTool{}
-	repoToolMap["github"] = &repotool.GithubRepoTool{}
-	repoToolMap["maven"] = &repotool.MavenRepoTool{}
 	for repoName, repo := range project.Repositories {
-		if repoTool, ok := repoToolMap[repo.Type]; ok {
-			if err := repoTool.Release(project, repoName); err != nil {
-				return err
+		if repo.HasRole(domain.RepositoryRoleRelease) {
+			if repoTool, ok := repotool.RepoRegistry[repo.Type]; ok {
+				if err := repoTool.Release(project, repoName); err != nil {
+					return err
+				}
+			} else {
+				fmt.Printf("Unkown repository type %v for %v\n", repo.Type, repoName)
 			}
-		} else {
-			fmt.Println("Unkown repository type %v: ", repo.Type)
 		}
 	}
 
