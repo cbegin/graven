@@ -3,8 +3,8 @@ package repotool
 import (
 	"context"
 	"fmt"
-	"os"
 	"net/url"
+	"os"
 
 	"github.com/cbegin/graven/config"
 	"github.com/cbegin/graven/domain"
@@ -38,8 +38,8 @@ func (g *GithubRepoTool) Release(project *domain.Project, repo string) error {
 		return fmt.Errorf("Sorry, could not find repo configuration named %v", repo)
 	}
 
-	ownerName := repository.Owner
-	repoName := repository.Repo
+	ownerName := repository.Group
+	repoName := repository.Artifact
 
 	tagName := fmt.Sprintf("v%s", project.Version)
 	releaseName := tagName
@@ -75,7 +75,7 @@ func (g *GithubRepoTool) Release(project *domain.Project, repo string) error {
 }
 
 func (g *GithubRepoTool) UploadDependency(project *domain.Project, repo string, dependencyFile, dependencyPath string) error {
-	return fmt.Errorf("Github repos aren't supported for dependencies.")
+	return fmt.Errorf("Github repos don't support dependencies.")
 }
 
 func authenticate(project *domain.Project, repo string) (*github.Client, context.Context, error) {

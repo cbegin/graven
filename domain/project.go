@@ -10,19 +10,19 @@ import (
 
 const (
 	ProjectFileName = "project.yaml"
-	TargetDirName = "target"
+	TargetDirName   = "target"
 
-	RepositoryRoleRelease = "release"
+	RepositoryRoleRelease    = "release"
 	RepositoryRoleDependency = "dependency"
 )
 
 type Project struct {
-	FilePath     string                       `yaml:",omitempty"`
-	Name         string                       `yaml:"name"`
-	Version      string                       `yaml:"version"`
-	Artifacts    []Artifact                   `yaml:"artifacts"`
-	Repositories map[string]Repository        `yaml:"repositories"`
-	Resources    []string                     `yaml:"resources"`
+	FilePath     string                `yaml:",omitempty"`
+	Name         string                `yaml:"name"`
+	Version      string                `yaml:"version"`
+	Artifacts    []Artifact            `yaml:"artifacts"`
+	Repositories map[string]Repository `yaml:"repositories"`
+	Resources    []string              `yaml:"resources"`
 }
 
 type Artifact struct {
@@ -41,13 +41,12 @@ type Target struct {
 }
 
 type Repository struct {
-	URL        string `yaml:"url"`
-	GroupID    string `yaml:"group_id"`
-	ArtifactID string `yaml:"artifact_id"`
-	Owner      string `yaml:"owner"`
-	Repo       string `yaml:"repo"`
-	Type       string `yaml:"type"`
-	Roles      []string `yaml:"roles"`
+	URL      string   `yaml:"url"`
+	Group    string   `yaml:"group"`
+	Artifact string   `yaml:"artifact"`
+	File     string   `yaml:"file"`
+	Type     string   `yaml:"type"`
+	Roles    []string `yaml:"roles"`
 }
 
 func (p *Project) TargetPath(subdirs ...string) string {
@@ -124,4 +123,3 @@ func LoadProject(filepath string) (*Project, error) {
 	project.FilePath = filepath
 	return project, nil
 }
-
