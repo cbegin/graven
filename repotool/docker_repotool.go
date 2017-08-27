@@ -2,12 +2,11 @@ package repotool
 
 import (
 	"fmt"
-	"path"
-	"path/filepath"
 
 	"github.com/cbegin/graven/config"
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
+	"path"
 )
 
 type DockerRepotool struct{}
@@ -44,13 +43,8 @@ func (r *DockerRepotool) Release(project *domain.Project, repo string) error {
 
 	dockerPath := path.Join(repository.URL, repository.Group, repository.Artifact)
 	dockerTag := fmt.Sprintf("%v:%v", dockerPath, project.Version)
-	dockerDir := filepath.Dir(project.ProjectPath(repository.File))
 
-	if sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "docker", "build", "-f", repository.File, "-t", dockerTag, dockerDir); err != nil {
-		fmt.Printf("Running Docker build...  %v\n%v\n", sout, serr)
-		return err
-	}
-
+	fmt.Printf("Pushing docker image %v\n", dockerTag)
 	if sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "docker", "push", dockerTag); err != nil {
 		fmt.Printf("Running Docker build...  %v\n%v\n", sout, serr)
 		return err

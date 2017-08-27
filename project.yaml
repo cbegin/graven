@@ -1,5 +1,5 @@
 name: graven
-version: 0.9.15-DEV
+version: 0.9.17-DEV
 artifacts:
 - classifier: darwin
   targets:
