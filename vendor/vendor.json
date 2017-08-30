@@ -57,18 +57,6 @@
 			"revisionTime": "2016-12-16T18:43:04Z"
 		},
 		{
-			"checksumSHA1": "uAVg4Tj5Fxi62z7/ScDEkHr6Ue8=",
-			"path": "github.com/mattn/go-colorable",
-			"revision": "ded68f7a9561c023e790de24279db7ebf473ea80",
-			"revisionTime": "2017-03-27T08:33:44Z"
-		},
-		{
-			"checksumSHA1": "U6lX43KDDlNOn+Z0Yyww+ZzHfFo=",
-			"path": "github.com/mattn/go-isatty",
-			"revision": "fc9e8d8ef48496124e79ae0df75490096eccf6fe",
-			"revisionTime": "2017-03-22T23:44:13Z"
-		},
-		{
 			"checksumSHA1": "F1IYMLBLAZaTOWnmXsgaxTGvrWI=",
 			"path": "github.com/pelletier/go-buffruneio",
 			"revision": "c37440a7cf42ac63b919c752ca73a85067e05992",
@@ -115,12 +103,6 @@
 			"path": "golang.org/x/oauth2/internal",
 			"revision": "f047394b6d14284165300fd82dad67edb3a4d7f6",
 			"revisionTime": "2017-05-17T17:14:19Z"
-		},
-		{
-			"checksumSHA1": "Tkb1hBdBWeO7SGjixS2Hm48F6+s=",
-			"path": "golang.org/x/sys/unix",
-			"revision": "0b25a408a50076fbbcae6b7ac0ea5fbb0b085e79",
-			"revisionTime": "2017-06-08T11:43:49Z"
 		},
 		{
 			"checksumSHA1": "WPEbk80NB3Esdh4Yk0PXr2K7xVU=",
