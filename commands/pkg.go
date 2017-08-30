@@ -9,6 +9,8 @@ import (
 	"github.com/cbegin/graven/util"
 	"github.com/hashicorp/go-multierror"
 	"github.com/urfave/cli"
+	"path"
+	"path/filepath"
 )
 
 var PackageCommand = cli.Command{
@@ -44,6 +46,20 @@ func pkg(c *cli.Context) error {
 		}()
 	}
 	wg.Wait()
+
+	for _, repo := range project.Repositories {
+		if repo.Type == "docker" && repo.HasRole("release") {
+			dockerPath := path.Join(repo.URL, repo.Group, repo.Artifact)
+			dockerTag := fmt.Sprintf("%v:%v", dockerPath, project.Version)
+			dockerDir := filepath.Dir(project.ProjectPath(repo.File))
+			fmt.Printf("Building docker image %v\n", dockerTag)
+			if sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "docker", "build", "-f", repo.File, "-t", dockerTag, dockerDir); err != nil {
+				fmt.Printf("%v\n%v\n", sout, serr)
+				merr = multierror.Append(merr, err)
+			}
+		}
+	}
+
 	return merr
 }
 

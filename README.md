@@ -224,23 +224,34 @@ artifacts:
 # Use graven release --login to set the github token.
 repositories:
   github:
+    url: https://api.github.com/
+    group: cbegin
+    artifact: graven
+    type: git
     # Github repos only support releases
     roles: release
-    # URL for private git repos can be set here. Defaults to Github.
-    # url: https://api.github.com/
-    owner: cbegin
-    repo: graven
-    type: git
   artifactory:
-    # Supports both releases and dependencies
-    roles: release, dependency
     url: http://localhost:8081/artifactory/releases/
+    group: cbegin
+    artifact: graven
     type: maven
-  nexus:
     # Supports both releases and dependencies
     roles: release, dependency
+  nexus:
     url: http://localhost:8082/nexus/content/repositories/releases/
+    group: cbegin
+    artifact: graven
     type: maven
+    # Supports both releases and dependencies
+    roles: release, dependency
+  docker:
+    url: docker.io
+    group: cbegin
+    artifact: graven
+    type: docker
+    file: Dockerfile
+    # Docker repos only support releases
+    roles: release
 # Resources will be included in the packaged archive. Can be overridden at 
 # artifact level.
 resources:
@@ -272,5 +283,4 @@ It automatically selects the vendor file to use in priority order as follows:
 ## TODO
 
 - maven repo tool support for dependencies
-- docker release repo support
 

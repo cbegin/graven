@@ -9,13 +9,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var (
-	repoTools = map[string]repotool.RepoTool{
-		"github":&repotool.GithubRepoTool{},
-		"maven":&repotool.MavenRepoTool{},
-	}
-)
-
 var RepoCommand = cli.Command{
 	Name:   "repo",
 	Usage:  "Manages repository connections",
@@ -28,7 +21,6 @@ var RepoCommand = cli.Command{
 		cli.StringFlag{
 			Name:  "name",
 			Usage: "Name of the repo to manage.",
-
 		},
 	},
 }
@@ -50,7 +42,7 @@ func repo(c *cli.Context) error {
 	}
 
 	if c.Bool("login") {
-		if repoTool, ok := repoTools[repository.Type]; ok {
+		if repoTool, ok := repotool.RepoRegistry[repository.Type]; ok {
 			err := repoTool.Login(project, repoName)
 			if err != nil {
 				return err

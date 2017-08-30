@@ -14,20 +14,7 @@ import (
 type MavenRepoTool struct{}
 
 func (m *MavenRepoTool) Login(project *domain.Project, repo string) error {
-	config := config.NewConfig()
-	if err := config.Read(); err != nil {
-		// ignore
-	}
-	if err := config.PromptPlainText(project.Name, fmt.Sprintf("%v-username", repo), "Username: "); err != nil {
-
-	}
-	if err := config.PromptSecret(project.Name, fmt.Sprintf("%v-password", repo), "Password: "); err != nil {
-
-	}
-	if err := config.Write(); err != nil {
-		return fmt.Errorf("Error writing configuration file. %v", err)
-	}
-	return nil
+	return GenericLogin(project, repo)
 }
 
 func (m *MavenRepoTool) Release(project *domain.Project, repo string) error {
@@ -53,8 +40,8 @@ func (m *MavenRepoTool) Release(project *domain.Project, repo string) error {
 		filepath := project.TargetPath(filename)
 
 		repoURL, err := url.Parse(repository.URL)
-		groupPath := strings.Replace(repository.GroupID, ".", "/", -1)
-		artifactId := repository.ArtifactID
+		groupPath := strings.Replace(repository.Group, ".", "/", -1)
+		artifactId := repository.Artifact
 		repoURL.Path = path.Join(repoURL.Path, groupPath, artifactId, project.Version, filename)
 		if err != nil {
 			return err
