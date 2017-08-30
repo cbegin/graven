@@ -8,21 +8,24 @@ import (
 
 var (
 	key = []byte("9riX.Jax2gvKy4%4{[H#Nd,E")
-	iv = []byte("<'RnpW4E3.L:/Ax*")
+	nonce = []byte("04f6d37b804f")
 )
 
 // Simple obfuscation function to help avoid over-the-shoulder
-// viewing of passwords and other data. No intended to be
+// viewing of passwords and other data. Not intended to be
 // cryptographically secure.
 func Cloak(text string) (string, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", err
+		panic(err.Error())
 	}
-	plaintext := []byte(text)
-	cfb := cipher.NewCFBEncrypter(block, iv)
-	ciphertext := make([]byte, len(plaintext))
-	cfb.XORKeyStream(ciphertext, plaintext)
+
+	aesgcm, err := cipher.NewGCM(block)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	ciphertext := aesgcm.Seal(nil, nonce, []byte(text), nil)
 	return encodeBase64(ciphertext), nil
 }
 
@@ -30,17 +33,26 @@ func Cloak(text string) (string, error) {
 // viewing of passwords and other data. No intended to be
 // cryptographically secure.
 func Uncloak(text string) (string, error) {
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		return "", err
-	}
 	ciphertext, err := decodeBase64(text)
 	if err != nil {
 		return "", err
 	}
-	cfb := cipher.NewCFBEncrypter(block, iv)
-	plaintext := make([]byte, len(ciphertext))
-	cfb.XORKeyStream(plaintext, ciphertext)
+
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	aesgcm, err := cipher.NewGCM(block)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	plaintext, err := aesgcm.Open(nil, nonce, ciphertext, nil)
+	if err != nil {
+		panic(err.Error())
+	}
+
 	return string(plaintext), nil
 }
 
