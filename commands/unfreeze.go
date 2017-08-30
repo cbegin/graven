@@ -45,6 +45,10 @@ func unfreeze(c *cli.Context) error {
 						if err := repoTool.DownloadDependency(project, repoName, sourceFile, vendortool.Coordinates(p)); err != nil {
 							fmt.Println(err)
 						} else {
+							err = util.UnzipDir(sourceFile, targetDir)
+							if err != nil {
+								fmt.Println(err)
+							}
 							break
 						}
 					} else {

@@ -43,5 +43,21 @@ repositories:
     type: docker
     roles:
     - release
+  artifactory:
+    url: http://localhost:8081/artifactory/releases/
+    group: cbegin
+    artifact: graven
+    type: maven
+    # Supports both releases and dependencies
+    roles:
+    - dependency
+  nexus:
+    url: http://localhost:8082/nexus/content/repositories/releases/
+    group: cbegin
+    artifact: graven
+    type: maven
+    # Supports both releases and dependencies
+    roles:
+    - dependency
 resources:
 - LICENSE
