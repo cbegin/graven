@@ -1,5 +1,5 @@
 name: graven
-version: 0.9.17-DEV
+version: 0.9.17
 artifacts:
 - classifier: darwin
   targets:
@@ -35,29 +35,13 @@ artifacts:
     GOARCH: amd64
     GOOS: windows
 repositories:
-  docker:
-    url: docker.io
+  github:
+    url: ""
     group: cbegin
     artifact: graven
-    file: test_fixtures/Dockerfile
-    type: docker
+    file: ""
+    type: github
     roles:
     - release
-  artifactory:
-    url: http://localhost:8081/artifactory/releases/
-    group: cbegin
-    artifact: graven
-    type: maven
-    # Supports both releases and dependencies
-    roles:
-    - dependency
-  nexus:
-    url: http://localhost:8082/nexus/content/repositories/releases/
-    group: cbegin
-    artifact: graven
-    type: maven
-    # Supports both releases and dependencies
-    roles:
-    - dependency
 resources:
 - LICENSE
