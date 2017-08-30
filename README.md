@@ -279,8 +279,3 @@ It automatically selects the vendor file to use in priority order as follows:
 * Glide: `glide.lock`
 * Dep: `Gopkg.lock`
 
-
-## TODO
-
-- maven repo tool support for dependencies
-
