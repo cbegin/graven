@@ -7,6 +7,8 @@ import (
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
 	"github.com/urfave/cli"
+	"github.com/cbegin/graven/repotool"
+	"github.com/cbegin/graven/vendortool"
 )
 
 var UnfreezeCommand = cli.Command{
@@ -37,13 +39,26 @@ func unfreeze(c *cli.Context) error {
 
 		_, err := os.Stat(sourceFile)
 		if os.IsNotExist(err) {
-			fmt.Printf("MISSING frozen dependency: %s => %s\n", p.ArchiveFileName(), p.PackagePath())
+			for repoName, repo := range project.Repositories {
+				if repo.HasRole(domain.RepositoryRoleDependency) {
+					if repoTool, ok := repotool.RepoRegistry[repo.Type]; ok {
+						if err := repoTool.DownloadDependency(project, repoName, sourceFile, vendortool.Coordinates(p)); err != nil {
+							fmt.Println(err)
+						} else {
+							break
+						}
+					} else {
+						fmt.Printf("Unkown repository type %v for %v\n", repo.Type, repoName)
+					}
+				}
+			}
 		} else {
 			err = util.UnzipDir(sourceFile, targetDir)
 			if err != nil {
 				return err
 			}
 		}
+
 	}
 
 	return nil

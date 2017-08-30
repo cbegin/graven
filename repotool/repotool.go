@@ -13,4 +13,5 @@ type RepoTool interface {
 	Release(project *domain.Project, repo string) error
 	Login(project *domain.Project, repo string) error
 	UploadDependency(project *domain.Project, repo string, dependencyFile, dependencyPath string) error
+	DownloadDependency(project *domain.Project, repo string, dependencyFile, dependencyPath string) error
 }

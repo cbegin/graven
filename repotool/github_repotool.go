@@ -78,6 +78,10 @@ func (g *GithubRepoTool) UploadDependency(project *domain.Project, repo string, 
 	return fmt.Errorf("Github repos aren't supported for dependencies.")
 }
 
+func (g *GithubRepoTool) DownloadDependency(project *domain.Project, repo string, dependencyFile, dependencyPath string) error {
+	return fmt.Errorf("Github repos aren't supported for dependencies.")
+}
+
 func authenticate(project *domain.Project, repo string) (*github.Client, context.Context, error) {
 	config := config.NewConfig()
 

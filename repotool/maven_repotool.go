@@ -98,3 +98,33 @@ func (m *MavenRepoTool) UploadDependency(project *domain.Project, repo string, d
 	}
 	return nil
 }
+
+func (m *MavenRepoTool) DownloadDependency(project *domain.Project, repo string, dependencyFile, dependencyPath string) error {
+	config := config.NewConfig()
+
+	if err := config.Read(); err != nil {
+		return fmt.Errorf("Error reading configuration (try: release --login): %v", err)
+	}
+
+	repository, ok := project.Repositories[repo]
+	if !ok {
+		return fmt.Errorf("Sorry, could not find repo configuration named %v", repo)
+	}
+
+	username := config.Get(project.Name, fmt.Sprintf("%v-username", repo))
+	password, err := config.GetSecret(project.Name, fmt.Sprintf("%v-password", repo))
+	if err != nil {
+		return err
+	}
+
+	repoUrl, err := url.Parse(repository.URL)
+	fullPath := path.Join(repoUrl.Path, dependencyPath)
+	repoUrl.Path = fullPath
+
+	if exists, err := util.HttpExists(repoUrl.String(), username, password); err != nil {
+		return err
+	} else if !exists {
+		return fmt.Errorf("%v doesn't exist", repoUrl.String())
+	}
+	return util.DownloadFile(repoUrl.String(), username, password, dependencyFile)
+}
