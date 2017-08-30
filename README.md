@@ -126,7 +126,7 @@ $ graven test
 $ graven package
 
 # When you're ready to release
-$ graven release --login
+$ graven repo --login --name github
 Please type or paste a github token (will not echo):
 $ graven release
 $ graven bump [major|minor|patch|QUALIFIER]

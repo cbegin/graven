@@ -21,7 +21,7 @@ func (m *MavenRepoTool) Release(project *domain.Project, repo string) error {
 	config := config.NewConfig()
 
 	if err := config.Read(); err != nil {
-		return fmt.Errorf("Error reading configuration (try: release --login): %v", err)
+		return fmt.Errorf("Error reading configuration (try: graven repo --login --name %v): %v", repo, err)
 	}
 
 	username := config.Get(project.Name, fmt.Sprintf("%v-username", repo))
@@ -60,7 +60,7 @@ func (m *MavenRepoTool) UploadDependency(project *domain.Project, repo string, d
 	config := config.NewConfig()
 
 	if err := config.Read(); err != nil {
-		return fmt.Errorf("Error reading configuration (try: release --login): %v", err)
+		return fmt.Errorf("Error reading configuration (try: graven repo --login --name %v): %v", repo, err)
 	}
 
 	repository, ok := project.Repositories[repo]
@@ -90,7 +90,7 @@ func (m *MavenRepoTool) DownloadDependency(project *domain.Project, repo string,
 	config := config.NewConfig()
 
 	if err := config.Read(); err != nil {
-		return fmt.Errorf("Error reading configuration (try: release --login): %v", err)
+		return fmt.Errorf("Error reading configuration (try: graven repo --login --name %v): %v", repo, err)
 	}
 
 	repository, ok := project.Repositories[repo]

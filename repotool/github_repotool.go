@@ -86,7 +86,7 @@ func authenticate(project *domain.Project, repo string) (*github.Client, context
 	config := config.NewConfig()
 
 	if err := config.Read(); err != nil {
-		return nil, nil, fmt.Errorf("Error reading configuration (try: release --login): %v", err)
+		return nil, nil, fmt.Errorf("Error reading configuration (try: graven repo --login --name %v): %v", repo, err)
 	}
 
 	token, err := config.GetSecret(project.Name, repo)
@@ -94,7 +94,7 @@ func authenticate(project *domain.Project, repo string) (*github.Client, context
 		return nil, nil, err
 	}
 	if token == "" {
-		return nil, nil, fmt.Errorf("Configuration missing token (try: release --login).")
+		return nil, nil, fmt.Errorf("Configuration missing token (try: graven repo --login --name %v).", repo)
 	}
 
 	ctx := context.Background()
