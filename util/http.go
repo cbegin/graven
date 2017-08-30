@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"path/filepath"
 )
 
 func HttpExists(uri, username, password string) (bool, error) {
@@ -33,7 +34,7 @@ func HttpExists(uri, username, password string) (bool, error) {
 	return true, nil
 }
 
-func DownloadFile(uri, username, password, filepath string) error {
+func DownloadFile(uri, username, password, targetPath string) error {
 	req, err := http.NewRequest("GET", uri, http.NoBody)
 	if err != nil {
 		return err
@@ -47,7 +48,9 @@ func DownloadFile(uri, username, password, filepath string) error {
 	}
 	defer resp.Body.Close()
 
-	file, err := os.Create(filepath)
+	os.MkdirAll(filepath.Dir(targetPath),0755)
+
+	file, err := os.Create(targetPath)
 	if err != nil {
 		return err
 	}
