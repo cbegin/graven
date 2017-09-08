@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"reflect"
 
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/repotool"
@@ -47,6 +48,8 @@ func repo(c *cli.Context) error {
 			if err != nil {
 				return err
 			}
+		} else {
+			fmt.Printf("Unknown repo type: %v. Expected one of %v", repository.Type, reflect.ValueOf(repotool.RepoRegistry).MapKeys())
 		}
 	} else {
 		s, err := yaml.Marshal(repository)

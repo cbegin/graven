@@ -51,12 +51,5 @@ func release(c *cli.Context) error {
 		}
 	}
 
-	if bumpVersion(project, "patch"); err != nil {
-		return err
-	}
-	if bumpVersion(project, "DEV"); err != nil {
-		return err
-	}
-
 	return nil
 }
