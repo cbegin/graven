@@ -94,10 +94,13 @@ here: [Freezing Dependencies](docs/freezing.md).
                                +----------+                           
 ```
 
-# project.yaml
+# project.yaml example
 
-For many projects, only minimal interaction will be needed with `project.yaml`
-after initialization. The following documented structure (derived from this
+**Before you have flashbacks of Maven POMs...** note that this is probably the 
+biggest project.yaml file you'll ever see. Most projects will have shorter,
+simpler project.yaml files, and you'll rarely have to modify them once initialized.
+
+The following documented structure (derived from this
 very project) will help better understand what you can do with it. 
 
 ```yaml
