@@ -5,7 +5,7 @@ cues from projects like Maven and Leiningen, but given Go's much
 simpler environment and far different take on dependency management, 
 little is shared beyond the goals.
 
-Want to know more? Read about the [docs/motivation.md](Motivation for Graven)
+Want to know more? Read about the [Motivation for Graven](docs/motivation.md)
 
 # Prerequisites
 
