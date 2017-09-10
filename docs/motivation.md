@@ -1,4 +1,4 @@
-# Design Motivation
+# Motivation for Graven
 
 ## Providing an easy, uniform build system
 

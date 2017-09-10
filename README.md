@@ -5,6 +5,8 @@ cues from projects like Maven and Leiningen, but given Go's much
 simpler environment and far different take on dependency management, 
 little is shared beyond the goals.
 
+Want to know more? Read about the [docs/motivation.md](Motivation for Graven)
+
 # Prerequisites
 
 Graven currently requires the following tools to be on your path:
@@ -151,7 +153,7 @@ artifacts:
 # artifact level.
 resources:
 - LICENSE
-# Configures an repository for deployment. 
+# Configures a repository for deployment. 
 # Use graven repo --login --name [name] to authenticate
 repositories:
   github:
@@ -160,21 +162,26 @@ repositories:
     artifact: graven
     type: github
     # Github repos only support releases
-    roles: release
+    roles: 
+    - release
   artifactory:
     url: http://localhost:8081/artifactory/releases/
     group: cbegin
     artifact: graven
     type: maven
-    # Supports both releases and dependencies
-    roles: release, dependency
+    # Supports both releases and frozen dependencies
+    roles: 
+    - release
+    - dependency
   nexus:
     url: http://localhost:8082/nexus/content/repositories/releases/
     group: cbegin
     artifact: graven
     type: maven
-    # Supports both releases and dependencies
-    roles: release, dependency
+    # Supports both releases and frozen dependencies
+    roles: 
+    - release
+    - dependency
   docker:
     url: docker.io
     group: cbegin
@@ -182,5 +189,13 @@ repositories:
     type: docker
     file: Dockerfile
     # Docker repos only support releases
-    roles: release
+    roles: 
+    - release
 ```
+## A Comment about Comments in project.yaml
+
+Currently Graven uses `gopkg.in/yaml.v2` which does not have round trip support for comments
+or document structure. Therefore, when Graven rewrites your project file at certain times, 
+your comments will be lost. I'll look at resolving this in the near future. Graven probably
+doesn't need rich YAML rewriting support, so I can probably get away with a minimal YAML 
+parser that preserves structure.
