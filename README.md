@@ -5,7 +5,7 @@ cues from projects like Maven and Leiningen, but given Go's much
 simpler environment and far different take on dependency management, 
 little is shared beyond the goals.
 
-Want to know more? Read about the [Motivation for Graven](docs/motivation.md)
+Want to know more? Read about the [Motivation for Graven](docs/motivation.md).
 
 # Prerequisites
 
@@ -59,10 +59,10 @@ $ graven release
 $ graven bump [major|minor|patch|QUALIFIER]
 ```
 
-A typical development cycle looks like this. The `init` command is run once 
-per project, then clean, build, test and package are typically used throughout 
-the development cycle. Releases occur less frequently, and versions are bumped 
-after the release.
+A typical development cycle looks like the following diagram. The `init` command 
+is run once per project, then `clean`, `build`, `test` and `package` are typically used 
+throughout the development cycle. Releases occur less frequently, and versions 
+are bumped after the release.
 
 The `freeze` and `unfreeze` commands are optional and on a completely 
 independent flow, thus can be executed any time. They are discussed separately
