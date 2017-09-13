@@ -7,7 +7,7 @@ little is shared beyond the goals.
 
 Want to know more? Read about the [Motivation for Graven](docs/motivation.md).
 
-# Prerequisites
+## Prerequisites
 
 Graven currently requires the following tools to be on your path:
 
@@ -19,7 +19,7 @@ Of course if you don't plan to use the `release` command commands, you
 can still use `graven` just for building, testing and packaging, and thus 
 would only require the `go` tool. 
 
-# Installation
+## Installation
 
 If you want to run the latest, you can just `go get` the tool.
 
@@ -31,7 +31,7 @@ For greater consistency and stability, you can run a specific relese version fro
 
 * https://github.com/cbegin/graven/releases
 
-# Workflow Example
+## Workflow Example
 
 Whether your starting an entirely new project, or working with existing source, 
 the workflow should be the same. 
@@ -94,7 +94,7 @@ here: [Freezing Dependencies](docs/freezing.md).
                                +----------+                           
 ```
 
-# project.yaml example
+## project.yaml example
 
 **Before you have flashbacks of Maven POMs...** note that this is probably the 
 biggest project.yaml file you'll ever see. Most projects will have shorter,
@@ -195,10 +195,89 @@ repositories:
     roles: 
     - release
 ```
-## A Comment about Comments in project.yaml
+### A Comment about Comments in project.yaml
 
 Currently Graven uses `gopkg.in/yaml.v2` which does not have round trip support for comments
 or document structure. Therefore, when Graven rewrites your project file at certain times, 
 your comments will be lost. I'll look at resolving this in the near future. Graven probably
 doesn't need rich YAML rewriting support, so I can probably get away with a minimal YAML 
 parser that preserves structure.
+
+## Name and Version
+
+```
+name: graven
+version: 0.6.6
+```
+
+The name of your project will initially be set by the parent directory in which it was created when the
+`init` command was run. You can change it to whatever you like, but it's recommended to keep it simple,
+short and alphabetic. It may be used for generating other values.
+
+The version of your project follows a minimalist set of semantic version practices. That being:
+
+```
+M.m.p-Q
+```
+* M: Major version. Incremented when the software changes significantly and typically in incompatible ways.
+* m: Minor version. Incremented when new features are added, and backward compatibility is maintained.
+* p: Patch version. Incremented when bugs are fixed. Backward compatibility is typically maintained, but is
+* sometimes unavoidably broken. 
+* Q: Qualifier. This is used to qualify a pre-release build and is typically something like RC1, DEV or TEST.
+
+## Artifacts
+
+```
+artifacts:
+- classifier: darwin
+  targets:
+  - executable: bin/graven
+    package: .
+    flags: ""
+    env: {}
+  archive: tgz
+  resources: []
+  env:
+    GOARCH: amd64
+    GOOS: darwin
+- ...
+```
+Each entity listed in the artifacts section represents a distributable artifact that consists of
+one or more executables built from a number of packages compiled with specified flags and environment
+variables. The resulting binaries are packaged up in an archive format (e.g. zip or tar.gz) and 
+additional resources can be included in the archive, specified in the resources array. Both resources
+and environment variables can be specified at higher levels to avoid duplication. More specific 
+environment variables will override broader scoped ones. The classifier specifies a suffix for the
+artifact that is usually used to indicate the target platform, but can be used to indicate anything
+that differs among distributable artifacts.
+
+## Repositories
+
+```
+repositories:
+  artifactory:
+    url: http://localhost:8081/artifactory/releases/
+    group: cbegin
+    artifact: graven
+    type: maven
+    # Supports both releases and frozen dependencies
+    roles: 
+    - release
+    - dependency
+  ...
+```
+
+In the repositories section you can define both release and dependency repositories. A release repository
+is where this project will be released. A dependency repository will be used to store frozen vendor 
+dependencies, so that you don't need to check in your vendor directories or .freezer directory. 
+
+Three repository types are currently supported: Github, Docker and Maven (including Nexus and Artifactory). 
+Their capabilities and settings are summarized in the table below.
+
+| Field | Github | Docker | Maven |  
+|-------|--------|--------|-------|
+| type | github | docker | maven |
+| url   | Github API URL | Docker registry URL | Maven release URL |
+| group | Owner | Repository | Group ID | 
+| artifact | Repo | Image Name | Artifact ID | 
+| roles | release | release | release, dependency |
