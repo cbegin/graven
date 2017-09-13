@@ -289,5 +289,5 @@ In order to use a repository for releases or dependencies, you'll need to authen
 To do so, simply call `graven repo --login --name [repo-name]`. The credentials you enter
 will be stored in your home directory in the .graven.yaml file. Your credentials will be
 obfuscated to discourage over-the-shoulder or casual exposure. Even though a strong 
-encryption algorithm is used, the key is not secure and thus you should treate it as 
+encryption algorithm is used, the key is not secure and thus you should treat it as 
 such.
