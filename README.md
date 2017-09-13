@@ -281,3 +281,4 @@ Their capabilities and settings are summarized in the table below.
 | group | Owner | Repository | Group ID | 
 | artifact | Repo | Image Name | Artifact ID | 
 | roles | release | release | release, dependency |
+| file | unused | Dockerfile | unused |
