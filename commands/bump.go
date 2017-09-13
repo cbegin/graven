@@ -17,7 +17,8 @@ const (
 	versionTemplate = `// graven - This file was generated. It will be overwritten. Do not modify.
 package {{.Package}}
 
-var Version="{{.Version}}"`
+var Version = "{{.Version}}"
+`
 )
 
 var BumpCommand = cli.Command{
