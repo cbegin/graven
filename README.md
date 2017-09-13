@@ -282,3 +282,12 @@ Their capabilities and settings are summarized in the table below.
 | artifact | Repo | Image Name | Artifact ID | 
 | roles | release | release | release, dependency |
 | file | unused | Dockerfile | unused |
+
+### Authenticating 
+
+In order to use a repository for releases or dependencies, you'll need to authenticate.
+To do so, simply call `graven repo --login --name [repo-name]`. The credentials you enter
+will be stored in your home directory in the .graven.yaml file. Your credentials will be
+obfuscated to discourage over-the-shoulder or casual exposure. Even though a strong 
+encryption algorithm is used, the key is not secure and thus you should treate it as 
+such.
