@@ -1,10 +1,14 @@
 package builder
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
+
+	"github.com/blang/semver"
 
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
@@ -13,6 +17,15 @@ import (
 type GoBuildTool struct{}
 
 func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact *domain.Artifact, target *domain.Target) error {
+	v, err := getGoVersion()
+	if err != nil {
+		return err
+	}
+
+	if err := ensureVersion(project.GoVersion, v); err != nil {
+		return err
+	}
+
 	fmt.Printf("Building %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
 	defer fmt.Printf("Done %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
 	var c *exec.Cmd
@@ -42,8 +55,7 @@ func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact
 	environment = append(environment, fmt.Sprintf("%s=%s", "TEMP", temp))
 	c.Env = environment
 
-	err := c.Run()
-	if err != nil {
+	if err := c.Run(); err != nil {
 		return fmt.Errorf("Build error. %v", err)
 	}
 
@@ -51,12 +63,19 @@ func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact
 		return fmt.Errorf("Build command exited in an error state. %v", c)
 	}
 	return err
-
 }
 
 func (g *GoBuildTool) Test(testPackage string, project *domain.Project) error {
-	err := runTestCommand(testPackage, project)
+	v, err := getGoVersion()
 	if err != nil {
+		return err
+	}
+
+	if err := ensureVersion(project.GoVersion, v); err != nil {
+		return err
+	}
+
+	if err := runTestCommand(testPackage, project); err != nil {
 		return err
 	}
 	return runCoverageCommand(testPackage, project)
@@ -149,4 +168,44 @@ func runCoverageCommand(testPackage string, project *domain.Project) error {
 	}
 
 	return nil
+}
+
+func ensureVersion(requiredVersion, actualVersion string) error {
+	if requiredVersion != "" {
+		r, err := semver.ParseRange(requiredVersion)
+		if err != nil {
+			return fmt.Errorf("Error parsing version range %v: %v.", requiredVersion, err)
+		}
+		v, err := semver.Parse(actualVersion)
+		if err != nil {
+			return fmt.Errorf("Error parsing version %v: %v.", actualVersion, err)
+		}
+		if !r(v) {
+			return fmt.Errorf("Go version %v does not satisfy %v.", actualVersion, requiredVersion)
+		}
+	}
+	return nil
+}
+
+func getGoVersion() (string, error) {
+	c := exec.Command("go", "version")
+	buffer := bytes.NewBufferString("")
+	c.Stdout = buffer
+	if err := c.Run(); err != nil {
+		return "", err
+	}
+	versionString := string(buffer.Bytes())
+
+	parts := strings.Split(versionString, " ")
+	if len(parts) < 4 {
+		return "", fmt.Errorf("Version %v is invalid.", versionString)
+	}
+
+	versionPart := parts[2]
+	if !strings.HasPrefix(versionPart, "go") {
+		return "", fmt.Errorf("Version %v is invalid.", versionString)
+	}
+
+	version := versionPart[2:]
+	return version, nil
 }

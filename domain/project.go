@@ -20,33 +20,34 @@ type Project struct {
 	FilePath     string                `yaml:",omitempty"`
 	Name         string                `yaml:"name"`
 	Version      string                `yaml:"version"`
-	Artifacts    []Artifact            `yaml:"artifacts"`
-	Repositories map[string]Repository `yaml:"repositories"`
-	Resources    []string              `yaml:"resources"`
+	GoVersion string                   `yaml:"go_version,omitempty"`
+	Artifacts    []Artifact            `yaml:"artifacts,omitempty"`
+	Repositories map[string]Repository `yaml:"repositories,omitempty"`
+	Resources    []string              `yaml:"resources,omitempty"`
 }
 
 type Artifact struct {
-	Classifier  string            `yaml:"classifier"`
-	Targets     []Target          `yaml:"targets"`
-	Archive     string            `yaml:"archive"`
-	Resources   []string          `yaml:"resources"`
-	Environment map[string]string `yaml:"env"`
+	Classifier  string            `yaml:"classifier,omitempty"`
+	Targets     []Target          `yaml:"targets,omitempty"`
+	Archive     string            `yaml:"archive,omitempty"`
+	Resources   []string          `yaml:"resources,omitempty"`
+	Environment map[string]string `yaml:"env,omitempty"`
 }
 
 type Target struct {
-	Executable  string            `yaml:"executable"`
-	Package     string            `yaml:"package"`
-	Flags       string            `yaml:"flags"`
-	Environment map[string]string `yaml:"env"`
+	Executable  string            `yaml:"executable,omitempty"`
+	Package     string            `yaml:"package,omitempty"`
+	Flags       string            `yaml:"flags,omitempty"`
+	Environment map[string]string `yaml:"env,omitempty"`
 }
 
 type Repository struct {
-	URL      string   `yaml:"url"`
-	Group    string   `yaml:"group"`
-	Artifact string   `yaml:"artifact"`
-	File     string   `yaml:"file"`
-	Type     string   `yaml:"type"`
-	Roles    []string `yaml:"roles"`
+	URL      string   `yaml:"url,omitempty"`
+	Group    string   `yaml:"group,omitempty"`
+	Artifact string   `yaml:"artifact,omitempty"`
+	File     string   `yaml:"file,omitempty"`
+	Type     string   `yaml:"type,omitempty"`
+	Roles    []string `yaml:"roles,omitempty"`
 }
 
 func (p *Project) TargetPath(subdirs ...string) string {

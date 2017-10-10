@@ -1,14 +1,12 @@
 name: graven
 version: 1.0.0-RC5
+go_version: ">=1.9.1"
 artifacts:
 - classifier: darwin
   targets:
   - executable: bin/graven
     package: .
-    flags: ""
-    env: {}
   archive: tgz
-  resources: []
   env:
     GOARCH: amd64
     GOOS: darwin
@@ -16,10 +14,7 @@ artifacts:
   targets:
   - executable: bin/graven
     package: .
-    flags: ""
-    env: {}
   archive: tar.gz
-  resources: []
   env:
     GOARCH: amd64
     GOOS: linux
@@ -27,19 +22,14 @@ artifacts:
   targets:
   - executable: graven.exe
     package: .
-    flags: ""
-    env: {}
   archive: zip
-  resources: []
   env:
     GOARCH: amd64
     GOOS: windows
 repositories:
   github:
-    url: ""
     group: cbegin
     artifact: graven
-    file: ""
     type: github
     roles:
     - release
