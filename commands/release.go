@@ -14,6 +14,12 @@ var ReleaseCommand = cli.Command{
 	Name:   "release",
 	Usage:  "Releases artifacts to repositories",
 	Action: release,
+	Flags: []cli.Flag{
+		cli.StringFlag{
+			Name:  "branch,b",
+			Usage: "Branch name to release. Default 'master'.",
+		},
+	},
 }
 
 func release(c *cli.Context) error {
@@ -22,10 +28,12 @@ func release(c *cli.Context) error {
 		return err
 	}
 
+	branch := c.String("branch")
+
 	//TODO: Make this configurable
 	var vcsTool vcstool.VCSTool = &vcstool.GitVCSTool{}
 	if os.Getenv("TESTRELEASE") == "" {
-		if err := vcsTool.VerifyRepoState(project); err != nil {
+		if err := vcsTool.VerifyRepoState(project, branch); err != nil {
 			return err
 		}
 	}

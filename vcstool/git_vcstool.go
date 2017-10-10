@@ -25,9 +25,13 @@ func (g *GitVCSTool) Tag(project *domain.Project, tagName string) error {
 	return nil
 }
 
-func (g *GitVCSTool) VerifyRepoState(project *domain.Project) error {
+func (g *GitVCSTool) VerifyRepoState(project *domain.Project, branch string) error {
 	remoteName := "origin"
 	branchName := "master"
+
+	if branch != "" {
+		branchName = branch
+	}
 
 	// Check if on expected branch (e.g. master)
 	if err := verifyGitState(func(stdout, stderr string) error {
