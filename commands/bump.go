@@ -160,10 +160,14 @@ func updateProjectFileVersion(project *domain.Project) error {
 		return err
 	}
 
+	eol := ""
 	lines := strings.Split(string(input), "\n")
 	for i, line := range lines {
 		if strings.HasPrefix(line, "version:") {
-			lines[i] = fmt.Sprintf("version: %v", project.Version)
+			if strings.HasSuffix(line, "\r") {
+				eol = "\r"
+			}
+			lines[i] = fmt.Sprintf("version: %v%v", project.Version, eol)
 		}
 	}
 
