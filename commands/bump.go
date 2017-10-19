@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 	"text/template"
 
 	"github.com/cbegin/graven/domain"
 	"github.com/urfave/cli"
-	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -116,8 +116,7 @@ func validateHeader(versionFile string) error {
 func bumpVersion(project *domain.Project, arg string) error {
 	version := domain.Version{}
 
-	err := version.Parse(project.Version)
-	if err != nil {
+	if err := version.Parse(project.Version); err != nil {
 		return fmt.Errorf("Error parsing version: %v", err)
 	}
 
@@ -143,25 +142,37 @@ func bumpVersion(project *domain.Project, arg string) error {
 
 	project.Version = version.ToString()
 
-	// Silly workaround for YAML libs inability to ignore fields.
-	projectFilePath := project.FilePath
-	project.FilePath = ""
-	defer func() {
-		project.FilePath = projectFilePath
-	}()
+	if err := updateProjectFileVersion(project); err != nil {
+		return err
+	}
 
-	bytes, err := yaml.Marshal(project)
+	return nil
+}
+
+func updateProjectFileVersion(project *domain.Project) error {
+	fileInfo, err := os.Stat(project.FilePath)
 	if err != nil {
 		return err
 	}
 
-	fileInfo, err := os.Stat(projectFilePath)
+	input, err := ioutil.ReadFile(project.FilePath)
 	if err != nil {
 		return err
 	}
 
-	err = ioutil.WriteFile(projectFilePath, bytes, fileInfo.Mode())
-	if err != nil {
+	eol := ""
+	lines := strings.Split(string(input), "\n")
+	for i, line := range lines {
+		if strings.HasPrefix(line, "version:") {
+			if strings.HasSuffix(line, "\r") {
+				eol = "\r"
+			}
+			lines[i] = fmt.Sprintf("version: %v%v", project.Version, eol)
+		}
+	}
+
+	output := strings.Join(lines, "\n")
+	if err := ioutil.WriteFile(project.FilePath, []byte(output), fileInfo.Mode()); err != nil {
 		return err
 	}
 
