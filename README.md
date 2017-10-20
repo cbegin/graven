@@ -108,6 +108,8 @@ very project) will help better understand what you can do with it.
 name: graven
 # Version is typically managed with the graven bump command.
 version: 0.6.6
+# You can specify a required go version, supporting ranges.
+go_version: ">=1.9.1"
 # List of artifacts. Each artifact builds one or more packages into executables,
 # and provides compiler flags, environment variables, and resources.
 # Upon initialization, an artifact config will be generated for darwin, linux and
@@ -195,14 +197,6 @@ repositories:
     roles: 
     - release
 ```
-### A Comment about Comments in project.yaml
-
-Currently Graven uses `gopkg.in/yaml.v2` which does not have round trip support for comments
-or document structure. Therefore, when Graven rewrites your project file at certain times, 
-your comments will be lost. I'll look at resolving this in the near future. Graven probably
-doesn't need rich YAML rewriting support, so I can probably get away with a minimal YAML 
-parser that preserves structure.
-
 ## Name and Version
 
 ```
