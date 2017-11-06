@@ -52,7 +52,7 @@ func getTestWalkerFunc(project *domain.Project, merr *error) filepath.WalkFunc {
 				"vendor": struct{}{},
 				"target": struct{}{},
 				".git":   struct{}{}}) {
-				fmt.Printf("x Testing %v\n", subDir)
+				fmt.Printf("Testing %v\n", subDir)
 				if err := buildTool.Test(subDir, project); err != nil {
 					*merr = multierror.Append(*merr, err)
 				}
