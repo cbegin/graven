@@ -3,7 +3,6 @@ package commands
 import (
 	"fmt"
 	"os"
-	"sync"
 
 	"github.com/cbegin/graven/buildtool"
 	"github.com/cbegin/graven/domain"
@@ -33,25 +32,16 @@ func build(c *cli.Context) error {
 	}
 
 	var merr error
-	mutex := sync.Mutex{}
-	wg := sync.WaitGroup{}
 	for _, artifact := range project.Artifacts {
 		a := artifact
-		wg.Add(len(artifact.Targets))
 		for _, target := range artifact.Targets {
 			t := target
-			go func() {
-				defer wg.Done()
-				err := buildTarget(project, &a, &t)
-				if err != nil {
-					mutex.Lock()
-					merr = multierror.Append(merr, err)
-					mutex.Unlock()
-				}
-			}()
+			err := buildTarget(project, &a, &t)
+			if err != nil {
+				merr = multierror.Append(merr, err)
+			}
 		}
 	}
-	wg.Wait()
 
 	return merr
 }

@@ -27,7 +27,6 @@ func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact
 	}
 
 	fmt.Printf("Building %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
-	defer fmt.Printf("Done %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
 	var c *exec.Cmd
 	if target.Flags == "" {
 		c = exec.Command("go", "build", "-o", filepath.Join(outputPath, target.Executable), target.Package)
@@ -56,12 +55,17 @@ func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact
 	c.Env = environment
 
 	if err := c.Run(); err != nil {
-		return fmt.Errorf("Build error. %v", err)
+		fmt.Printf("FAILED to build %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
+		return fmt.Errorf("FAILED to build %v/%v:%v (%v)\n", artifact.Classifier, target.Executable, project.Version, err)
 	}
 
 	if !c.ProcessState.Success() {
-		return fmt.Errorf("Build command exited in an error state. %v", c)
+		fmt.Printf("FAILED to build %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
+		return fmt.Errorf("FAILED to build %v/%v:%v (Build command exited in an error state. %v)\n", artifact.Classifier, target.Executable, project.Version, c)
 	}
+
+	fmt.Printf("Built %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
+
 	return err
 }
 
