@@ -285,3 +285,7 @@ will be stored in your home directory in the .graven.yaml file. Your credentials
 obfuscated to discourage over-the-shoulder or casual exposure. Even though a strong 
 encryption algorithm is used, the key is not secure and thus you should treat it as 
 such.
+
+### Tutorial Video
+
+[![Graven Video](docs/video.png)](https://youtu.be/forR0rTmqec)
