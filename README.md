@@ -7,6 +7,10 @@ little is shared beyond the goals.
 
 Want to know more? Read about the [Motivation for Graven](docs/motivation.md).
 
+### Tutorial Video
+
+[![Graven Video](docs/video.png)](https://youtu.be/forR0rTmqec)
+
 ## Prerequisites
 
 Graven currently requires the following tools to be on your path:
@@ -286,6 +290,4 @@ obfuscated to discourage over-the-shoulder or casual exposure. Even though a str
 encryption algorithm is used, the key is not secure and thus you should treat it as 
 such.
 
-### Tutorial Video
 
-[![Graven Video](docs/video.png)](https://youtu.be/forR0rTmqec)
