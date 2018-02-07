@@ -5,6 +5,6 @@ import (
 )
 
 type VCSTool interface {
-	VerifyRepoState(project *domain.Project, branch string) error
-	Tag(project *domain.Project, tagname string) error
+	VerifyRepoState(project *domain.Project, remote, branch string) error
+	Tag(project *domain.Project, remote, tagname string) error
 }

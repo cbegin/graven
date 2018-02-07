@@ -19,6 +19,10 @@ var ReleaseCommand = cli.Command{
 			Name:  "branch,b",
 			Usage: "Branch name to release. Default 'master'.",
 		},
+		cli.StringFlag{
+			Name:  "remote,r",
+			Usage: "Remote name to verify repository state against. Default 'origin'.",
+		},
 	},
 }
 
@@ -29,11 +33,12 @@ func release(c *cli.Context) error {
 	}
 
 	branch := c.String("branch")
+	remote := c.String("remote")
 
 	//TODO: Make this configurable
 	var vcsTool vcstool.VCSTool = &vcstool.GitVCSTool{}
 	if os.Getenv("TESTRELEASE") == "" {
-		if err := vcsTool.VerifyRepoState(project, branch); err != nil {
+		if err := vcsTool.VerifyRepoState(project, remote, branch); err != nil {
 			return err
 		}
 	}
@@ -42,7 +47,7 @@ func release(c *cli.Context) error {
 	}
 	if os.Getenv("TESTRELEASE") == "" {
 		tagName := fmt.Sprintf("v%s", project.Version)
-		if err := vcsTool.Tag(project, tagName); err != nil {
+		if err := vcsTool.Tag(project, remote, tagName); err != nil {
 			return err
 		}
 	}

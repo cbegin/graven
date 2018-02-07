@@ -12,28 +12,38 @@ type GitVCSTool struct{}
 
 type Validator func(stdout, stderr string) error
 
-func (g *GitVCSTool) Tag(project *domain.Project, tagName string) error {
+func (g *GitVCSTool) Tag(project *domain.Project, remote, tagName string) error {
+	remoteName := "origin"
+
+	if remote != "" {
+		remoteName = remote
+	}
+
 	if sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", "tag", tagName); err != nil {
 		fmt.Printf("Tagging  %v\n%v\n", sout, serr)
 		return err
 	}
 
-	if sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", "push", "--tags"); err != nil {
+	if sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", "push", "--tags", remoteName); err != nil {
 		fmt.Printf("PushTags %v\n%v\n", sout, serr)
 		return err
 	}
 	return nil
 }
 
-func (g *GitVCSTool) VerifyRepoState(project *domain.Project, branch string) error {
+func (g *GitVCSTool) VerifyRepoState(project *domain.Project, remote, branch string) error {
 	remoteName := "origin"
 	branchName := "master"
+
+	if remote != "" {
+		remoteName = remote
+	}
 
 	if branch != "" {
 		branchName = branch
 	}
 
-	// Check if on expected branch (e.g. master)
+	fmt.Println("Check if on expected branch (e.g. master)")
 	if err := verifyGitState(func(stdout, stderr string) error {
 		actualBranch := strings.TrimSpace(stdout)
 		if actualBranch != branchName {
@@ -44,7 +54,7 @@ func (g *GitVCSTool) VerifyRepoState(project *domain.Project, branch string) err
 		return err
 	}
 
-	// Ensure no uncommitted changes
+	fmt.Println("Check for uncommitted changes")
 	if err := verifyGitState(func(stdout, stderr string) error {
 		if strings.TrimSpace(stdout) != "" || strings.TrimSpace(stderr) != "" {
 			return fmt.Errorf("Cannot release with uncommitted changes.")
@@ -54,7 +64,7 @@ func (g *GitVCSTool) VerifyRepoState(project *domain.Project, branch string) err
 		return err
 	}
 
-	// Check if changes exist on server
+	fmt.Println("Check if changes exist on server")
 	if err := verifyGitState(func(stdout, stderr string) error {
 		lineCount := len(strings.Split(strings.TrimSpace(stderr), "\n"))
 		if lineCount > 2 {
@@ -65,7 +75,7 @@ func (g *GitVCSTool) VerifyRepoState(project *domain.Project, branch string) err
 		return err
 	}
 
-	// Check if local changes are pushed
+	fmt.Println("Check if local changes are pushed")
 	if err := verifyGitState(func(stdout, stderr string) error {
 		parts := strings.Split(strings.TrimSpace(stdout), "\n")
 		if strings.TrimSpace(parts[0]) != strings.TrimSpace(parts[1]) {
@@ -82,7 +92,7 @@ func (g *GitVCSTool) VerifyRepoState(project *domain.Project, branch string) err
 func verifyGitState(validator Validator, project *domain.Project, args ...string) error {
 	sout, serr, err := util.RunCommand(project.ProjectPath(), nil, "git", args...)
 	if err != nil {
-		return fmt.Errorf("ERROR running Git command: %v\n", err)
+		return fmt.Errorf("ERROR running Git command:\n%v\n%v\n", serr, err)
 	}
 	return validator(sout, serr)
 }
