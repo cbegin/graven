@@ -180,6 +180,10 @@ func ensureVersion(requiredVersion, actualVersion string) error {
 		if err != nil {
 			return fmt.Errorf("Error parsing version range %v: %v.", requiredVersion, err)
 		}
+		//Needed for every new minor version of Go, naming convention is 1.10, 1.10.1 instead of 1.10.0, 1.10.1
+		for len(strings.Split(actualVersion,".")) < 3{
+			actualVersion = fmt.Sprintf("%s.0", actualVersion)
+		}
 		v, err := semver.Parse(actualVersion)
 		if err != nil {
 			return fmt.Errorf("Error parsing version %v: %v.", actualVersion, err)
