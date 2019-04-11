@@ -42,11 +42,17 @@ func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact
 	for k, v := range util.MergeMaps(artifact.Environment, target.Environment) {
 		environment = append(environment, fmt.Sprintf("%s=%s", k, v))
 	}
+	homedir, _ := os.LookupEnv("HOME")
+	userprofile, _ := os.LookupEnv("USERPROFILE")
+	gomod, _ := os.LookupEnv("GO111MODULE")
 	gopath, _ := os.LookupEnv("GOPATH")
 	path, _ := os.LookupEnv("PATH")
 	temp, _ := os.LookupEnv("TEMP")
 	tmp, _ := os.LookupEnv("TMP")
 	tmpdir, _ := os.LookupEnv("TMPDIR")
+	environment = append(environment, fmt.Sprintf("%s=%s", "HOME", homedir))
+	environment = append(environment, fmt.Sprintf("%s=%s", "USERPROFILE", userprofile))
+	environment = append(environment, fmt.Sprintf("%s=%s", "GO111MODULE", gomod))
 	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
 	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
 	environment = append(environment, fmt.Sprintf("%s=%s", "TMPDIR", tmpdir))
@@ -181,7 +187,7 @@ func ensureVersion(requiredVersion, actualVersion string) error {
 			return fmt.Errorf("Error parsing version range %v: %v.", requiredVersion, err)
 		}
 		//Needed for every new minor version of Go, naming convention is 1.10, 1.10.1 instead of 1.10.0, 1.10.1
-		for len(strings.Split(actualVersion,".")) < 3{
+		for len(strings.Split(actualVersion, ".")) < 3 {
 			actualVersion = fmt.Sprintf("%s.0", actualVersion)
 		}
 		v, err := semver.Parse(actualVersion)
