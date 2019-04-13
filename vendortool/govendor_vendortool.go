@@ -15,7 +15,7 @@ import (
 )
 
 type GovendorPackage struct {
-	Origin       string `json:"oriin,omitempty"`
+	Origin       string `json:"origin,omitempty"`
 	Path         string `json:"path,omitempty"`
 	Revision     string `json:"revision,omitempty"`
 	RevisionTime string `json:"revisionTime,omitempty"`
@@ -55,7 +55,6 @@ func (g *GovendorPackage) PackagePath() string {
 func (g *GovendorPackage) Tag() string {
 	return g.Revision
 }
-
 
 func (g *GovendorVendorTool) VendorFileExists(project *domain.Project) bool {
 	vendorFilePath := project.ProjectPath("vendor", "vendor.json")

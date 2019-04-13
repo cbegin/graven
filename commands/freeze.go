@@ -3,15 +3,17 @@ package commands
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/cbegin/graven/domain"
+	"github.com/cbegin/graven/repotool"
 	"github.com/cbegin/graven/util"
 	"github.com/cbegin/graven/vendortool"
 	"github.com/urfave/cli"
-	"github.com/cbegin/graven/repotool"
 )
 
 var supportedVendorTools = []vendortool.VendorTool{
+	&vendortool.ModVendorTool{},
 	&vendortool.GovendorVendorTool{},
 	&vendortool.GlideVendorTool{},
 	&vendortool.DepVendorTool{},
@@ -22,7 +24,6 @@ var FreezeCommand = cli.Command{
 	Usage:  "Freezes vendor dependencies to avoid having to check in source",
 	Action: freeze,
 }
-
 
 func selectVendorTool(project *domain.Project) (vendortool.VendorTool, error) {
 	for _, vt := range supportedVendorTools {
@@ -50,25 +51,30 @@ func freeze(c *cli.Context) error {
 		return err
 	}
 
-	freezerPath := project.ProjectPath(".freezer")
+	freezerPath := project.ProjectPath(".modules")
 
 	if _, err := os.Stat(freezerPath); !os.IsNotExist(err) {
 		if err := os.RemoveAll(freezerPath); err != nil {
-			return fmt.Errorf("Could not clean .freezer: %v", err)
+			return fmt.Errorf("Could not clean .modules: %v", err)
 		}
 	}
 
 	if err := os.Mkdir(freezerPath, 0755); err != nil {
-		return fmt.Errorf("Could not make .freezer: %v", err)
+		return fmt.Errorf("Could not make .modules: %v", err)
 	}
 
 	for _, p := range vendorTool.Dependencies() {
 		sourcePath := project.ProjectPath("vendor", p.PackagePath())
-		targetFile := project.ProjectPath(".freezer", p.ArchiveFileName())
+		targetFile := project.ProjectPath(".modules", p.ArchiveFileName())
 
 		if _, err := os.Stat(sourcePath); os.IsNotExist(err) {
 			fmt.Printf("MISSING dependency %v\n", p.PackagePath())
 			continue
+		}
+
+		dirString, _ := filepath.Split(targetFile)
+		if dirString != "" {
+			os.MkdirAll(dirString, 0755)
 		}
 
 		err = util.ZipDir(sourcePath, targetFile, false)
