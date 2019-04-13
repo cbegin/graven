@@ -38,26 +38,10 @@ func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact
 	c.Stdin = os.Stdin
 	c.Dir = project.ProjectPath()
 
-	environment := []string{}
+	environment := project.Environment()
 	for k, v := range util.MergeMaps(artifact.Environment, target.Environment) {
 		environment = append(environment, fmt.Sprintf("%s=%s", k, v))
 	}
-	homedir, _ := os.LookupEnv("HOME")
-	userprofile, _ := os.LookupEnv("USERPROFILE")
-	gomod, _ := os.LookupEnv("GO111MODULE")
-	gopath, _ := os.LookupEnv("GOPATH")
-	path, _ := os.LookupEnv("PATH")
-	temp, _ := os.LookupEnv("TEMP")
-	tmp, _ := os.LookupEnv("TMP")
-	tmpdir, _ := os.LookupEnv("TMPDIR")
-	environment = append(environment, fmt.Sprintf("%s=%s", "HOME", homedir))
-	environment = append(environment, fmt.Sprintf("%s=%s", "USERPROFILE", userprofile))
-	environment = append(environment, fmt.Sprintf("%s=%s", "GO111MODULE", gomod))
-	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
-	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TMPDIR", tmpdir))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TMP", tmp))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TEMP", temp))
 	c.Env = environment
 
 	if err := c.Run(); err != nil {
@@ -108,18 +92,7 @@ func runTestCommand(testPackage string, project *domain.Project) error {
 	cmd.Stdin = os.Stdin
 	cmd.Dir = project.ProjectPath()
 
-	environment := []string{}
-	gopath, _ := os.LookupEnv("GOPATH")
-	path, _ := os.LookupEnv("PATH")
-	temp, _ := os.LookupEnv("TEMP")
-	tmp, _ := os.LookupEnv("TMP")
-	tmpdir, _ := os.LookupEnv("TMPDIR")
-	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
-	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TMPDIR", tmpdir))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TMP", tmp))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TEMP", temp))
-	cmd.Env = environment
+	cmd.Env = project.Environment()
 
 	if err := cmd.Start(); err != nil {
 		return fmt.Errorf("Error starting tests. %v", err)
@@ -152,18 +125,7 @@ func runCoverageCommand(testPackage string, project *domain.Project) error {
 	cmd.Stdin = os.Stdin
 	cmd.Dir = project.ProjectPath()
 
-	environment := []string{}
-	gopath, _ := os.LookupEnv("GOPATH")
-	path, _ := os.LookupEnv("PATH")
-	temp, _ := os.LookupEnv("TEMP")
-	tmp, _ := os.LookupEnv("TMP")
-	tmpdir, _ := os.LookupEnv("TMPDIR")
-	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
-	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TMPDIR", tmpdir))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TMP", tmp))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TEMP", temp))
-	cmd.Env = environment
+	cmd.Env = project.Environment()
 
 	if err := cmd.Start(); err != nil {
 		return fmt.Errorf("Error generating coverage HTML. %v", err)

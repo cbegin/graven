@@ -20,7 +20,7 @@ type Project struct {
 	FilePath     string                `yaml:",omitempty"`
 	Name         string                `yaml:"name"`
 	Version      string                `yaml:"version"`
-	GoVersion string                   `yaml:"go_version,omitempty"`
+	GoVersion    string                `yaml:"go_version,omitempty"`
 	Artifacts    []Artifact            `yaml:"artifacts,omitempty"`
 	Repositories map[string]Repository `yaml:"repositories,omitempty"`
 	Resources    []string              `yaml:"resources,omitempty"`
@@ -123,4 +123,27 @@ func LoadProject(filepath string) (*Project, error) {
 
 	project.FilePath = filepath
 	return project, nil
+}
+
+func (project *Project) Environment() []string {
+	environment := []string{}
+	homedir, _ := os.LookupEnv("HOME")
+	userprofile, _ := os.LookupEnv("USERPROFILE")
+	//gomod, _ := os.LookupEnv("GO111MODULE")
+	//goproxy := "file://" + project.ProjectPath(".modules")
+	gopath, _ := os.LookupEnv("GOPATH")
+	path, _ := os.LookupEnv("PATH")
+	temp, _ := os.LookupEnv("TEMP")
+	tmp, _ := os.LookupEnv("TMP")
+	tmpdir, _ := os.LookupEnv("TMPDIR")
+	environment = append(environment, fmt.Sprintf("%s=%s", "HOME", homedir))
+	environment = append(environment, fmt.Sprintf("%s=%s", "USERPROFILE", userprofile))
+	//environment = append(environment, fmt.Sprintf("%s=%s", "GO111MODULE", gomod))
+	//environment = append(environment, fmt.Sprintf("%s=%s", "GOPROXY", goproxy))
+	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
+	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TMPDIR", tmpdir))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TMP", tmp))
+	environment = append(environment, fmt.Sprintf("%s=%s", "TEMP", temp))
+	return environment
 }
