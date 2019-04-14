@@ -15,7 +15,7 @@ import (
 )
 
 type GovendorPackage struct {
-	Origin       string `json:"oriin,omitempty"`
+	Origin       string `json:"origin,omitempty"`
 	Path         string `json:"path,omitempty"`
 	Revision     string `json:"revision,omitempty"`
 	RevisionTime string `json:"revisionTime,omitempty"`
