@@ -60,7 +60,7 @@ func (g *ModVendorTool) LoadFile(project *domain.Project) error {
 	c.Env = project.Environment()
 	bytes, err := c.Output()
 
-	err = json.Unmarshal(unfuckJSON(bytes), g)
+	err = json.Unmarshal(fixJSONArray(bytes), g)
 	if err != nil {
 		return err
 	}
@@ -71,6 +71,25 @@ func (g *ModVendorTool) LoadFile(project *domain.Project) error {
 
 	if !c.ProcessState.Success() {
 		return fmt.Errorf("FAILED to download module information  (command exited in an error state. %v)\n", c)
+	}
+
+	return g.vendorModules(project)
+}
+
+func (g *ModVendorTool) vendorModules(project *domain.Project) error {
+	c := exec.Command("go", "mod", "vendor")
+	c.Stderr = os.Stderr
+	c.Stdin = os.Stdin
+	c.Dir = project.ProjectPath()
+	c.Env = project.Environment()
+	_, err := c.Output()
+
+	if err != nil {
+		return fmt.Errorf("FAILED to vendor modules (%v)\n", err)
+	}
+
+	if !c.ProcessState.Success() {
+		return fmt.Errorf("FAILED to vendor modules  (command exited in an error state. %v)\n", c)
 	}
 	return nil
 }
@@ -84,7 +103,7 @@ func (g *ModVendorTool) Dependencies() []PackageDepencency {
 	return deps
 }
 
-func unfuckJSON(notJSON []byte) []byte {
+func fixJSONArray(notJSON []byte) []byte {
 	var re = regexp.MustCompile(`}\s*{`)
 	s := re.ReplaceAllString(string(notJSON), "},\n{")
 	s = `{"Packages":[` + s + `]}`

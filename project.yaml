@@ -6,6 +6,7 @@ artifacts:
   targets:
   - executable: bin/graven
     package: .
+    flags: ["-mod", "vendor"]
   archive: tgz
   env:
     GOARCH: amd64
@@ -14,6 +15,7 @@ artifacts:
   targets:
   - executable: bin/graven
     package: .
+    flags: ["-mod", "vendor"]
   archive: tar.gz
   env:
     GOARCH: amd64
@@ -22,6 +24,7 @@ artifacts:
   targets:
   - executable: graven.exe
     package: .
+    flags: ["-mod", "vendor"]
   archive: zip
   env:
     GOARCH: amd64

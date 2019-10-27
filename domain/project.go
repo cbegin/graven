@@ -37,7 +37,7 @@ type Artifact struct {
 type Target struct {
 	Executable  string            `yaml:"executable,omitempty"`
 	Package     string            `yaml:"package,omitempty"`
-	Flags       string            `yaml:"flags,omitempty"`
+	Flags       []string          `yaml:"flags,omitempty"`
 	Environment map[string]string `yaml:"env,omitempty"`
 }
 
