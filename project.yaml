@@ -1,5 +1,5 @@
 name: graven
-version: 2.0.0-RC1
+version: 2.0.0-bump
 go_version: ">=1.12.0"
 artifacts:
 - classifier: darwin
