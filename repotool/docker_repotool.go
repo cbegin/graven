@@ -15,6 +15,10 @@ func (r *DockerRepotool) Login(project *domain.Project, repo string) error {
 	return GenericLogin(project, repo)
 }
 
+func (r *DockerRepotool) LoginTest(project *domain.Project, repo string) error {
+	return nil
+}
+
 func (r *DockerRepotool) Release(project *domain.Project, repo string) error {
 	config := config.NewConfig()
 
@@ -57,7 +61,6 @@ func (r *DockerRepotool) UploadDependency(project *domain.Project, repo string, 
 	return fmt.Errorf("Docker repos don't support dependencies.")
 }
 
-
-func (g *DockerRepotool) DownloadDependency(project *domain.Project, repo string, dependencyFile, dependencyPath string) error {
+func (r *DockerRepotool) DownloadDependency(project *domain.Project, repo string, dependencyFile, dependencyPath string) error {
 	return fmt.Errorf("Docker repos don't support dependencies.")
 }

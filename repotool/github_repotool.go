@@ -27,6 +27,25 @@ func (g *GithubRepoTool) Login(project *domain.Project, repo string) error {
 	return nil
 }
 
+func (g *GithubRepoTool) LoginTest(project *domain.Project, repo string) error {
+	gh, ctx, err := authenticate(project, repo)
+	if err != nil {
+		return fmt.Errorf("Authentication error for repo %v: %v", repo, err)
+	}
+
+	repository, found := project.Repositories[repo]
+	if !found {
+		return fmt.Errorf("No repo named %v is found in project.", repo)
+	}
+
+	_, _, err = gh.Repositories.ListReleases(ctx, repository.Group, repository.Artifact, &github.ListOptions{})
+	if err != nil {
+		return fmt.Errorf("Error listing releases for %v: %v", repo, err)
+	}
+
+	return nil
+}
+
 func (g *GithubRepoTool) Release(project *domain.Project, repo string) error {
 	gh, ctx, err := authenticate(project, repo)
 	if err != nil {
