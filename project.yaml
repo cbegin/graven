@@ -30,7 +30,7 @@ artifacts:
     GOARCH: amd64
     GOOS: windows
 repositories:
-  githubx:
+  github:
     group: cbegin
     artifact: graven
     type: github
