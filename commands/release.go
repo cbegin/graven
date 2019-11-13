@@ -45,6 +45,19 @@ func release(c *cli.Context) error {
 	if err := pkg(c); err != nil {
 		return err
 	}
+
+	for repoName, repo := range project.Repositories {
+		if repo.HasRole(domain.RepositoryRoleRelease) {
+			if repoTool, ok := repotool.RepoRegistry[repo.Type]; ok {
+				if err := repoTool.LoginTest(project, repoName); err != nil {
+					return err
+				}
+			} else {
+				fmt.Printf("Unkown repository type %v for %v\n", repo.Type, repoName)
+			}
+		}
+	}
+
 	if os.Getenv("TESTRELEASE") == "" {
 		tagName := fmt.Sprintf("v%s", project.Version)
 		if err := vcsTool.Tag(project, remote, tagName); err != nil {
