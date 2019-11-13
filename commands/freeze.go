@@ -68,7 +68,7 @@ func freeze(c *cli.Context) error {
 		targetFile := project.ProjectPath(".modules", p.ArchiveFileName())
 
 		if _, err := os.Stat(sourcePath); os.IsNotExist(err) {
-			fmt.Printf("MISSING dependency %v\n", p.PackagePath())
+			fmt.Printf("Skipping %v wasn't found in vendor folder (may be an empty dependency).\n", p.PackagePath())
 			continue
 		}
 

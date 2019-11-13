@@ -10,6 +10,7 @@ import (
 
 	"path/filepath"
 
+	"golang.org/x/mod/module"
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/util"
 )
@@ -34,8 +35,18 @@ func (g *ModVendorTool) Name() string {
 }
 
 func (g *ModPackage) ArchiveFileName() string {
-	// TODO support title case
-	return fmt.Sprintf("%v/@v/%v.zip", g.Path, g.Version)
+	unescaped := fmt.Sprintf("%v/@v/%v.zip", g.Path, g.Version)
+	escapedPath, err := module.EscapePath(g.Path)
+	if err != nil {
+		fmt.Printf("Error, could not escape module path %v: %v\n", g.Path, err)
+		return unescaped
+	}
+	escapedVersion, err := module.EscapeVersion(g.Version)
+	if err != nil {
+		fmt.Printf("Error, could not escape module version %v@%v: %v\n", g.Path, g.Version, err)
+		return unescaped
+	}
+	return fmt.Sprintf("%v/@v/%v.zip", escapedPath, escapedVersion)
 }
 
 func (g *ModPackage) PackagePath() string {

@@ -14,6 +14,7 @@ require (
 	github.com/pelletier/go-toml v1.6.0
 	github.com/stretchr/testify v1.4.0
 	github.com/urfave/cli v1.22.1
+	golang.org/x/mod v0.1.0
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	gopkg.in/yaml.v2 v2.2.4
 )
