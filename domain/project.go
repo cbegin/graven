@@ -37,7 +37,7 @@ type Artifact struct {
 type Target struct {
 	Executable  string            `yaml:"executable,omitempty"`
 	Package     string            `yaml:"package,omitempty"`
-	Flags       string            `yaml:"flags,omitempty"`
+	Flags       []string          `yaml:"flags,omitempty"`
 	Environment map[string]string `yaml:"env,omitempty"`
 }
 
@@ -126,24 +126,9 @@ func LoadProject(filepath string) (*Project, error) {
 }
 
 func (project *Project) Environment() []string {
-	environment := []string{}
-	homedir, _ := os.LookupEnv("HOME")
-	userprofile, _ := os.LookupEnv("USERPROFILE")
-	//gomod, _ := os.LookupEnv("GO111MODULE")
-	//goproxy := "file://" + project.ProjectPath(".modules")
-	gopath, _ := os.LookupEnv("GOPATH")
-	path, _ := os.LookupEnv("PATH")
-	temp, _ := os.LookupEnv("TEMP")
-	tmp, _ := os.LookupEnv("TMP")
-	tmpdir, _ := os.LookupEnv("TMPDIR")
-	environment = append(environment, fmt.Sprintf("%s=%s", "HOME", homedir))
-	environment = append(environment, fmt.Sprintf("%s=%s", "USERPROFILE", userprofile))
-	//environment = append(environment, fmt.Sprintf("%s=%s", "GO111MODULE", gomod))
-	//environment = append(environment, fmt.Sprintf("%s=%s", "GOPROXY", goproxy))
-	environment = append(environment, fmt.Sprintf("%s=%s", "GOPATH", gopath))
-	environment = append(environment, fmt.Sprintf("%s=%s", "PATH", path))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TMPDIR", tmpdir))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TMP", tmp))
-	environment = append(environment, fmt.Sprintf("%s=%s", "TEMP", temp))
-	return environment
+	// This function used to do more with the existing environment,
+	// but now we just forward the whole environment to avoid surprising
+	// behavior. We'll keep it in case we ever want to add the ability to
+	// unset existing env vars at some point.
+	return os.Environ()
 }

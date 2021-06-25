@@ -5,10 +5,10 @@ import (
 	"os"
 
 	"github.com/cbegin/graven/domain"
-	"github.com/cbegin/graven/util"
-	"github.com/urfave/cli"
 	"github.com/cbegin/graven/repotool"
+	"github.com/cbegin/graven/util"
 	"github.com/cbegin/graven/vendortool"
+	"github.com/urfave/cli"
 )
 
 var UnfreezeCommand = cli.Command{
@@ -34,7 +34,7 @@ func unfreeze(c *cli.Context) error {
 	}
 
 	for _, p := range vendorTool.Dependencies() {
-		sourceFile := project.ProjectPath(".freezer", p.ArchiveFileName())
+		sourceFile := project.ProjectPath(".modules", p.ArchiveFileName())
 		targetDir := project.ProjectPath("vendor", p.PackagePath())
 
 		_, err := os.Stat(sourceFile)

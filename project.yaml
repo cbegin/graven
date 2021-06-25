@@ -1,11 +1,12 @@
 name: graven
-version: 1.0.5-DEV
-go_version: ">=1.10.0"
+version: 2.0.0-RC2
+go_version: ">=1.12.0"
 artifacts:
 - classifier: darwin
   targets:
   - executable: bin/graven
     package: .
+    flags: ["-mod", "vendor"]
   archive: tgz
   env:
     GOARCH: amd64
@@ -14,6 +15,7 @@ artifacts:
   targets:
   - executable: bin/graven
     package: .
+    flags: ["-mod", "vendor"]
   archive: tar.gz
   env:
     GOARCH: amd64
@@ -22,6 +24,7 @@ artifacts:
   targets:
   - executable: graven.exe
     package: .
+    flags: ["-mod", "vendor"]
   archive: zip
   env:
     GOARCH: amd64

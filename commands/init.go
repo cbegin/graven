@@ -118,7 +118,7 @@ func initialize(c *cli.Context) error {
 				targets = append(targets, domain.Target{
 					Executable: fmt.Sprintf("%v%v", executable, template.Extension),
 					Package:    pkg,
-					Flags:      "",
+					Flags:      []string{},
 				})
 			}
 		}

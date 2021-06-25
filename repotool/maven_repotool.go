@@ -17,6 +17,10 @@ func (m *MavenRepoTool) Login(project *domain.Project, repo string) error {
 	return GenericLogin(project, repo)
 }
 
+func (m *MavenRepoTool) LoginTest(project *domain.Project, repo string) error {
+	return nil
+}
+
 func (m *MavenRepoTool) Release(project *domain.Project, repo string) error {
 	config := config.NewConfig()
 

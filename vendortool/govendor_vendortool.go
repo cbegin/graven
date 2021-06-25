@@ -56,7 +56,6 @@ func (g *GovendorPackage) Tag() string {
 	return g.Revision
 }
 
-
 func (g *GovendorVendorTool) VendorFileExists(project *domain.Project) bool {
 	vendorFilePath := project.ProjectPath("vendor", "vendor.json")
 	return util.PathExists(vendorFilePath)

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"testing"
 	"path/filepath"
+	"testing"
 
 	"github.com/cbegin/graven/domain"
 	"github.com/cbegin/graven/test_fixtures/hello/version"
@@ -109,17 +109,17 @@ func TestShouldInitDirectory(t *testing.T) {
 func TestShouldFreezeResources(t *testing.T) {
 	c := &cli.Context{}
 
-	_ = os.RemoveAll("../test_fixtures/hello/.freezer")
+	_ = os.RemoveAll("../test_fixtures/hello/.modules")
 
 	err := freeze(c)
 	assert.NoError(t, err)
 
-	assert.True(t, util.PathExists("../test_fixtures/hello/.freezer/github-com-davecgh-go-spew-spew-346938d642f2ec3594ed81d874461961cd0faa76.zip"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/.freezer/github-com-fatih-color-62e9147c64a1ed519147b62a56a14e83e2be02c1.zip"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/.freezer/github-com-mattn-go-colorable-941b50ebc6efddf4c41c8e4537a5f68a4e686b24.zip"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/.freezer/github-com-mattn-go-isatty-fc9e8d8ef48496124e79ae0df75490096eccf6fe.zip"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/.freezer/github-com-pmezard-go-difflib-difflib-792786c7400a136282c1664665ae0a8db921c6c2.zip"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/.freezer/github-com-stretchr-testify-assert-f6abca593680b2315d2075e0f5e2a9751e3f431a.zip"))
+	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-davecgh-go-spew-spew-346938d642f2ec3594ed81d874461961cd0faa76.zip"))
+	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-fatih-color-62e9147c64a1ed519147b62a56a14e83e2be02c1.zip"))
+	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-mattn-go-colorable-941b50ebc6efddf4c41c8e4537a5f68a4e686b24.zip"))
+	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-mattn-go-isatty-fc9e8d8ef48496124e79ae0df75490096eccf6fe.zip"))
+	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-pmezard-go-difflib-difflib-792786c7400a136282c1664665ae0a8db921c6c2.zip"))
+	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-stretchr-testify-assert-f6abca593680b2315d2075e0f5e2a9751e3f431a.zip"))
 
 }
 
@@ -217,4 +217,3 @@ func resetVersion() {
 	util.CopyFile("../test_fixtures/hello/project.fixture", "../test_fixtures/hello/project.yaml")
 	util.CopyFile("../test_fixtures/hello/version/version.fixture", "../test_fixtures/hello/version/version.go")
 }
-

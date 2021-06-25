@@ -28,10 +28,13 @@ func (g *GoBuildTool) Build(outputPath string, project *domain.Project, artifact
 
 	fmt.Printf("Building %v/%v:%v\n", artifact.Classifier, target.Executable, project.Version)
 	var c *exec.Cmd
-	if target.Flags == "" {
+	if len(target.Flags) == 0 {
 		c = exec.Command("go", "build", "-o", filepath.Join(outputPath, target.Executable), target.Package)
 	} else {
-		c = exec.Command("go", "build", "-o", filepath.Join(outputPath, target.Executable), target.Flags, target.Package)
+		args := []string{"build", "-o", filepath.Join(outputPath, target.Executable)}
+		args = append(args, target.Flags...)
+		args = append(args, target.Package)
+		c = exec.Command("go", args...)
 	}
 	c.Stdout = os.Stdout
 	c.Stderr = os.Stderr

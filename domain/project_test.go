@@ -35,6 +35,6 @@ func TestShouldLoadProject(t *testing.T) {
 	for _, g := range linux.Targets {
 		assert.Equal(t, "hello", g.Executable)
 		assert.Equal(t, ".", g.Package)
-		assert.Equal(t, "-p=4", g.Flags)
+		assert.Equal(t, []string{"-p", "4"}, g.Flags)
 	}
 }
