@@ -1,6 +1,6 @@
-// This is a minimalist config package. It uses a flat structure
+// Package config is a minimalist config package. It uses a flat structure
 // and simple obfuscation to avoid over-the-shoulder or casual viewing
-// of passwords on the file system. Future implemenations may improve upon
+// of passwords on the file system. Future implementations may improve upon
 // the data structure and allow for user provided passwords that will
 // better protect the locally stored password.
 // Or we can try to find a config library that supports:
