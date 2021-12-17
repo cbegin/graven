@@ -48,7 +48,7 @@ $ graven test
 $ graven package
 
 # When you're ready to release
-$ graven repo --login --name github
+$ graven repo login --name github
 Please type or paste a github token (will not echo):
 $ graven release
 $ graven bump [major|minor|patch|QUALIFIER]
@@ -150,7 +150,7 @@ artifacts:
 resources:
 - LICENSE
 # Configures a repository for deployment.
-# Use graven repo --login --name [name] to authenticate
+# Use graven repo login --name [name] to authenticate
 repositories:
   github:
     url: https://api.github.com/

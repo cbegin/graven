@@ -25,7 +25,7 @@ func (m *MavenRepoTool) Release(project *domain.Project, repo string) error {
 	c := config.NewConfig()
 
 	if err := c.Read(); err != nil {
-		return fmt.Errorf("Error reading configuration (try: graven repo --login --name %v): %v", repo, err)
+		return fmt.Errorf("Error reading configuration (try: graven repo login --name %v): %v", repo, err)
 	}
 
 	username := c.Get(project.Name, fmt.Sprintf("%v-username", repo))
