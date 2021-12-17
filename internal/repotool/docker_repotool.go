@@ -11,8 +11,8 @@ import (
 
 type DockerRepotool struct{}
 
-func (r *DockerRepotool) Login(project *domain.Project, repo string) error {
-	return GenericLogin(project, repo)
+func (r *DockerRepotool) Login(project *domain.Project, repo string, auth string) error {
+	return GenericLogin(project, repo, auth)
 }
 
 func (r *DockerRepotool) LoginTest(*domain.Project, string) error {

@@ -24,6 +24,10 @@ var RepoCommand = cli.Command{
 					Name:  "name",
 					Usage: "Repository name.",
 				},
+				cli.StringFlag{
+					Name:  "auth",
+					Usage: "Credentials [user:pass|token]",
+				},
 			},
 		},
 		{
@@ -51,13 +55,15 @@ func repoLogin(c *cli.Context) error {
 		return fmt.Errorf("No repo name specified.")
 	}
 
+	auth := c.String("auth")
+
 	repository, found := project.Repositories[repoName]
 	if !found {
 		return fmt.Errorf("No repo named %v is found in project.", repoName)
 	}
 
 	if repoTool, ok := repotool.RepoRegistry[repository.Type]; ok {
-		err := repoTool.Login(project, repoName)
+		err := repoTool.Login(project, repoName, auth)
 		if err != nil {
 			return err
 		}

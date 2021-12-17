@@ -84,6 +84,10 @@ func (c Config) PromptSecret(group, name, prompt string) error {
 		return fmt.Errorf("Error reading secret from terminal: %v", err)
 	}
 
+	return c.SetSecret(group, name, plainText)
+}
+
+func (c Config) SetSecret(group string, name string, plainText string) error {
 	cipherText, err := util.Cloak(plainText)
 	if err != nil {
 		return fmt.Errorf("Error encrypting secret: %v", err)

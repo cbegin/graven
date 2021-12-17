@@ -13,8 +13,8 @@ import (
 
 type MavenRepoTool struct{}
 
-func (m *MavenRepoTool) Login(project *domain.Project, repo string) error {
-	return GenericLogin(project, repo)
+func (m *MavenRepoTool) Login(project *domain.Project, repo string, auth string) error {
+	return GenericLogin(project, repo, auth)
 }
 
 func (m *MavenRepoTool) LoginTest(*domain.Project, string) error {

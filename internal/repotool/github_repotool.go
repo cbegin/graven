@@ -15,15 +15,23 @@ import (
 
 type GithubRepoTool struct{}
 
-func (g *GithubRepoTool) Login(project *domain.Project, repo string) error {
+func (g *GithubRepoTool) Login(project *domain.Project, repo string, auth string) error {
 	c := config.NewConfig()
 	if err := c.Read(); err != nil {
 		// ignore
 	}
-	err := c.PromptSecret(project.Name, repo, "Please type or paste a github token (will not echo): ")
-	err = c.Write()
-	if err != nil {
-		return fmt.Errorf("Error writing configuration file. %v", err)
+	if auth == "" {
+		err := c.PromptSecret(project.Name, repo, "Please type or paste a github token (will not echo): ")
+		if err != nil {
+			return fmt.Errorf("Error reading token from stdin: %v", err)
+		}
+	} else {
+		if err := c.SetSecret(project.Name, repo, auth); err != nil {
+			return fmt.Errorf("Error writing secret to config: %v", err)
+		}
+	}
+	if err := c.Write(); err != nil {
+		return fmt.Errorf("Error writing configuration file: %v", err)
 	}
 	return nil
 }
