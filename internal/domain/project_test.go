@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/cbegin/graven/test/hello/version"
+
 	"github.com/stretchr/testify/assert"
 )
 

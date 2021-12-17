@@ -2,9 +2,10 @@ package vcstool
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/cbegin/graven/internal/domain"
 	"github.com/cbegin/graven/internal/util"
-	"strings"
 )
 
 type GitVCSTool struct{}

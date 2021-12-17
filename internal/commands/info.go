@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+
 	"github.com/cbegin/graven/internal/domain"
 
 	"github.com/urfave/cli"
@@ -14,7 +15,7 @@ var InfoCommand = cli.Command{
 	Action: info,
 }
 
-func info(c *cli.Context) error {
+func info(*cli.Context) error {
 	project, err := domain.FindProject()
 	if err != nil {
 		return err

@@ -2,13 +2,14 @@ package commands
 
 import (
 	"fmt"
-	"github.com/cbegin/graven/internal/domain"
 	"go/parser"
 	"go/token"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/cbegin/graven/internal/domain"
 
 	"github.com/urfave/cli"
 	"gopkg.in/yaml.v2"
@@ -72,7 +73,7 @@ func main() {
 	fmt.Println("Hello!")
 }`
 
-func initialize(c *cli.Context) error {
+func initialize(*cli.Context) error {
 	wd, err := os.Getwd()
 	if err != nil {
 		return err
@@ -159,9 +160,9 @@ func getInitializeWalkerFunc(basePath string, packages *[]PackagePath) filepath.
 			subDirParts := strings.Split(subDir, string(filepath.Separator))
 			matches, _ := filepath.Glob(filepath.Join(path, "*.go"))
 			if len(matches) > 0 && !contains(subDirParts, map[string]struct{}{
-				"vendor": struct{}{},
-				"target": struct{}{},
-				".git":   struct{}{}}) {
+				"vendor": {},
+				"target": {},
+				".git":   {}}) {
 				ast, err := parser.ParseDir(fs, path, nil, parser.PackageClauseOnly)
 				if err != nil {
 					fmt.Println(err)

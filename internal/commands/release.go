@@ -2,10 +2,11 @@ package commands
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/cbegin/graven/internal/domain"
 	"github.com/cbegin/graven/internal/repotool"
-	vcstool2 "github.com/cbegin/graven/internal/vcstool"
-	"os"
+	"github.com/cbegin/graven/internal/vcstool"
 
 	"github.com/urfave/cli"
 )
@@ -36,7 +37,7 @@ func release(c *cli.Context) error {
 	remote := c.String("remote")
 
 	//TODO: Make this configurable
-	var vcsTool vcstool2.VCSTool = &vcstool2.GitVCSTool{}
+	var vcsTool vcstool.VCSTool = &vcstool.GitVCSTool{}
 	if os.Getenv("TESTRELEASE") == "" {
 		if err := vcsTool.VerifyRepoState(project, remote, branch); err != nil {
 			return err

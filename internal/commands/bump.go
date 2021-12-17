@@ -2,11 +2,12 @@ package commands
 
 import (
 	"fmt"
-	domain2 "github.com/cbegin/graven/internal/domain"
 	"io/ioutil"
 	"os"
 	"strings"
 	"text/template"
+
+	"github.com/cbegin/graven/internal/domain"
 
 	"github.com/urfave/cli"
 )
@@ -38,7 +39,7 @@ var BumpCommand = cli.Command{
 }
 
 func bump(c *cli.Context) error {
-	project, err := domain2.FindProject()
+	project, err := domain.FindProject()
 	if err != nil {
 		return err
 	}
@@ -60,7 +61,7 @@ func bump(c *cli.Context) error {
 	return nil
 }
 
-func writeVersionFile(project *domain2.Project) error {
+func writeVersionFile(project *domain.Project) error {
 	versionPath := project.ProjectPath(versionPackage)
 	versionFile := project.ProjectPath(versionPackage, versionFileName)
 
@@ -71,7 +72,9 @@ func writeVersionFile(project *domain2.Project) error {
 	_ = os.Mkdir(versionPath, 0755) // ignore error. we'll catch file errors later
 
 	file, err := os.Create(versionFile)
-	defer file.Close()
+	defer func() {
+		_ = file.Close()
+	}()
 	if err != nil {
 		return err
 	}
@@ -80,20 +83,21 @@ func writeVersionFile(project *domain2.Project) error {
 		return err
 	}
 
-	tmpl.Execute(file, struct {
+	return tmpl.Execute(file, struct {
 		Version string
 		Package string
 	}{
 		Version: project.Version,
 		Package: versionPackage,
 	})
-	return nil
 }
 
 func validateHeader(versionFile string) error {
 	const headerLength = 10
 	file, err := os.Open(versionFile)
-	defer file.Close()
+	defer func() {
+		_ = file.Close()
+	}()
 	if os.IsNotExist(err) {
 		// it's okay if the file doesn't exist
 		return nil
@@ -113,8 +117,8 @@ func validateHeader(versionFile string) error {
 	return nil
 }
 
-func bumpVersion(project *domain2.Project, arg string) error {
-	version := domain2.Version{}
+func bumpVersion(project *domain.Project, arg string) error {
+	version := domain.Version{}
 
 	if err := version.Parse(project.Version); err != nil {
 		return fmt.Errorf("Error parsing version: %v", err)
@@ -149,7 +153,7 @@ func bumpVersion(project *domain2.Project, arg string) error {
 	return nil
 }
 
-func updateProjectFileVersion(project *domain2.Project) error {
+func updateProjectFileVersion(project *domain.Project) error {
 	fileInfo, err := os.Stat(project.FilePath)
 	if err != nil {
 		return err

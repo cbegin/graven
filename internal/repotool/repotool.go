@@ -2,6 +2,7 @@ package repotool
 
 import (
 	"fmt"
+
 	"github.com/cbegin/graven/internal/config"
 	"github.com/cbegin/graven/internal/domain"
 )
@@ -21,17 +22,17 @@ type RepoTool interface {
 }
 
 func GenericLogin(project *domain.Project, repo string) error {
-	config := config.NewConfig()
-	if err := config.Read(); err != nil {
+	c := config.NewConfig()
+	if err := c.Read(); err != nil {
 		// ignore
 	}
-	if err := config.PromptPlainText(project.Name, fmt.Sprintf("%v-username", repo), "Username: "); err != nil {
+	if err := c.PromptPlainText(project.Name, fmt.Sprintf("%v-username", repo), "Username: "); err != nil {
 
 	}
-	if err := config.PromptSecret(project.Name, fmt.Sprintf("%v-password", repo), "Password: "); err != nil {
+	if err := c.PromptSecret(project.Name, fmt.Sprintf("%v-password", repo), "Password: "); err != nil {
 
 	}
-	if err := config.Write(); err != nil {
+	if err := c.Write(); err != nil {
 		return fmt.Errorf("Error writing configuration file. %v", err)
 	}
 	return nil

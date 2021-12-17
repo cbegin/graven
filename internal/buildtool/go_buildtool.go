@@ -3,12 +3,13 @@ package builder
 import (
 	"bytes"
 	"fmt"
-	"github.com/cbegin/graven/internal/domain"
-	"github.com/cbegin/graven/internal/util"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/cbegin/graven/internal/domain"
+	"github.com/cbegin/graven/internal/util"
 
 	"github.com/blang/semver"
 )

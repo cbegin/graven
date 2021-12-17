@@ -9,6 +9,7 @@ import (
 
 	"github.com/cbegin/graven/internal/domain"
 	"github.com/cbegin/graven/internal/util"
+
 	"github.com/hashicorp/go-multierror"
 	"github.com/urfave/cli"
 )
@@ -87,8 +88,8 @@ func packageArtifact(project *domain.Project, artifact *domain.Artifact) error {
 		if err != nil {
 			return err
 		}
-		os.Remove(dest)
-		os.Rename(temp, dest)
+		_ = os.Remove(dest)
+		_ = os.Rename(temp, dest)
 	}
 	return nil
 }

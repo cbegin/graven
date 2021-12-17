@@ -2,10 +2,11 @@ package commands
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/cbegin/graven/internal/buildtool"
 	"github.com/cbegin/graven/internal/domain"
 	"github.com/cbegin/graven/internal/util"
-	"os"
 
 	"github.com/hashicorp/go-multierror"
 	"github.com/urfave/cli"
@@ -49,7 +50,7 @@ func build(c *cli.Context) error {
 func buildTarget(project *domain.Project, artifact *domain.Artifact, target *domain.Target) error {
 	classifiedPath := project.TargetPath(artifact.Classifier)
 	if _, err := os.Stat(classifiedPath); os.IsNotExist(err) {
-		os.Mkdir(classifiedPath, 0755)
+		_ = os.Mkdir(classifiedPath, 0755)
 	}
 
 	for _, resource := range append(project.Resources, artifact.Resources...) {

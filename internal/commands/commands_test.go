@@ -2,14 +2,15 @@ package commands
 
 import (
 	"fmt"
-	"github.com/cbegin/graven/internal/domain"
-	"github.com/cbegin/graven/internal/util"
 	"os"
 	"path"
 	"path/filepath"
 	"testing"
 
+	"github.com/cbegin/graven/internal/domain"
+	"github.com/cbegin/graven/internal/util"
 	"github.com/cbegin/graven/test/hello/version"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/urfave/cli"
 )
@@ -82,14 +83,17 @@ func TestShouldInitDirectory(t *testing.T) {
 	_ = os.RemoveAll(tempdir)
 	err := os.MkdirAll(tempdir, 0755)
 	assert.NoError(t, err)
-	defer os.RemoveAll(tempdir)
+	defer func() {
+		_ = os.RemoveAll(tempdir)
+	}()
 
 	c := &cli.Context{}
 
 	wd, err := os.Getwd()
 	assert.NoError(t, err)
-	defer os.Chdir(wd) // making double sure we change the working directory back
-
+	defer func() {
+		_ = os.Chdir(wd) // making double sure we change the working directory back
+	}()
 	err = os.Chdir(tempdir)
 	assert.NoError(t, err)
 
@@ -180,6 +184,6 @@ func TestShouldSetVersionQualifier(t *testing.T) {
 }
 
 func resetVersion() {
-	util.CopyFile("../../test/hello/project.fixture", "../../test/hello/project.yaml")
-	util.CopyFile("../../test/hello/version/version.fixture", "../../test/hello/version/version.go")
+	_ = util.CopyFile("../../test/hello/project.fixture", "../../test/hello/project.yaml")
+	_ = util.CopyFile("../../test/hello/version/version.fixture", "../../test/hello/version/version.go")
 }

@@ -2,11 +2,12 @@ package commands
 
 import (
 	"fmt"
-	"github.com/cbegin/graven/internal/buildtool"
-	"github.com/cbegin/graven/internal/domain"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/cbegin/graven/internal/buildtool"
+	"github.com/cbegin/graven/internal/domain"
 
 	"github.com/hashicorp/go-multierror"
 	"github.com/urfave/cli"
@@ -49,9 +50,9 @@ func getTestWalkerFunc(project *domain.Project, merr *error) filepath.WalkFunc {
 			subDirParts := strings.Split(subDir, string(filepath.Separator))
 			matches, _ := filepath.Glob(filepath.Join(path, "*_test.go"))
 			if len(matches) > 0 && !contains(subDirParts, map[string]struct{}{
-				"vendor": struct{}{},
-				"target": struct{}{},
-				".git":   struct{}{}}) {
+				"vendor": {},
+				"target": {},
+				".git":   {}}) {
 				fmt.Printf("Testing %v\n", subDir)
 				if err := buildTool.Test(subDir, project); err != nil {
 					*merr = multierror.Append(*merr, err)

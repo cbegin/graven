@@ -3,14 +3,14 @@ package vendortool
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/cbegin/graven/internal/domain"
-	"github.com/cbegin/graven/internal/util"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
 
-	"path/filepath"
+	"github.com/cbegin/graven/internal/domain"
+	"github.com/cbegin/graven/internal/util"
 
 	"golang.org/x/mod/module"
 )

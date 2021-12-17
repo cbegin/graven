@@ -13,11 +13,12 @@ package config
 import (
 	"bufio"
 	"fmt"
-	"github.com/cbegin/graven/internal/util"
 	"io/ioutil"
 	"os"
 	"os/user"
 	"path/filepath"
+
+	"github.com/cbegin/graven/internal/util"
 
 	"github.com/bgentry/speakeasy"
 	"gopkg.in/yaml.v2"

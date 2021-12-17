@@ -2,11 +2,11 @@ package repotool
 
 import (
 	"fmt"
+	"path"
+
 	"github.com/cbegin/graven/internal/config"
 	"github.com/cbegin/graven/internal/domain"
 	"github.com/cbegin/graven/internal/util"
-
-	"path"
 )
 
 type DockerRepotool struct{}
@@ -15,19 +15,19 @@ func (r *DockerRepotool) Login(project *domain.Project, repo string) error {
 	return GenericLogin(project, repo)
 }
 
-func (r *DockerRepotool) LoginTest(project *domain.Project, repo string) error {
+func (r *DockerRepotool) LoginTest(*domain.Project, string) error {
 	return nil
 }
 
 func (r *DockerRepotool) Release(project *domain.Project, repo string) error {
-	config := config.NewConfig()
+	c := config.NewConfig()
 
-	if err := config.Read(); err != nil {
+	if err := c.Read(); err != nil {
 		return fmt.Errorf("Error reading configuration (try: graven repo --login --name %v): %v", repo, err)
 	}
 
-	username := config.Get(project.Name, fmt.Sprintf("%v-username", repo))
-	password, err := config.GetSecret(project.Name, fmt.Sprintf("%v-password", repo))
+	username := c.Get(project.Name, fmt.Sprintf("%v-username", repo))
+	password, err := c.GetSecret(project.Name, fmt.Sprintf("%v-password", repo))
 	if err != nil {
 		return err
 	}

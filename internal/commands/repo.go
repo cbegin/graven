@@ -2,9 +2,10 @@ package commands
 
 import (
 	"fmt"
+	"reflect"
+
 	"github.com/cbegin/graven/internal/domain"
 	"github.com/cbegin/graven/internal/repotool"
-	"reflect"
 
 	"github.com/urfave/cli"
 	"gopkg.in/yaml.v2"

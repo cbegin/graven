@@ -1,8 +1,9 @@
 package commands
 
 import (
-	"github.com/cbegin/graven/internal/domain"
 	"os"
+
+	"github.com/cbegin/graven/internal/domain"
 
 	"github.com/urfave/cli"
 )
@@ -13,7 +14,7 @@ var CleanCommand = cli.Command{
 	Action: clean,
 }
 
-func clean(c *cli.Context) error {
+func clean(*cli.Context) error {
 	project, err := domain.FindProject()
 	if err != nil {
 		return err

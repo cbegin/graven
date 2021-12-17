@@ -2,12 +2,13 @@ package repotool
 
 import (
 	"fmt"
-	"github.com/cbegin/graven/internal/config"
-	"github.com/cbegin/graven/internal/domain"
-	"github.com/cbegin/graven/internal/util"
 	"net/url"
 	"path"
 	"strings"
+
+	"github.com/cbegin/graven/internal/config"
+	"github.com/cbegin/graven/internal/domain"
+	"github.com/cbegin/graven/internal/util"
 )
 
 type MavenRepoTool struct{}
@@ -16,19 +17,19 @@ func (m *MavenRepoTool) Login(project *domain.Project, repo string) error {
 	return GenericLogin(project, repo)
 }
 
-func (m *MavenRepoTool) LoginTest(project *domain.Project, repo string) error {
+func (m *MavenRepoTool) LoginTest(*domain.Project, string) error {
 	return nil
 }
 
 func (m *MavenRepoTool) Release(project *domain.Project, repo string) error {
-	config := config.NewConfig()
+	c := config.NewConfig()
 
-	if err := config.Read(); err != nil {
+	if err := c.Read(); err != nil {
 		return fmt.Errorf("Error reading configuration (try: graven repo --login --name %v): %v", repo, err)
 	}
 
-	username := config.Get(project.Name, fmt.Sprintf("%v-username", repo))
-	password, err := config.GetSecret(project.Name, fmt.Sprintf("%v-password", repo))
+	username := c.Get(project.Name, fmt.Sprintf("%v-username", repo))
+	password, err := c.GetSecret(project.Name, fmt.Sprintf("%v-password", repo))
 	if err != nil {
 		return err
 	}

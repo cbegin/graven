@@ -3,10 +3,11 @@ package repotool
 import (
 	"context"
 	"fmt"
-	"github.com/cbegin/graven/internal/config"
-	"github.com/cbegin/graven/internal/domain"
 	"net/url"
 	"os"
+
+	"github.com/cbegin/graven/internal/config"
+	"github.com/cbegin/graven/internal/domain"
 
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
@@ -15,12 +16,12 @@ import (
 type GithubRepoTool struct{}
 
 func (g *GithubRepoTool) Login(project *domain.Project, repo string) error {
-	config := config.NewConfig()
-	if err := config.Read(); err != nil {
+	c := config.NewConfig()
+	if err := c.Read(); err != nil {
 		// ignore
 	}
-	err := config.PromptSecret(project.Name, repo, "Please type or paste a github token (will not echo): ")
-	err = config.Write()
+	err := c.PromptSecret(project.Name, repo, "Please type or paste a github token (will not echo): ")
+	err = c.Write()
 	if err != nil {
 		return fmt.Errorf("Error writing configuration file. %v", err)
 	}
@@ -94,13 +95,13 @@ func (g *GithubRepoTool) Release(project *domain.Project, repo string) error {
 }
 
 func authenticate(project *domain.Project, repo string) (*github.Client, context.Context, error) {
-	config := config.NewConfig()
+	c := config.NewConfig()
 
-	if err := config.Read(); err != nil {
+	if err := c.Read(); err != nil {
 		return nil, nil, fmt.Errorf("Error reading configuration (try: graven repo --login --name %v): %v", repo, err)
 	}
 
-	token, err := config.GetSecret(project.Name, repo)
+	token, err := c.GetSecret(project.Name, repo)
 	if err != nil {
 		return nil, nil, err
 	}

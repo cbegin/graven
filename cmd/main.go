@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	commands2 "github.com/cbegin/graven/internal/commands"
 	"os"
 
+	"github.com/cbegin/graven/internal/commands"
 	"github.com/cbegin/graven/version"
+
 	"github.com/urfave/cli"
 )
 
@@ -16,15 +17,15 @@ func main() {
 	app.Usage = "A build automation tool for Go."
 
 	app.Commands = []cli.Command{
-		commands2.BuildCommand,
-		commands2.InfoCommand,
-		commands2.CleanCommand,
-		commands2.PackageCommand,
-		commands2.BumpCommand,
-		commands2.TestCommand,
-		commands2.InitCommand,
-		commands2.ReleaseCommand,
-		commands2.RepoCommand,
+		commands.BuildCommand,
+		commands.InfoCommand,
+		commands.CleanCommand,
+		commands.PackageCommand,
+		commands.BumpCommand,
+		commands.TestCommand,
+		commands.InitCommand,
+		commands.ReleaseCommand,
+		commands.RepoCommand,
 	}
 
 	err := app.Run(os.Args)
