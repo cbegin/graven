@@ -5,8 +5,8 @@ artifacts:
 - classifier: darwin
   targets:
   - executable: bin/graven
-    package: .
-    #flags: ["-mod", "vendor"]
+    package: ./cmd
+    flags: ["-ldflags", "-s"]
   archive: tgz
   env:
     GOARCH: amd64
@@ -14,17 +14,17 @@ artifacts:
 - classifier: linux
   targets:
   - executable: bin/graven
-    package: .
-    #flags: ["-mod", "vendor"]
+    package: ./cmd
+    flags: ["-ldflags", "-s"]
   archive: tar.gz
   env:
     GOARCH: amd64
     GOOS: linux
 - classifier: win
   targets:
-  - executable: graven.exe
-    package: .
-    #flags: ["-mod", "vendor"]
+  - executable: bin/graven.exe
+    package: ./cmd
+    flags: ["-ldflags", "-s"]
   archive: zip
   env:
     GOARCH: amd64
