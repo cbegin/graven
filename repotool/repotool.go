@@ -19,8 +19,6 @@ type RepoTool interface {
 	Login(project *domain.Project, repo string) error
 	LoginTest(project *domain.Project, repo string) error
 	Release(project *domain.Project, repo string) error
-	UploadDependency(project *domain.Project, repo string, dependencyFile, dependencyPath string) error
-	DownloadDependency(project *domain.Project, repo string, dependencyFile, dependencyPath string) error
 }
 
 func GenericLogin(project *domain.Project, repo string) error {

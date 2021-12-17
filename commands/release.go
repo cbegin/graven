@@ -47,14 +47,12 @@ func release(c *cli.Context) error {
 	}
 
 	for repoName, repo := range project.Repositories {
-		if repo.HasRole(domain.RepositoryRoleRelease) {
-			if repoTool, ok := repotool.RepoRegistry[repo.Type]; ok {
-				if err := repoTool.LoginTest(project, repoName); err != nil {
-					return err
-				}
-			} else {
-				fmt.Printf("Unkown repository type %v for %v\n", repo.Type, repoName)
+		if repoTool, ok := repotool.RepoRegistry[repo.Type]; ok {
+			if err := repoTool.LoginTest(project, repoName); err != nil {
+				return err
 			}
+		} else {
+			fmt.Printf("Unkown repository type %v for %v\n", repo.Type, repoName)
 		}
 	}
 
@@ -66,14 +64,12 @@ func release(c *cli.Context) error {
 	}
 
 	for repoName, repo := range project.Repositories {
-		if repo.HasRole(domain.RepositoryRoleRelease) {
-			if repoTool, ok := repotool.RepoRegistry[repo.Type]; ok {
-				if err := repoTool.Release(project, repoName); err != nil {
-					return err
-				}
-			} else {
-				fmt.Printf("Unkown repository type %v for %v\n", repo.Type, repoName)
+		if repoTool, ok := repotool.RepoRegistry[repo.Type]; ok {
+			if err := repoTool.Release(project, repoName); err != nil {
+				return err
 			}
+		} else {
+			fmt.Printf("Unkown repository type %v for %v\n", repo.Type, repoName)
 		}
 	}
 

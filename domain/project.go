@@ -8,6 +8,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+var FindProject = internalFindProject
+
 const (
 	ProjectFileName = "project.yaml"
 	TargetDirName   = "target"
@@ -42,12 +44,11 @@ type Target struct {
 }
 
 type Repository struct {
-	URL      string   `yaml:"url,omitempty"`
-	Group    string   `yaml:"group,omitempty"`
-	Artifact string   `yaml:"artifact,omitempty"`
-	File     string   `yaml:"file,omitempty"`
-	Type     string   `yaml:"type,omitempty"`
-	Roles    []string `yaml:"roles,omitempty"`
+	URL      string `yaml:"url,omitempty"`
+	Group    string `yaml:"group,omitempty"`
+	Artifact string `yaml:"artifact,omitempty"`
+	File     string `yaml:"file,omitempty"`
+	Type     string `yaml:"type,omitempty"`
 }
 
 func (p *Project) TargetPath(subdirs ...string) string {
@@ -69,17 +70,6 @@ func (p *Project) ProjectPath(subdirs ...string) string {
 func (a *Artifact) ArtifactFile(project *Project) string {
 	return fmt.Sprintf("%s-%s-%s.%s", project.Name, project.Version, a.Classifier, a.Archive)
 }
-
-func (r *Repository) HasRole(role string) bool {
-	for _, r := range r.Roles {
-		if r == role {
-			return true
-		}
-	}
-	return false
-}
-
-var FindProject = internalFindProject
 
 func internalFindProject() (*Project, error) {
 	wd, _ := os.Getwd()

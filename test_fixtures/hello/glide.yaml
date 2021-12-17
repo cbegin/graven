@@ -1,7 +1,0 @@
-package: github.com/cbegin/graven/test_fixtures/hello
-import:
-- package: github.com/fatih/color
-testImport:
-- package: github.com/stretchr/testify
-  subpackages:
-  - assert

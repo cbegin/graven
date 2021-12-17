@@ -1,12 +1,12 @@
 name: graven
-version: 2.0.0-RC2
+version: 3.0.0-DEV
 go_version: ">=1.12.0"
 artifacts:
 - classifier: darwin
   targets:
   - executable: bin/graven
     package: .
-    flags: ["-mod", "vendor"]
+    #flags: ["-mod", "vendor"]
   archive: tgz
   env:
     GOARCH: amd64
@@ -15,7 +15,7 @@ artifacts:
   targets:
   - executable: bin/graven
     package: .
-    flags: ["-mod", "vendor"]
+    #flags: ["-mod", "vendor"]
   archive: tar.gz
   env:
     GOARCH: amd64
@@ -24,7 +24,7 @@ artifacts:
   targets:
   - executable: graven.exe
     package: .
-    flags: ["-mod", "vendor"]
+    #flags: ["-mod", "vendor"]
   archive: zip
   env:
     GOARCH: amd64
@@ -34,7 +34,5 @@ repositories:
     group: cbegin
     artifact: graven
     type: github
-    roles:
-    - release
 resources:
 - LICENSE

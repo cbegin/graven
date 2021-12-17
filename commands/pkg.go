@@ -48,7 +48,7 @@ func pkg(c *cli.Context) error {
 	wg.Wait()
 
 	for _, repo := range project.Repositories {
-		if repo.Type == "docker" && repo.HasRole("release") {
+		if repo.Type == "docker" {
 			dockerPath := path.Join(repo.URL, repo.Group, repo.Artifact)
 			dockerTag := fmt.Sprintf("%v:%v", dockerPath, project.Version)
 			dockerDir := filepath.Dir(project.ProjectPath(repo.File))

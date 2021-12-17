@@ -20,8 +20,6 @@ func init() {
 		absolutePath, _ := filepath.Abs(relativePath)
 		return domain.LoadProject(absolutePath)
 	}
-	c := &cli.Context{}
-	_ = unfreeze(c)
 }
 
 func TestShouldBuildTargetDirectory(t *testing.T) {
@@ -104,38 +102,6 @@ func TestShouldInitDirectory(t *testing.T) {
 	assert.True(t, util.PathExists(path.Join(tempdir, "version", "version.go")))
 	assert.True(t, util.PathExists(path.Join(tempdir, "main.go")))
 	assert.True(t, util.PathExists(path.Join(tempdir, "project.yaml")))
-}
-
-func TestShouldFreezeResources(t *testing.T) {
-	c := &cli.Context{}
-
-	_ = os.RemoveAll("../test_fixtures/hello/.modules")
-
-	err := freeze(c)
-	assert.NoError(t, err)
-
-	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-davecgh-go-spew-spew-346938d642f2ec3594ed81d874461961cd0faa76.zip"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-fatih-color-62e9147c64a1ed519147b62a56a14e83e2be02c1.zip"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-mattn-go-colorable-941b50ebc6efddf4c41c8e4537a5f68a4e686b24.zip"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-mattn-go-isatty-fc9e8d8ef48496124e79ae0df75490096eccf6fe.zip"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-pmezard-go-difflib-difflib-792786c7400a136282c1664665ae0a8db921c6c2.zip"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/.modules/github-com-stretchr-testify-assert-f6abca593680b2315d2075e0f5e2a9751e3f431a.zip"))
-
-}
-
-func TestShouldUnfreezeResources(t *testing.T) {
-	c := &cli.Context{}
-
-	_ = os.RemoveAll("../test_fixtures/hello/vendor/github.com")
-	_ = os.RemoveAll("../test_fixtures/hello/vendor/golang.org")
-
-	err := unfreeze(c)
-	assert.NoError(t, err)
-
-	assert.True(t, util.PathExists("../test_fixtures/hello/vendor/github.com/fatih"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/vendor/github.com/mattn"))
-	assert.True(t, util.PathExists("../test_fixtures/hello/vendor/golang.org/x"))
-
 }
 
 func TestShouldRunTests(t *testing.T) {

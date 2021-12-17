@@ -56,11 +56,3 @@ func (r *DockerRepotool) Release(project *domain.Project, repo string) error {
 
 	return nil
 }
-
-func (r *DockerRepotool) UploadDependency(project *domain.Project, repo string, dependencyFile, dependencyPath string) error {
-	return fmt.Errorf("Docker repos don't support dependencies.")
-}
-
-func (r *DockerRepotool) DownloadDependency(project *domain.Project, repo string, dependencyFile, dependencyPath string) error {
-	return fmt.Errorf("Docker repos don't support dependencies.")
-}

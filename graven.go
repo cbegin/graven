@@ -22,8 +22,6 @@ func main() {
 		commands.PackageCommand,
 		commands.BumpCommand,
 		commands.TestCommand,
-		commands.FreezeCommand,
-		commands.UnfreezeCommand,
 		commands.InitCommand,
 		commands.ReleaseCommand,
 		commands.RepoCommand,
