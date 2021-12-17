@@ -27,13 +27,7 @@ Furthermore, builds aren't easily repeatable and versions are usually
 based on commit hashcodes, rather than intelligently selected semantic
 versions that describe capabilities, compatibility and bug fixes. 
 
-Graven supports, automate and encourages proper semantic versioning and 
-can freeze vendor dependencies to ensure repeatable builds are possible. 
-Graven is opinionated about vendoring tools, and has chosen Govendor as 
-its standard. However, it may support other vendoring tools in the future, 
-and will embrace any standard tools that eventually come from the Go
-project.
-
+Graven supports, automate and encourages proper semantic versioning. 
 
 ## Where things differ
 

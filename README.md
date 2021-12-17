@@ -7,10 +7,6 @@ little is shared beyond the goals.
 
 Want to know more? Read about the [Motivation for Graven](docs/motivation.md).
 
-### Tutorial Video
-
-[![Graven Video](docs/video.png)](https://youtu.be/forR0rTmqec)
-
 ## Prerequisites
 
 Graven currently requires the following tools to be on your path:
@@ -18,6 +14,7 @@ Graven currently requires the following tools to be on your path:
 * `go` - the Go build tool, used to compile and test your application.
 * `git` - used during the release process to validate the state of your repo,
 and tag your repo.
+* `docker` - used during build and release of docker images
 
 Of course if you don't plan to use the `release` command commands, you
 can still use `graven` just for building, testing and packaging, and thus
@@ -25,19 +22,13 @@ would only require the `go` tool.
 
 ## Installation
 
-If you want to run the latest, you can just `go get` the tool.
-
-```
-go get -u github.com/cbegin/graven
-```
-
-For greater consistency and stability, you can run a specific relese version from:
+For greater consistency and stability, it is recommended to download a specific release version from:
 
 * https://github.com/cbegin/graven/releases
 
 ## Workflow Example
 
-Whether your starting an entirely new project, or working with existing source,
+Whether you're starting an entirely new project, or working with existing source,
 the workflow should be the same.
 
 Not all of these steps are always necessary. See below for a description of
@@ -57,7 +48,7 @@ $ graven test
 $ graven package
 
 # When you're ready to release
-$ graven repo --login --name github
+$ graven repo login --name github
 Please type or paste a github token (will not echo):
 $ graven release
 $ graven bump [major|minor|patch|QUALIFIER]
@@ -67,10 +58,6 @@ A typical development cycle looks like the following diagram. The `init` command
 is run once per project, then `clean`, `build`, `test` and `package` are typically used
 throughout the development cycle. Releases occur less frequently, and versions
 are bumped after the release.
-
-The `freeze` and `unfreeze` commands are optional and on a completely
-independent flow, thus can be executed any time. They are discussed separately
-here: [Freezing Dependencies](docs/freezing.md).
 
 ```
                                +----------+
@@ -85,14 +72,14 @@ here: [Freezing Dependencies](docs/freezing.md).
                             \                 /
                              \ +----------+  /
                               \| package  |<-
-    +----------+               +----------+
-    |  freeze  |                     |
-    +----------+                     v
-          |                    +----------+
-          |                    |  release |
-    +-----v----+               +----------+
-    | unfreeze |                     |
-    +----------+                     |
+                               +----------+
+                                     |
+                                     v
+                               +----------+
+                               |  release |
+                               +----------+
+                                     |
+                                     |
                                +-----v----+
                                |   bump   |
                                +----------+
@@ -127,7 +114,7 @@ artifacts:
   targets:
   - executable: bin/graven
     package: .
-    flags: ""
+    flags: []
     env: {}
   # archive supports zip and tar.gz (or tgz, as a single dot alias)
   archive: tgz
@@ -140,7 +127,7 @@ artifacts:
   targets:
   - executable: bin/graven
     package: .
-    flags: ""
+    flags: []
     env: {}
   archive: tar.gz
   resources: []
@@ -151,7 +138,7 @@ artifacts:
   targets:
   - executable: graven.exe
     package: .
-    flags: ""
+    flags: []
     env: {}
   archive: zip
   resources: []
@@ -163,44 +150,31 @@ artifacts:
 resources:
 - LICENSE
 # Configures a repository for deployment.
-# Use graven repo --login --name [name] to authenticate
+# Use graven repo login --name [name] to authenticate
 repositories:
   github:
     url: https://api.github.com/
     group: cbegin
     artifact: graven
     type: github
-    # Github repos only support releases
-    roles:
-    - release
   artifactory:
     url: http://localhost:8081/artifactory/releases/
     group: cbegin
     artifact: graven
     type: maven
-    # Supports both releases and frozen dependencies
-    roles:
-    - release
-    - dependency
   nexus:
     url: http://localhost:8082/nexus/content/repositories/releases/
     group: cbegin
     artifact: graven
     type: maven
-    # Supports both releases and frozen dependencies
-    roles:
-    - release
-    - dependency
   docker:
     url: docker.io
     group: cbegin
     artifact: graven
     type: docker
     file: Dockerfile
-    # Docker repos only support releases
-    roles:
-    - release
 ```
+
 ## Name and Version
 
 ```
@@ -231,7 +205,7 @@ artifacts:
   targets:
   - executable: bin/graven
     package: .
-    flags: ""
+    flags: []
     env: {}
   archive: tgz
   resources: []
@@ -258,16 +232,10 @@ repositories:
     group: cbegin
     artifact: graven
     type: maven
-    # Supports both releases and frozen dependencies
-    roles:
-    - release
-    - dependency
   ...
 ```
 
-In the repositories section you can define both release and dependency repositories. A release repository
-is where this project will be released. A dependency repository will be used to store frozen vendor
-dependencies, so that you don't need to check in your vendor directories or .modules directory.
+A repository is where this project will be released. 
 
 Three repository types are currently supported: Github, Docker and Maven (including Nexus and Artifactory).
 Their capabilities and settings are summarized in the table below.
@@ -278,16 +246,14 @@ Their capabilities and settings are summarized in the table below.
 | url   | Github API URL | Docker registry URL | Maven release URL |
 | group | Owner | Repository | Group ID |
 | artifact | Repo | Image Name | Artifact ID |
-| roles | release | release | release, dependency |
 | file | unused | Dockerfile | unused |
 
 ### Authenticating
 
-In order to use a repository for releases or dependencies, you'll need to authenticate.
-To do so, simply call `graven repo --login --name [repo-name]`. The credentials you enter
+In order to use a repository for releases, you'll need to authenticate.
+To do so, simply call `graven repo login --name [repo-name]`. The credentials you enter
 will be stored in your home directory in the .graven.yaml file. Your credentials will be
 obfuscated to discourage over-the-shoulder or casual exposure. Even though a strong
-encryption algorithm is used, the key is not secure and thus you should treat it as
-such.
+encryption algorithm is used, the key is not secure, and thus you should treat it accordingly.
 
 
