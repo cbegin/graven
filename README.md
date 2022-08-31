@@ -1,3 +1,5 @@
+Deprecated
+
 # graven
 
 Graven is a build management tool for Go projects. It takes light
